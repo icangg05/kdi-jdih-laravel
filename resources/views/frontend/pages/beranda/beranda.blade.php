@@ -1,0 +1,12 @@
+@extends('frontend.layouts.frontend')
+
+@section('content')
+  @include('frontend.pages.beranda.components.hero-section')
+  @include('frontend.pages.beranda.components.pejabat-section')
+  @include('frontend.pages.beranda.components.statistik-section')
+  @include('frontend.pages.beranda.components.peraturan-section')
+  @include('frontend.pages.beranda.components.monografi-section')
+  @include('frontend.pages.beranda.components.pengumuman-section')
+  @include('frontend.pages.beranda.components.video-section')
+  @include('frontend.pages.beranda.components.berita-section')
+@endsection
