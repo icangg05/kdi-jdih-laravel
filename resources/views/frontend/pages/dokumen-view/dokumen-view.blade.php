@@ -286,7 +286,13 @@
                   <h3>Keterangan Status</h3>
                 </div>
                 <ul class="widget-list text-extra-dark-gray font-weight-600" style="opacity: 0.9;">
-                  {{ $dataStatus ? $dataStatus->status_peraturan : '—' }}
+                  @if ($dataStatus)
+                  <button class="btn btn-dark badge" type="button">
+                    {{ ucfirst($dataStatus->status_peraturan) }}
+                  </button>
+                  @else
+                  —
+                  @endif
                 </ul>
               </div>
             @endif

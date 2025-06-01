@@ -76,11 +76,11 @@ class BerandaController extends Controller
     $countMonografi = DB::table('document')
       ->where('tipe_dokumen', 2)
       ->count();
+    $countArtikel = DB::table('document')
+      ->where('tipe_dokumen', 3)
+      ->count();
     $countPutusan = DB::table('document')
       ->where('tipe_dokumen', 4)
-      ->count();
-    $countBerita = DB::table('berita')
-      ->where('status', 1)
       ->count();
 
     return view('frontend.pages.beranda.beranda', compact(
@@ -95,8 +95,8 @@ class BerandaController extends Controller
       'berita',
       'countPeraturan',
       'countMonografi',
+      'countArtikel',
       'countPutusan',
-      'countBerita'
     ));
   }
 }

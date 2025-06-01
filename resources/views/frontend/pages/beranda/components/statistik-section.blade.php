@@ -47,7 +47,7 @@
                 <img src="{{ asset('assets/frontend/img/artikel.svg') }}" alt="img">
               </div>
               <div class="content">
-                <h6>{{ $countBerita }}</h6>
+                <h6>{{ $countArtikel }}</h6>
                 <h5 class="font-size20">Artikel</h5>
               </div>
             </div>
