@@ -7,7 +7,7 @@
             Ditampilkan {{ $data->firstItem() }} - {{ $data->lastItem() }} dari {{ $data->total() }}
             Data</div>
           <h3 class="panel-title">
-            <h3 class="panel-title"><i class="glyphicon glyphicon-book"></i> Data {{ $title }}</h3>
+            <h3 class="panel-title"><i class="glyphicon glyphicon-book"></i> &nbsp;Data {{ $title }}</h3>
           </h3>
           <div class="clearfix"></div>
         </div>
@@ -95,7 +95,8 @@
                 @php $item = (array) $item; @endphp
                 <tr class="w0">
                   <td class="text-center" style="width: 50px;">
-                    {{ $loop->index + $data->firstItem() }}.</td>
+                    {{ $loop->index + $data->firstItem() }}.
+                  </td>
 
                   @foreach ($columns as $col)
                     @php
@@ -159,7 +160,6 @@
 @push('link')
   <link href="{{ asset('assets') }}/backend/assets/be3f94da/css/kv-grid.css" rel="stylesheet">
   <link href="{{ asset('assets') }}/backend/assets/dd0a08c6/css/bootstrap-dialog-bs3.css" rel="stylesheet">
-  <link href="{{ asset('assets') }}/backend/assets/be3f94da/css/jquery.resizableColumns.css" rel="stylesheet">
   <script src="{{ asset('assets') }}/backend/assets/dd0a08c6/js/dialog.js"></script>
   <script>
     var krajeeDialogDefaults_f77ffd0f = {
@@ -211,12 +211,8 @@
 @endpush
 
 @push('script')
-  <script src="{{ asset('assets') }}/backend/assets/f07c8c94/yii.gridView.js"></script>
   <script src="{{ asset('assets') }}/backend/assets/dd0a08c6/js/bootstrap-dialog.js"></script>
   <script src="{{ asset('assets') }}/backend/assets/dd0a08c6/js/dialog-yii.js"></script>
-  <script src="{{ asset('assets') }}/backend/assets/be3f94da/js/kv-grid-export.js"></script>
-  <script src="{{ asset('assets') }}/backend/assets/be3f94da/js/jquery.resizableColumns.js"></script>
-  <script src="{{ asset('assets') }}/backend/assets/e70edb63/jquery.pjax.js"></script>
   <script>
     jQuery(function($) {
       jQuery('#w1').dropdown();

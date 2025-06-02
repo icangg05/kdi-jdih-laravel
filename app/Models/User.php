@@ -9,15 +9,16 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    // protected $table = 'user';
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
-
+    
     /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
      */
+    protected $table = 'user';
+    
     protected $fillable = [
         'name',
         'email',
@@ -43,7 +44,12 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'password'          => 'hashed',
         ];
+    }
+
+    public function getAuthPassword()
+    {
+        return $this->password_hash;
     }
 }

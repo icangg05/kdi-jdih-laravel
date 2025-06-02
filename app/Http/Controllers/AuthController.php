@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
@@ -16,7 +15,7 @@ class AuthController extends Controller
   public function authenticate(Request $request)
   {
     $credentials = $request->validate([
-      'username'      => ['required'],
+      'username' => ['required'],
       'password' => ['required'],
     ]);
 

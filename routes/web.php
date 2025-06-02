@@ -26,23 +26,33 @@ Route::get('/logout', [AuthController::class, 'logout'])
 
 
 // Frontend route
-Route::get('/download/{file}', [DokumenController::class, 'downloadFile'])->name('download_file');
+Route::get('/download/{file}', [DokumenController::class, 'downloadFile'])
+  ->name('download_file');
 
 Route::name('frontend.')->group(function () {
-  Route::get('/', [BerandaController::class, 'index'])->name('beranda');
+  Route::get('/', [BerandaController::class, 'index'])
+    ->name('beranda');
 
-  Route::get('/profil/{kategori}', [ProfilController::class, 'index'])->name('profil');
+  Route::get('/profil/{kategori}', [ProfilController::class, 'index'])
+    ->name('profil');
 
-  Route::get('/dokumen/{kategori}', [DokumenController::class, 'index'])->name('dokumen');
-  Route::get('/dokumen/{kategori}/{id}', [DokumenController::class, 'viewById'])->name('dokumen_view');
+  Route::get('/dokumen/{kategori}', [DokumenController::class, 'index'])
+    ->name('dokumen');
+  Route::get('/dokumen/{kategori}/{id}', [DokumenController::class, 'viewById'])
+    ->name('dokumen_view');
 
-  Route::get('/pengumuman', [PengumumanController::class, 'index'])->name('pengumuman');
-  Route::get('/pengumuman/{id}', [PengumumanController::class, 'viewById'])->name('pengumuman_view');
+  Route::get('/pengumuman', [PengumumanController::class, 'index'])
+    ->name('pengumuman');
+  Route::get('/pengumuman/{id}', [PengumumanController::class, 'viewById'])
+    ->name('pengumuman_view');
 
-  Route::get('/berita', [BeritaController::class, 'index'])->name('berita');
-  Route::get('/berita/{id}', [BeritaController::class, 'viewById'])->name('berita_view');
+  Route::get('/berita', [BeritaController::class, 'index'])
+    ->name('berita');
+  Route::get('/berita/{id}', [BeritaController::class, 'viewById'])
+    ->name('berita_view');
 
-  Route::get('/informasi-hukum/{id}', [InformasiHukumController::class, 'index'])->name('informasi_hukum');
+  Route::get('/informasi-hukum/{id}', [InformasiHukumController::class, 'index'])
+    ->name('informasi_hukum');
 });
 
 
