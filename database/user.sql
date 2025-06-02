@@ -2,10 +2,10 @@
 -- version 5.2.2
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Waktu pembuatan: 01 Jun 2025 pada 13.08
--- Versi server: 8.0.30
--- Versi PHP: 8.3.21
+-- Host: db
+-- Waktu pembuatan: 02 Jun 2025 pada 06.04
+-- Versi server: 8.0.42
+-- Versi PHP: 8.2.27
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -31,7 +31,7 @@ CREATE TABLE `user` (
   `id` int NOT NULL,
   `username` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL,
   `auth_key` varchar(32) COLLATE utf8mb3_unicode_ci NOT NULL,
-  `password_hash` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
+  `password_hash` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL,
   `password_reset_token` varchar(255) COLLATE utf8mb3_unicode_ci DEFAULT NULL,
   `email` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL,
   `status` smallint NOT NULL DEFAULT '10',

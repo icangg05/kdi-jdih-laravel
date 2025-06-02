@@ -43,6 +43,7 @@ class DashboardController extends Controller
 
     // Path lengkap ke mysqldump Laragon
     $mysqldump = 'C:\\laragon\\bin\\mysql\\mysql-8.0.30-winx64\\bin\\mysqldump.exe';
+    // $mysqldump = "mysqldump";
 
     // Perintah (tanpa -p jika password kosong)
     $passPart = $pass ? "-p$pass" : '';

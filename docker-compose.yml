@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: kdi-jdih-app
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+    ports:
+      - "9000:9000"
+    depends_on:
+      - db
+
+  web:
+    image: nginx:alpine
+    container_name: kdi-jdih-nginx
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+
+  db:
+    image: mysql:8.0
+    container_name: kdi-jdih-mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: db_jdih
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: jdih
+      MYSQL_PASSWORD: jdih123
+    volumes:
+      - dbdata:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: kdi-jdih-phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+
+volumes:
+  dbdata:
