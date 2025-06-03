@@ -16,7 +16,8 @@
 
 @push('link')
   <style>
-    .fileinput-upload-button {
+    .fileinput-upload-button,
+    .file-preview {
       display: none;
     }
   </style>
@@ -25,6 +26,7 @@
 @push('script')
   <script>
     var mimes = @json($mimes ?? []);
+    console.log(mimes);
 
     window.{{ $key }} = {
       "allowedFileExtensions": mimes,

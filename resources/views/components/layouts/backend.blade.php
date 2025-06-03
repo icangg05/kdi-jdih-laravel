@@ -25,6 +25,14 @@
     <link href="{{ asset('assets') }}/backend/assets/6a009609/css/kv-summernote.css" rel="stylesheet">
     <link href="{{ asset('assets') }}/backend/assets/7fee4fda/css/fileinput.css" rel="stylesheet">
   @endif
+  <script src="{{ asset('assets') }}/backend/assets/3e5a9e6a/jquery.js"></script>
+
+  <style>
+    .select2-selection.select2-selection--single {
+      height: 34px !important;
+      opacity: 0.8 !important;
+    }
+  </style>
 
   @stack('link')
 </head>
@@ -46,7 +54,6 @@
     @include('backend.partials.footer')
   </div>
 
-  <script src="{{ asset('assets') }}/backend/assets/3e5a9e6a/jquery.js"></script>
   <script src="{{ asset('assets') }}/backend/assets/f07c8c94/yii.js"></script>
   <script src="{{ asset('assets') }}/backend/assets/63e477e8/js/bootstrap.js"></script>
   <script src="{{ asset('assets') }}/backend/assets/687d7f9a/plugins/fastclick/fastclick.min.js"></script>

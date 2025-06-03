@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
 class DashboardController extends Controller
@@ -31,6 +32,7 @@ class DashboardController extends Controller
       'countPutusan',
     ));
   }
+
 
   public function exportDatabase()
   {
@@ -65,5 +67,65 @@ class DashboardController extends Controller
     }
 
     return response()->download($filePath)->deleteFileAfterSend(true);
+  }
+
+
+  public function downloadFile(Request $request)
+  {
+    return Storage::download($request->filePath);
+  }
+
+
+  public function generateWilayah()
+  {
+    $response = Http::timeout(5)->get('https://wilayah.id/api/provinces.json');
+
+    if (!$response->successful()) {
+      return response()->json([
+        'success' => false,
+        'message' => 'Gagal mengambil data provinsi'
+      ], 500);
+    }
+
+    $result = $response->json()['data'] ?? [];
+
+    $provinsiList = collect($result)
+      ->map(fn($item) => [
+        'code' => $item['code'],
+        'label' => strtoupper($item['name']),
+        'value' => strtoupper($item['name'])
+      ])
+      ->values()
+      ->toArray();
+
+    $gabunganWilayah = $provinsiList;
+
+    // Ambil kabupaten/kota berdasarkan kode provinsi
+    foreach ($provinsiList as $prov) {
+      $code = $prov['code'];
+      $kabResponse = Http::timeout(5)->get("https://wilayah.id/api/regencies/{$code}.json");
+
+      if ($kabResponse->successful()) {
+        $kabupatenList = $kabResponse->json()['data'] ?? [];
+
+        $formattedKabupaten = collect($kabupatenList)
+          ->map(fn($item) => [
+            'label' => strtoupper($item['name']),
+            'value' => strtoupper($item['name'])
+          ])
+          ->values()
+          ->toArray();
+
+        $gabunganWilayah = array_merge($gabunganWilayah, $formattedKabupaten);
+      }
+    }
+
+    Storage::put('data_wilayah.json', json_encode($gabunganWilayah, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
+    return response()->json([
+      'success' => true,
+      'message' => 'Data provinsi dan kabupaten berhasil disimpan',
+      'total_data' => count($gabunganWilayah)
+    ]);
   }
 }

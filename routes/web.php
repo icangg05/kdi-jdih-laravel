@@ -13,9 +13,9 @@ use App\Http\Controllers\Frontend\DokumenController;
 use App\Http\Controllers\Frontend\InformasiHukumController;
 use App\Http\Controllers\Frontend\PengumumanController;
 use App\Http\Controllers\Frontend\ProfilController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Storage;
+
+
 
 // Auth route
 Route::get('/backend', [AuthController::class, 'login'])
@@ -60,18 +60,16 @@ Route::name('frontend.')->group(function () {
 // Dashboard route
 Route::middleware('auth')->prefix('dashboard')->name('backend.')->group(function () {
   Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+  Route::resource('/peraturan', BackendPeraturanController::class);
   Route::resource('/pengumuman', BackendPengumumanController::class);
   Route::resource('/berita', BackendBeritaController::class);
   Route::resource('/video', BackendVideoController::class);
   Route::resource('/informasi-hukum', BackendInformasiHukumController::class);
   Route::resource('/informasi-hukum', BackendInformasiHukumController::class);
-  Route::resource('/peraturan', BackendPeraturanController::class);
 });
 
 
-// Route download
-Route::post('/download', function(Request $request) {
-  return Storage::download($request->filePath);
-})->name('download_file');
-
-Route::get('/exportdb', [DashboardController::class, 'exportDatabase']);
+// Route helper
+Route::post('/download', [DashboardController::class, 'downloadFile'])->name('download_file');
+Route::get('/exportdb', [DashboardController::class, 'exportDatabase'])->name('exrpot_db');
+Route::get('/generate-wilayah', [DashboardController::class, 'generateWilayah'])->name('generate_wilayah');
