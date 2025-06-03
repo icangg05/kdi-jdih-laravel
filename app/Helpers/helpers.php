@@ -3,16 +3,27 @@
 use Illuminate\Support\Facades\Storage;
 
 if (! function_exists('checkFilePath')) {
-  function checkFilePath($file)
+  function checkFilePath($directory, $file)
   {
     if (empty($file)) {
       return false;
     }
 
-    $filePath = config('app.doc_directory') . $file;
+    $filePath = $directory . $file;
     if (!Storage::exists($filePath))
       return false;
 
     return true;
+  }
+}
+
+
+if (! function_exists('uploadFile')) {
+  function uploadFile($directory, $file)
+  {
+    $filename = $file->hashName();
+    $file->storeAs($directory, $filename);
+
+    return $filename;
   }
 }

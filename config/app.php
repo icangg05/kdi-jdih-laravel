@@ -14,6 +14,7 @@ return [
 
   'doc_directory' => 'dokumen/',
   'img_directory' => 'gambar/',
+  'default_img' => 'assets/img/default-img.jpg',
 
   /*
     |--------------------------------------------------------------------------

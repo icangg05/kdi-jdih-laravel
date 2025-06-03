@@ -21,7 +21,7 @@
             placeholder="Tulis tanggal pengumuman" />
 
           <x-backend.input-text :value="$pengumuman->judul ?? ''" label="Judul" key="judul" :required="true" />
-          <x-backend.input-text :value="$pengumuman->tag ?? ''" label="Tag" key="tag" :required="true" />
+          <x-backend.input-text :value="$pengumuman->tag ?? ''" label="Tag" key="tag" :required="true" :length="100" />
 
           <x-backend.input-editor :value="$pengumuman->isi ?? ''" label="Isi" key="isi" :required="true"
             placeholder="Tulis isi pengumuman..." />

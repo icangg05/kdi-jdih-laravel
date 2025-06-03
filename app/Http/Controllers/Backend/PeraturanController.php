@@ -16,7 +16,6 @@ class PeraturanController extends Controller
       ->orderBy('created_at', 'desc')
       ->select('document.*', 'data_status.status_peraturan')
       ->paginate(15);
-    // dd($peraturan);
 
     return view('backend.pages.peraturan.peraturan', compact(
       'peraturan'
