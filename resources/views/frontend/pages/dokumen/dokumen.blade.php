@@ -37,20 +37,20 @@
                             </span>
                           </p>
                         </div>
-                        <p style="line-height: 24px;">
+                        <p style="line-height: 22px;">
                           <a class="titles" href="{{ route('frontend.dokumen_view', [$kategori, $item->id]) }}">
                             {{ $item->judul }}</a>
                         </p>
                         <div class="d-flex left-content-between align-items-left">
-                          <button @disabled(!checkFilePath($item->dokumen_lampiran))
+                          <button @disabled(!checkFilePath(config('app.doc_directory'), $item->dokumen_lampiran))
                             onclick="window.location='{{ $item->dokumen_lampiran ? route('download_file', $item->dokumen_lampiran) : '#' }}'"
-                            style="opacity: {{ !checkFilePath($item->dokumen_lampiran) ? '.4' : '1' }};"
+                            style="opacity: {{ !checkFilePath(config('app.doc_directory'), $item->dokumen_lampiran) ? '.4' : '1' }};"
                             class="btn-custom mr-3">
                             <i class="fa-solid fa-file-lines"></i>&nbsp; Download
                           </button>
-                          <button @disabled(!checkFilePath($item->abstrak))
+                          <button @disabled(!checkFilePath(config('app.doc_directory'), $item->abstrak))
                             onclick="window.location='{{ $item->abstrak ? route('download_file', $item->abstrak) : '#' }}'"
-                            style="opacity: {{ !checkFilePath($item->abstrak) ? '.4' : '1' }};"
+                            style="opacity: {{ !checkFilePath(config('app.doc_directory'), $item->abstrak) ? '.4' : '1' }};"
                             class="btn-custom-2">
                             <i class="fa-solid fa-file-lines"></i>&nbsp; ABSTRAK
                           </button>

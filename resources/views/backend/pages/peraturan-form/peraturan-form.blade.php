@@ -1,8 +1,19 @@
-<x-layouts.backend title="Tambah Data Peraturan" :listNav="[['label' => 'Peraturan', 'route' => 'backend.peraturan.index'], ['label' => 'Tambah Data Peraturan']]">
+@php
+  $isCreate = request()->routeIs('backend.peraturan.create') ? true : false;
+  $title = ($isCreate ? 'Tambah' : 'Edit') . ' Data Peraturan';
+@endphp
+
+<x-layouts.backend :title="$title" :listNav="[['label' => 'Peraturan', 'route' => 'backend.peraturan.index'], ['label' => $title]]">
+
   <div class="box-body no-padding">
     <div class="section">
-      <form id="w0" class="form-horizontal" action="/backend/peraturan/create" method="post"
-        enctype="multipart/form-data">
+      <form class="form-horizontal"
+        action="{{ $isCreate ? route('backend.peraturan.store') : route('backend.peraturan.update', $peraturan->id) }}"
+        method="POST" enctype="multipart/form-data">
+        @csrf
+        @if (!$isCreate)
+          @method('PATCH')
+        @endif
 
         <div class="box box-primary box-solid">
           <div class="box-header with-border">
@@ -13,7 +24,7 @@
             <x-backend.input-select
               label="Jenis Peraturan"
               key="jenis_peraturan"
-              placeholder="Pilih tipe pengelolaan..."
+              placeholder="--Pilih tipe pengelolaan--"
               required
               :value="$peraturan->jenis_peraturan ?? ''"
               :data="$selectTipeDokumen"
@@ -22,11 +33,75 @@
             <x-backend.input-select
               label="Bentuk Peraturan"
               key="bentuk_peraturan"
-              placeholder="Pilih tipe peraturan..."
+              placeholder="--Pilih bentuk peraturan--"
               required
               :value="$peraturan->bentuk_peraturan ?? ''"
-              :data="$selectTipeDokumen"
+              :data="[['label' => 'Jenis peraturan belum dipilih', 'value' => '']]"
             />
+            @push('script')
+              <script>
+                let dataTipeTokumen = @json($dataTipeDokumen);
+                let peraturan = @json($peraturan ?? null);
+
+                if (peraturan) {
+                  $('#jenis_peraturan option').each(function() {
+                    if ($(this).text().trim() === peraturan.jenis_peraturan) {
+                      $(this).prop('selected', true);
+                      return false;
+                    }
+                  });
+
+                  let dataJenisPeraturan  = dataTipeTokumen.find(item => item.name == peraturan.jenis_peraturan);
+                  let dataBentukPeraturan = dataTipeTokumen.filter(
+                    item => item.second_id.startsWith(`${dataJenisPeraturan.parent_id}:${dataJenisPeraturan.id}:`)
+                  );
+                  if (dataBentukPeraturan.length == 0)
+                    dataBentukPeraturan.push(dataJenisPeraturan);
+
+                  $('#bentuk_peraturan').empty();
+                  dataBentukPeraturan.forEach(function(item) {
+                    $('#bentuk_peraturan').append(
+                      `<option value="${item.singkatan}">${item.singkatan}</option>`
+                    );
+                  });
+
+                  $('#bentuk_peraturan option').each(function() {
+                    if ($(this).text().trim() === peraturan.bentuk_peraturan) {
+                      $(this).prop('selected', true);
+                      return false;
+                    }
+                  });
+                }
+
+
+                $(document).ready(function() {
+                  $('#jenis_peraturan').on('change', function() {
+                    let jenisPeraturanId = $(this).val();
+                    
+                    if (!jenisPeraturanId) {
+                      $('#bentuk_peraturan').empty().append(
+                        `<option value="">--Pilih bentuk peraturan--</option>`
+                        `<option value="">Jenis peraturan belum dipilih</option>`
+                      );
+                      return;
+                    }
+                    let dataJenisPeraturan  = dataTipeTokumen.find(item => item.id == jenisPeraturanId);
+                    let dataBentukPeraturan = dataTipeTokumen.filter(
+                      item => item.second_id.startsWith(`${dataJenisPeraturan.parent_id}:${dataJenisPeraturan.id}:`)
+                    );
+                    if (dataBentukPeraturan.length == 0)
+                      dataBentukPeraturan.push(dataJenisPeraturan);
+
+                    $('#bentuk_peraturan').empty();
+                    dataBentukPeraturan.forEach(function(item) {
+                      $('#bentuk_peraturan').append(
+                        `<option value="${item.singkatan}">${item.singkatan}</option>`
+                      );
+                    });
+                  })
+                });
+              </script>
+            @endpush
 
             {{-- Judul --}}
             <x-backend.input-textarea
@@ -35,6 +110,15 @@
               placeholder="Tulis lengkap judul peraturan"
               required
               :value="$peraturan->judul ?? ''"
+            />
+
+            {{-- Nomor peraturan --}}
+            <x-backend.input-text
+              label="Nomor Peraturan" 
+              key="nomor_peraturan" 
+              placeholder="Tulis nomor peraturan" 
+              required
+              :value="$peraturan->nomor_peraturan ?? ''" 
             />
 
             {{-- Tahun terbit --}}
@@ -49,10 +133,9 @@
             {{-- Tempat penetapan --}}
             <x-backend.input-select
               label="Tempat Penetapan"
-              key="tempat_penetapan"
+              key="tempat_terbit"
               placeholder="Pilih tempat penetapan..."
-              required
-              :value="$peraturan->tempat_penetapan ?? ''"
+              :value="$peraturan->tempat_terbit ?? ''"
               :data="$selectTempatPenetapan"
             />
 
@@ -123,6 +206,14 @@
               :value="$peraturan->bidang_hukum ?? ''"
               :data="$selectBidangHukum"
             />
+
+            {{-- Abstrak --}}
+            <x-backend.input-file-small 
+              label="Abstrak" 
+              key="abstrak" 
+              :value="$peraturan->abstrak ?? ''"
+              :mimes="['pdf']" 
+            />
           </div>
         </div>
 
@@ -136,7 +227,7 @@
               label="Judul Lampiran" 
               key="judul_lampiran" 
               placeholder="Tulis judul lampiran" 
-              :value="$peraturan->judul_lampiran ?? ''" 
+              :value="$lampiran->judul_lampiran ?? ''" 
             />
 
             {{-- Judul --}}
@@ -145,14 +236,16 @@
               key="deskripsi_lampiran"
               rows="2"
               placeholder="Tulis deskripsi lampiran"
-              :value="$peraturan->judul ?? ''"
+              :value="$lampiran->deskripsi_lampiran ?? ''"
             />
 
             {{-- Dokumen Lampiran --}}
-            <x-backend.input-file-small label="Dokumen Lampiran" key="dokumen_lampiran" :mimes="['pdf']" />
-            
-            {{-- Abstrak --}}
-            <x-backend.input-file-small label="Abstrak" key="abstrak" :mimes="['pdf']" />
+            <x-backend.input-file-small
+              label="Dokumen Lampiran" 
+              key="dokumen_lampiran" 
+              :value="$lampiran->dokumen_lampiran ?? ''"
+              :mimes="['pdf']" 
+            />
           </div>
         </div>
 

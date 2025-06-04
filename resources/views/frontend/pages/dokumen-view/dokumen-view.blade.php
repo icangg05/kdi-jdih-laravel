@@ -86,7 +86,11 @@
                     {{ $item[0] }}<br>
                     <span class="text-extra-dark-gray font-weight-600">
                       @if ($kategori == 'peraturan' && ($i == 1 || $i == 2))
-                        {{ Carbon\Carbon::parse($data[$item[1]])->translatedFormat('l, j F Y') }}
+                        @if (!empty($data[$item[1]]))
+                          {{ Carbon\Carbon::parse($data[$item[1]])->translatedFormat('l, j F Y') }}
+                        @else
+                          —
+                        @endif
                       @elseif ($kategori == 'putusan' && $i == 2)
                         {{ Carbon\Carbon::parse($data[$item[1]])->translatedFormat('l, j F Y') }}
                       @else
@@ -242,7 +246,7 @@
                 <ul class="list-group mt-2">
                   @if ($kategori == 'peraturan')
                     <li class="list-group-item text-center">STATUS</li>
-                    <li class="list-group-item list-group-item-secondary text-center">
+                    <li class="list-group-item list-group-item-{{ strtolower($data['status']) == 'berlaku' ? 'success' : 'danger' }} text-center">
                       <strong>{{ $data['status'] }}</strong>
                     </li>
                   @elseif ($kategori == 'monografi')
@@ -267,15 +271,26 @@
                 <h3>Lampiran</h3>
               </div>
               <div class="d-flex left-content-between align-items-start">
-                <button @disabled(!checkFilePath($data['dokumen_lampiran']))
-                  onclick="window.location='{{ $data['dokumen_lampiran'] ? route('download_file', $data['dokumen_lampiran']) : '#' }}'"
-                  style="opacity: {{ !checkFilePath($data['dokumen_lampiran']) ? '.4' : '1' }};" class="btn-custom mr-3">
-                  <i class="fa-solid fa-file-lines"></i>&nbsp; Download
-                </button>
-                <button @disabled(!checkFilePath($data['abstrak']))
-                  onclick="window.location='{{ $data['abstrak'] ? route('download_file', $data['abstrak']) : '#' }}'"
-                  style="opacity: {{ !checkFilePath($data['abstrak']) ? '.4' : '1' }};" class="btn-custom-2">
-                  <i class="fa-solid fa-file-lines"></i>&nbsp; ABSTRAK
+                <form action="{{ route('download_file') }}" method="POST" style="display: inline">
+                  @csrf
+                  <input type="hidden" name="filePath"
+                    value="{{ config('app.doc_directory') . $data['dokumen_lampiran'] }}">
+                  <button type="submit" @disabled(!checkFilePath(config('app.doc_directory'), $data['dokumen_lampiran']))
+                    style="opacity: {{ !checkFilePath(config('app.doc_directory'), $data['dokumen_lampiran']) ? '.4' : '1' }};"
+                    class="btn-custom mr-3">
+                    <i class="fa-solid fa-file-lines"></i>&nbsp; Download
+                  </button>
+                </form>
+
+                <form action="{{ route('download_file') }}" method="POST" style="display: inline">
+                  @csrf
+                  <input type="hidden" name="filePath"
+                    value="{{ config('app.doc_directory') . $data['dokumen_lampiran'] }}">
+                  <button type="submit" @disabled(!checkFilePath(config('app.doc_directory'), $data['abstrak']))
+                    style="opacity: {{ !checkFilePath(config('app.doc_directory'), $data['abstrak']) ? '.4' : '1' }};"
+                    class="btn-custom-2">
+                    <i class="fa-solid fa-file-lines"></i>&nbsp; ABSTRAK
+                </form>
                 </button>
               </div>
             </div>
@@ -287,11 +302,11 @@
                 </div>
                 <ul class="widget-list text-extra-dark-gray font-weight-600" style="opacity: 0.9;">
                   @if ($dataStatus)
-                  <button class="btn btn-dark badge" type="button">
-                    {{ ucfirst($dataStatus->status_peraturan) }}
-                  </button>
+                    <button class="btn btn-dark badge" type="button">
+                      {{ ucfirst($dataStatus->status_peraturan) }}
+                    </button>
                   @else
-                  —
+                    —
                   @endif
                 </ul>
               </div>

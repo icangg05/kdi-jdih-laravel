@@ -10,6 +10,12 @@
     @error($key)
       <p class="help-block help-block-error">{{ $message }}</p>
     @enderror
+
+    @if (checkFilePath(config('app.doc_directory'), $value))
+      <button type="button"
+        onclick="window.location.href='{{ asset('storage/' . config('app.doc_directory') . $value) }}'"
+        style="margin-top: 6px" class="btn btn-dark btn-sm">{{ $value }}</button>
+    @endif
   </div>
 </div>
 
@@ -26,7 +32,6 @@
 @push('script')
   <script>
     var mimes = @json($mimes ?? []);
-    console.log(mimes);
 
     window.{{ $key }} = {
       "allowedFileExtensions": mimes,

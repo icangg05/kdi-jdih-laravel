@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\DataLampiran;
+use App\Models\Document;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
-use function PHPUnit\Framework\fileExists;
 
 class PeraturanController extends Controller
 {
@@ -39,10 +41,11 @@ class PeraturanController extends Controller
 
   public function create()
   {
+    $dataTipeDokumen   = DB::table('document_type')->get();
     $selectTipeDokumen = DB::table('document_type')
       ->where('parent_id', 1)
       ->get()
-      ->map(fn($item) => ['label' => $item->name, 'value' => $item->name]);
+      ->map(fn($item) => ['label' => $item->name, 'value' => $item->id]);
 
     $selectTempatPenetapan = Storage::exists('data_wilayah.json')
       ? json_decode(Storage::get('data_wilayah.json'), true) : [];
@@ -60,6 +63,46 @@ class PeraturanController extends Controller
       ->map(fn($item) => ['label' => $item->name, 'value' => $item->name])->toArray();
 
     return view('backend.pages.peraturan-form.peraturan-form', compact(
+      'dataTipeDokumen',
+      'selectTipeDokumen',
+      'selectTempatPenetapan',
+      'selectBahasa',
+      'selectUrusanPemerintahan',
+      'selectBidangHukum',
+    ));
+  }
+
+  public function edit($id)
+  {
+    $peraturan = Document::findOrFail($id);
+    $lampiran  = DB::table('data_lampiran')->where('id_dokumen', $peraturan->id)->first();
+
+    $dataTipeDokumen   = DB::table('document_type')->get();
+    $selectTipeDokumen = DB::table('document_type')
+      ->where('parent_id', 1)
+      ->get()
+      ->map(fn($item) => ['label' => $item->name, 'value' => $item->id]);
+
+    $selectTempatPenetapan = Storage::exists('data_wilayah.json')
+      ? json_decode(Storage::get('data_wilayah.json'), true) : [];
+
+    $selectBahasa = DB::table('bahasa')
+      ->get()
+      ->map(fn($item) => ['label' => $item->name, 'value' => $item->name])->toArray();
+
+    $selectUrusanPemerintahan = DB::table('urusan_pemerintahan')
+      ->get()
+      ->map(fn($item) => ['label' => $item->name, 'value' => $item->name])->toArray();
+
+    $selectBidangHukum = DB::table('bidang_hukum')
+      ->get()
+      ->map(fn($item) => ['label' => $item->name, 'value' => $item->name])->toArray();
+
+
+    return view('backend.pages.peraturan-form.peraturan-form', compact(
+      'peraturan',
+      'lampiran',
+      'dataTipeDokumen',
       'selectTipeDokumen',
       'selectTempatPenetapan',
       'selectBahasa',
@@ -71,6 +114,123 @@ class PeraturanController extends Controller
 
   public function store(Request $request)
   {
-    dd($request->all());
+    $request->validate([
+      'jenis_peraturan'      => ['required'],
+      'bentuk_peraturan'     => ['required'],
+      'judul'                => ['required'],
+      'nomor_peraturan'      => ['required'],
+      'tahun_terbit'         => ['required', 'numeric'],
+      'tanggal_penetapan'    => ['required', 'date'],
+      'tanggal_pengundangan' => ['nullable', 'date'],
+    ]);
+
+    $data           = $request->except('_token', 'judul_lampiran', 'deskripsi_lampiran', 'dokumen_lampiran');
+    $jenisPeraturan = DB::table('document_type')->where('id', (int) $request->jenis_peraturan)->first();
+
+    // Upload abstrak
+    if ($request->file('abstrak'))
+      $abstrak = uploadFile($this->docDirectory, $request->file('abstrak'));
+
+    // Set data document
+    $data['tipe_dokumen']         = 1;
+    $data['jenis_peraturan']      = $jenisPeraturan->name;
+    $data['singkatan_jenis']      = $jenisPeraturan->singkatan;
+    $data['tanggal_penetapan']    = Carbon::createFromFormat('d-F-Y', $data['tanggal_penetapan'])->format('Y-m-d');
+    $data['tanggal_pengundangan'] = $data['tanggal_pengundangan']
+      ? Carbon::createFromFormat('d-F-Y', $data['tanggal_pengundangan'])->format('Y-m-d') : null;
+    $data['abstrak']    = $abstrak ?? null;
+    $data['created_at'] = Carbon::now();
+    $data['_created_by'] = Auth::user()->id;
+    $data['updated_at'] = Carbon::now();
+    $data['_updated_by'] = Auth::user()->id;
+
+    // Store to database
+    $peraturanId = Document::create($data)->id;
+
+    // Store and upload dokumen lampiran
+    if ($request->file('dokumen_lampiran'))
+      $dokumenLampiran = uploadFile($this->docDirectory, $request->file('dokumen_lampiran'));
+
+    // Set data lampiran
+    $lampiran['id_dokumen']         = $peraturanId;
+    $lampiran['judul_lampiran']     = $request->judul_lampiran;
+    $lampiran['deskripsi_lampiran'] = $request->deskripsi_lampiran;
+    $lampiran['dokumen_lampiran']   = $dokumenLampiran ?? null;
+    $lampiran['created_at']         = Carbon::now();
+    $lampiran['_created_by']        = Auth::user()->id;
+    $lampiran['updated_at']         = Carbon::now();
+    $lampiran['_updated_by']        = Auth::user()->id;
+
+    // Store to database
+    DataLampiran::create($lampiran);
+
+
+    return redirect()->route('backend.peraturan.index')->with('success', 'Data Peraturan berhasil ditambahkan');
+  }
+
+
+  public function update(Request $request, $id)
+  {
+    $request->validate([
+      'jenis_peraturan'      => ['required'],
+      'bentuk_peraturan'     => ['required'],
+      'judul'                => ['required'],
+      'nomor_peraturan'      => ['required'],
+      'tahun_terbit'         => ['required', 'numeric'],
+      'tanggal_penetapan'    => ['required', 'date'],
+      'tanggal_pengundangan' => ['nullable', 'date'],
+    ]);
+
+    // Get data peraturan
+    $peraturan      = Document::findOrFail($id);
+    // Data request convert and except another data
+    $data           = $request->except('_method', '_token', 'judul_lampiran', 'deskripsi_lampiran', 'dokumen_lampiran');
+    $jenisPeraturan = DB::table('document_type')->where('id', (int) $request->jenis_peraturan)->first();
+
+    // Upload abstrak
+    if ($request->file('abstrak'))
+      $abstrak = uploadFile($this->docDirectory, $request->file('abstrak'));
+
+    // Set data document
+    $data['jenis_peraturan']      = $jenisPeraturan->name;
+    $data['singkatan_jenis']      = $jenisPeraturan->singkatan;
+    $data['tanggal_penetapan']    = Carbon::createFromFormat('d-F-Y', $data['tanggal_penetapan'])->format('Y-m-d');
+    $data['tanggal_pengundangan'] = $data['tanggal_pengundangan']
+      ? Carbon::createFromFormat('d-F-Y', $data['tanggal_pengundangan'])->format('Y-m-d') : null;
+    $data['abstrak']     = $abstrak ?? $peraturan->abstrak;
+    $data['updated_at']  = Carbon::now();
+    $data['_updated_by'] = Auth::user()->id;
+
+    // Update data peraturan
+    $peraturan->update($data);
+
+
+    // Update and upload dokumen lampiran
+    if ($request->file('dokumen_lampiran'))
+      $dokumenLampiran = uploadFile($this->docDirectory, $request->file('dokumen_lampiran'));
+
+    // Get data lmapiran
+    $lampiranUpdate = DataLampiran::where('id_dokumen', $peraturan->id)->first();
+
+    // Set data lampiran
+    $lampiran['judul_lampiran']     = $request->judul_lampiran;
+    $lampiran['deskripsi_lampiran'] = $request->deskripsi_lampiran;
+    $lampiran['dokumen_lampiran']   = $dokumenLampiran ?? $lampiranUpdate->dokumen_lampiran;
+    $lampiran['updated_at']         = Carbon::now();
+    $lampiran['_updated_by']        = Auth::user()->id;
+
+    // Update to database
+    $lampiranUpdate->update($lampiran);
+
+
+    return redirect()->route('backend.peraturan.index')->with('success', 'Data Peraturan berhasil diupdate');
+  }
+
+
+  public function destroy($id)
+  {
+    Document::findOrFail((int) $id)->delete();
+
+    return redirect()->route('backend.peraturan.index')->with('success', 'Data berhasil dihapus');
   }
 }

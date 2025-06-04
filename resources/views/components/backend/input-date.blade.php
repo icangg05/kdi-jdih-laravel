@@ -15,7 +15,7 @@
       @php
         $formatDate = Carbon\Carbon::make($value)?->format('d-F-Y') ?? '';
       @endphp
-      <input value="{{ $formatDate }}" type="text" id="{{ $key }}-disp"
+      <input @required(!empty($required)) value="{{ $formatDate }}" type="text" id="{{ $key }}-disp"
         class="form-control krajee-datepicker" name="{{ $key }}" value="{{ old($key) }}"
         placeholder="{{ !empty($placeholder) ? $placeholder : '' }}" data-krajee-datecontrol="datecontrol_3bd44a6c"
         data-datepicker-source="{{ $key }}-disp-kvdate" data-datepicker-type="2"

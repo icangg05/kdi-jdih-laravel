@@ -1,6 +1,6 @@
 <x-layouts.backend :title="$title" :listNav="[['label' => 'Pengumuman', 'route' => 'backend.pengumuman.index'], ['label' => $title]]">
   @php
-    $isCreate = Request::routeIs('backend.pengumuman.create') ? true : false;
+    $isCreate = request()->routeIs('backend.pengumuman.create') ? true : false;
   @endphp
 
   <div class="box-body no-padding">

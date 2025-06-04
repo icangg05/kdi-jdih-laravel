@@ -72,21 +72,32 @@
               </tr>
               <tr id="w0-filters" class="filters skip-export">
                 <td>&nbsp;</td>
+
                 @foreach ($columns as $col)
                   @if (!empty($col['type_search']) && $col['type_search'] === 'select')
                     <td>
-                      <select id="id" class="form-control" name="name">
-                        <option value="">Filter Data</option>
+                      <select id="{{ $col['key'] . '-select' }}" class="form-control {{ $col['key'] }}"
+                        name="name">
+                        <option value="">Pilih...</option>
                         @foreach ($col['data_type_search'] as $item)
                           <option value="{{ $item }}">{{ $item }}</option>
                         @endforeach
                       </select>
                     </td>
+
+                    @push('script')
+                      <script>
+                        $(document).ready(function() {
+                          $(".{{ $col['key'] }}").select2();
+                        });
+                      </script>
+                    @endpush
                   @else
                     <td><input type="text" class="form-control" name="{{ $col['key'] }}" autocomplete="off">
                     </td>
                   @endif
                 @endforeach
+
                 <td>&nbsp;</td>
               </tr>
             </thead>

@@ -57,6 +57,10 @@
     .btn-custom-2:focus {
       color: #fff;
     }
+
+    .dokumen .card p a {
+      font-size: 1rem !important;
+    }
   </style>
   </style>
 </head>

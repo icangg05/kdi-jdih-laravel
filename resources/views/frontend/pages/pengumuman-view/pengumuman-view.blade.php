@@ -38,11 +38,16 @@
                 <div class="post-img col-lg-4 mb-4">
                   <img class="rounded" src="{{ asset('assets/frontend/img/default.jpg') }}" alt="img">
                   <div class="mt-4">
-                    <button @disabled(!checkFilePath($pengumuman->dokumen))
-                      onclick="window.location='{{ $pengumuman->dokumen ? route('download_file', $pengumuman->dokumen) : '#' }}'"
-                      style="opacity: {{ !checkFilePath($pengumuman->dokumen) ? '.4' : '1' }};" class="btn-custom mr-3">
-                      <i class="fa-solid fa-file-lines"></i>&nbsp; Download
-                    </button>
+                    <form action="{{ route('download_file') }}" method="POST" style="display: inline">
+                      @csrf
+                      <input type="hidden" name="filePath"
+                        value="{{ config('app.doc_directory') . $pengumuman->dokumen }}">
+                      <button @disabled(!checkFilePath(config('app.doc_directory'), $pengumuman->dokumen))
+                        onclick="window.location='{{ $pengumuman->dokumen ? route('download_file', $pengumuman->dokumen) : '#' }}'"
+                        style="opacity: {{ !checkFilePath(config('app.doc_directory'), $pengumuman->dokumen) ? '.4' : '1' }};" class="btn-custom mr-3">
+                        <i class="fa-solid fa-file-lines"></i>&nbsp; Download
+                      </button>
+                    </form>
                   </div>
                 </div>
                 <div class="content col-lg-8 pt-2">
@@ -51,7 +56,7 @@
               </div>
               <hr>
 
-              @if (checkFilePath($pengumuman->dokumen))
+              @if (checkFilePath(config('app.doc_directory'), $pengumuman->dokumen))
                 <iframe src="{{ asset('storage/' . config('app.doc_directory') . $pengumuman->dokumen) }}" width="100%"
                   height="600" style="border: 1px solid; border-radius: 16px;" allowfullscreen></iframe>
               @endif
@@ -101,11 +106,11 @@
             <div class="section new">
               <div class="row">
                 @foreach ($video as $item)
-                <div class="col-lg-12 mb-3">
-                  <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ $item->link }}" frameborder="0"
-                    allowfullscreen></iframe>
-                  <h5>{{ $item->judul }}</h5>
-                </div>
+                  <div class="col-lg-12 mb-3">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ $item->link }}"
+                      frameborder="0" allowfullscreen></iframe>
+                    <h5>{{ $item->judul }}</h5>
+                  </div>
                 @endforeach
               </div>
             </div>

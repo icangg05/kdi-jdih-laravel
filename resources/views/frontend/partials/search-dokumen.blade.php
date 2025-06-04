@@ -6,11 +6,11 @@
       @endforeach
 
       <div class="form-row align-items-center">
-        <div class="col-md-8 my-1">
+        <div class="col-md-10 my-1">
           <input type="text" class="form-control" name="q" value="{{ request()->q }}"
             placeholder="Cari dokumen hukum lainnya..." autocomplete="off">
         </div>
-        <div class="col-md-1 my-1">
+        <div class="col-md-2 my-1">
           <button type="submit" class="butn btn-block">Cari</button>
         </div>
       </div>

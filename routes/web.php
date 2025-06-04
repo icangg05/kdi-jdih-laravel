@@ -27,9 +27,6 @@ Route::get('/logout', [AuthController::class, 'logout'])
 
 
 // Frontend route
-Route::get('/download/{file}', [DokumenController::class, 'downloadFile'])
-  ->name('download_file');
-
 Route::name('frontend.')->group(function () {
   Route::get('/', [BerandaController::class, 'index'])
     ->name('beranda');
@@ -47,13 +44,13 @@ Route::name('frontend.')->group(function () {
   Route::get('/pengumuman/{id}', [PengumumanController::class, 'viewById'])
     ->name('pengumuman_view');
 
+  Route::get('/informasi-hukum/{id}', [InformasiHukumController::class, 'index'])
+    ->name('informasi_hukum');
+
   Route::get('/berita', [BeritaController::class, 'index'])
     ->name('berita');
   Route::get('/berita/{id}', [BeritaController::class, 'viewById'])
     ->name('berita_view');
-
-  Route::get('/informasi-hukum/{id}', [InformasiHukumController::class, 'index'])
-    ->name('informasi_hukum');
 });
 
 
@@ -70,6 +67,7 @@ Route::middleware('auth')->prefix('dashboard')->name('backend.')->group(function
 
 
 // Route helper
+Route::get('/tes', [DashboardController::class, 'downloadFile'])->name('tes');
 Route::post('/download', [DashboardController::class, 'downloadFile'])->name('download_file');
 Route::get('/exportdb', [DashboardController::class, 'exportDatabase'])->name('exrpot_db');
 Route::get('/generate-wilayah', [DashboardController::class, 'generateWilayah'])->name('generate_wilayah');

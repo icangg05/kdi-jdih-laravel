@@ -5,8 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
-use Symfony\Component\CssSelector\Node\SelectorNode;
+
 
 class DokumenController extends Controller
 {
@@ -24,14 +23,14 @@ class DokumenController extends Controller
       $data        = DB::table('document')->where('tipe_dokumen', 2)
         ->leftJoin('data_lampiran', 'document.id', '=', 'data_lampiran.id_dokumen')
         ->select('document.*', 'data_lampiran.judul_lampiran', 'data_lampiran.dokumen_lampiran');
-      $tipeDokumen = DB::table('document_type')->where('parent_id', 0)->get();
+      $tipeDokumen = DB::table('document_type')->where('parent_id', 2)->get();
       //
     } elseif ($kategori === 'artikel') {
       $title       = 'Artikel / Majalah Hukum';
       $data        = DB::table('document')->where('tipe_dokumen', 3)
         ->leftJoin('data_lampiran', 'document.id', '=', 'data_lampiran.id_dokumen')
         ->select('document.*', 'data_lampiran.judul_lampiran', 'data_lampiran.dokumen_lampiran');
-      $tipeDokumen = DB::table('document_type')->where('parent_id', 0)->get();
+      $tipeDokumen = DB::table('document_type')->where('parent_id', 3)->get();
       //
     } elseif ($kategori === 'putusan') {
       $title       = 'Putusan';
@@ -127,11 +126,5 @@ class DokumenController extends Controller
       'dokumenTerkait',
       'hasilUjiMateri',
     ));
-  }
-
-  public function downloadFile($file)
-  {
-    $filePath = config('app.doc_directory') . $file;
-    return Storage::download($filePath);
   }
 }

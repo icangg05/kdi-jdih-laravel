@@ -27,10 +27,18 @@
   @endif
   <script src="{{ asset('assets') }}/backend/assets/3e5a9e6a/jquery.js"></script>
 
+  {{-- Select2 link and script --}}
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
   <style>
     .select2-selection.select2-selection--single {
       height: 34px !important;
-      opacity: 0.8 !important;
+      opacity: 0.9 !important;
+    }
+
+    .select2-results__option:hover {
+      color: white !important;
     }
   </style>
 
