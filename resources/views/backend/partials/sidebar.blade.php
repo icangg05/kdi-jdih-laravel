@@ -17,14 +17,14 @@
     <ul class="sidebar-menu">
       @foreach (config('sidebar') as $item)
         @if (empty($item['subMenu']))
-          <li @class(['active' => $item['isActive']])>
+          <li @class(['active' => request()->is($item['isActive'])])>
             <a href="{{ route($item['route']) }}">
               <i class="{{ $item['icon'] }}"></i>
               <span>{{ $item['label'] }}</span>
             </a>
           </li>
         @else
-          <li @class(['active' => $item['isActive']])>
+          <li @class(['active' => request()->is($item['isActive'])])>
             <a href="#">
               <i class="{{ $item['icon'] }}"></i>
               <span>{{ $item['label'] }}</span>
@@ -32,7 +32,7 @@
             </a>
             <ul class='treeview-menu'>
               @foreach ($item['subMenu'] as $subMenu)
-                <li @class(['active' => $subMenu['isActive']])>
+                <li @class(['active' => request()->is($subMenu['isActive'])])>
                   <a href="{{ route($subMenu['route']) }}">
                     <i class="{{ $subMenu['icon'] }}"></i>
                     <span>{{ $subMenu['label'] }}</span>

@@ -40,12 +40,24 @@
     .select2-results__option:hover {
       color: white !important;
     }
+
+    .no-spinner::-webkit-inner-spin-button,
+    .no-spinner::-webkit-outer-spin-button {
+      -webkit-appearance: none !important;
+      margin: 0 !important;
+    }
+
+    /* Firefox */
+    .no-spinner {
+      -moz-appearance: textfield !important;
+    }
   </style>
 
   @stack('link')
 </head>
 
 <body class="hold-transition skin-red sidebar-mini">
+  @include('sweetalert::alert')
 
   <div class="wrapper">
     @include('backend.partials.header')

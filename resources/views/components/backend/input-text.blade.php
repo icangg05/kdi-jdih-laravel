@@ -4,8 +4,10 @@
     <span style="color: {{ !empty($required) && $required ? 'red' : 'gray' }}">*</span>
   </label>
   <div class="col-sm-8">
-    <input @required(!empty($required)) placeholder="{{ $placeholder ?? '' }}" value="{{ old($key, $value) }}" type="text" maxlength="{{ $length ?? 255 }}" id="{{ $key }}" class="form-control" name="{{ $key }}" maxlength="255">
-    
+    <input @required(!empty($required)) placeholder="{{ $placeholder ?? '' }}" value="{{ old($key, $value) }}"
+      type="{{ $type ?? 'text' }}" maxlength="{{ $length ?? 255 }}" id="{{ $key }}" class="form-control no-spinner"
+      name="{{ $key }}" maxlength="255">
+
     @error($key)
       <p class="help-block help-block-error">{{ $message }}</p>
     @enderror

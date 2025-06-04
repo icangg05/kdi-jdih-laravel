@@ -118,6 +118,7 @@
               key="nomor_peraturan" 
               placeholder="Tulis nomor peraturan" 
               required
+              type="number"
               :value="$peraturan->nomor_peraturan ?? ''" 
             />
 
@@ -127,6 +128,7 @@
               key="tahun_terbit" 
               placeholder="Tulis tahun peraturan" 
               required
+              type="number"
               :value="$peraturan->tahun_terbit ?? ''" 
             />
 
@@ -246,6 +248,45 @@
               :value="$lampiran->dokumen_lampiran ?? ''"
               :mimes="['pdf']" 
             />
+            @push('script')
+              <script>
+                let dokumenLampiran = @json($lampiran->dokumen_lampiran ?? '');
+
+                $(document).ready(function () {
+                  function toggleRequiredFields() {
+                    let judul     = $('#judul_lampiran').val().trim();
+                    let dokumen   = $('#dokumen_lampiran').val().trim();
+                    let deskripsi = $('#deskripsi_lampiran').val().trim();
+                    
+                    // Reset semua required
+                    $('#judul_lampiran').removeAttr('required');
+                    $('#dokumen_lampiran').removeAttr('required');
+
+                    if (dokumenLampiran)
+                      $('#judul_lampiran').attr('required', true);
+
+                    // Aturan: Jika deskripsi atau dokumen diisi → judul wajib
+                    if (deskripsi !== '' || dokumen !== '') {
+                      $('#judul_lampiran').attr('required', true);
+                    }
+
+                    // Aturan: Jika judul diisi → dokumen wajib
+                    if (!dokumenLampiran) {
+                      if (judul !== '') {
+                        $('#dokumen_lampiran').attr('required', true);
+                      }
+                    }
+                  }
+
+                  // Trigger saat halaman load dan saat berubah
+                  toggleRequiredFields();
+
+                  $('#judul_lampiran, #dokumen_lampiran, #deskripsi_lampiran').on('input change', function () {
+                    toggleRequiredFields();
+                  });
+                });
+              </script>
+            @endpush
           </div>
         </div>
 

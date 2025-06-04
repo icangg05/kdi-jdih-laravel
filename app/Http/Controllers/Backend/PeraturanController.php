@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
-
 class PeraturanController extends Controller
 {
   protected string $docDirectory;
@@ -26,6 +25,10 @@ class PeraturanController extends Controller
 
   public function index()
   {
+    $title = 'Hapus peraturan!';
+    $text = "Yakin akan menghapus data ini?";
+    confirmDelete($title, $text);
+
     $peraturan = DB::table('document')
       ->where('tipe_dokumen', 1)
       ->leftJoin('data_status', 'document.id', '=', 'data_status.id_dokumen')
@@ -147,25 +150,30 @@ class PeraturanController extends Controller
     // Store to database
     $peraturanId = Document::create($data)->id;
 
-    // Store and upload dokumen lampiran
-    if ($request->file('dokumen_lampiran'))
-      $dokumenLampiran = uploadFile($this->docDirectory, $request->file('dokumen_lampiran'));
 
-    // Set data lampiran
-    $lampiran['id_dokumen']         = $peraturanId;
-    $lampiran['judul_lampiran']     = $request->judul_lampiran;
-    $lampiran['deskripsi_lampiran'] = $request->deskripsi_lampiran;
-    $lampiran['dokumen_lampiran']   = $dokumenLampiran ?? null;
-    $lampiran['created_at']         = Carbon::now();
-    $lampiran['_created_by']        = Auth::user()->id;
-    $lampiran['updated_at']         = Carbon::now();
-    $lampiran['_updated_by']        = Auth::user()->id;
+    // Process lampiran data
+    if ($request->judul_lampiran && $request->dokumen_lampiran) {
+      // Store and upload dokumen lampiran
+      if ($request->file('dokumen_lampiran'))
+        $dokumenLampiran = uploadFile($this->docDirectory, $request->file('dokumen_lampiran'));
 
-    // Store to database
-    DataLampiran::create($lampiran);
+      // Set data lampiran
+      $lampiran['id_dokumen']         = $peraturanId;
+      $lampiran['judul_lampiran']     = $request->judul_lampiran;
+      $lampiran['deskripsi_lampiran'] = $request->deskripsi_lampiran;
+      $lampiran['dokumen_lampiran']   = $dokumenLampiran ?? null;
+      $lampiran['created_at']         = Carbon::now();
+      $lampiran['_created_by']        = Auth::user()->id;
+      $lampiran['updated_at']         = Carbon::now();
+      $lampiran['_updated_by']        = Auth::user()->id;
+
+      // Store to database
+      DataLampiran::create($lampiran);
+    }
 
 
-    return redirect()->route('backend.peraturan.index')->with('success', 'Data Peraturan berhasil ditambahkan');
+    toastr()->success('Data peraturan berhasil ditambahkan.');
+    return redirect()->route('backend.peraturan.index');
   }
 
 
@@ -205,25 +213,34 @@ class PeraturanController extends Controller
     $peraturan->update($data);
 
 
-    // Update and upload dokumen lampiran
-    if ($request->file('dokumen_lampiran'))
-      $dokumenLampiran = uploadFile($this->docDirectory, $request->file('dokumen_lampiran'));
+    if ($request->judul_lampiran) {
+      // Get data lmapiran
+      $lampiranUpdate = DataLampiran::where('id_dokumen', $peraturan->id)->first();
 
-    // Get data lmapiran
-    $lampiranUpdate = DataLampiran::where('id_dokumen', $peraturan->id)->first();
+      // Update and upload dokumen lampiran
+      if ($request->file('dokumen_lampiran'))
+        $dokumenLampiran = uploadFile($this->docDirectory, $request->file('dokumen_lampiran'));
 
-    // Set data lampiran
-    $lampiran['judul_lampiran']     = $request->judul_lampiran;
-    $lampiran['deskripsi_lampiran'] = $request->deskripsi_lampiran;
-    $lampiran['dokumen_lampiran']   = $dokumenLampiran ?? $lampiranUpdate->dokumen_lampiran;
-    $lampiran['updated_at']         = Carbon::now();
-    $lampiran['_updated_by']        = Auth::user()->id;
+      // Set data lampiran
+      $lampiran['judul_lampiran']     = $request->judul_lampiran;
+      $lampiran['deskripsi_lampiran'] = $request->deskripsi_lampiran;
+      $lampiran['dokumen_lampiran']   = $dokumenLampiran ?? $lampiranUpdate->dokumen_lampiran;
+      $lampiran['updated_at']         = Carbon::now();
+      $lampiran['_updated_by']        = Auth::user()->id;
 
-    // Update to database
-    $lampiranUpdate->update($lampiran);
+      if (!$lampiranUpdate) {
+        // Create if not lampiran
+        $lampiran['id_dokumen'] = $peraturan->id;
+        DataLampiran::create($lampiran);
+      } else {
+        // Update to database
+        $lampiranUpdate->update($lampiran);
+      }
+    }
 
 
-    return redirect()->route('backend.peraturan.index')->with('success', 'Data Peraturan berhasil diupdate');
+    toastr()->success('Data peraturan berhasil diupdate.');
+    return redirect()->route('backend.peraturan.index');
   }
 
 
@@ -231,6 +248,7 @@ class PeraturanController extends Controller
   {
     Document::findOrFail((int) $id)->delete();
 
-    return redirect()->route('backend.peraturan.index')->with('success', 'Data berhasil dihapus');
+    toastr()->info('Data peraturan berhasil dihapus.');
+    return redirect()->route('backend.peraturan.index');
   }
 }
