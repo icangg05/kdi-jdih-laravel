@@ -181,17 +181,17 @@
               <table class="kv-grid-table table table-bordered table-striped kv-table-wrap">
                 <thead>
                   <tr>
-                    <th class="text-center">No</th>
+                    <th class="text-center" style="width: 60px;">No</th>
                     <th>Nama T.E.U</th>
-                    <th>Tipe T.E.U</th>
-                    <th>Jenis T.E.U</th>
+                    <th style="width: 170px;">Tipe T.E.U</th>
+                    <th style="width: 170px;">Jenis T.E.U</th>
                     <th class="text-center" style="width: 150px;">Aksi</th>
                   </tr>
                 </thead>
                 <tbody>
-                  @foreach ($dataPengarang as $item)
+                  @forelse ($dataPengarang as $item)
                     <tr>
-                      <td class="text-center" style="width: 50px;">{{ $loop->iteration }}.</td>
+                      <td class="text-center">{{ $loop->iteration }}.</td>
                       <td>{{ $item->nama_pengarang }}</td>
                       <td>{{ $item->tipe_pengarang }}</td>
                       <td>{{ $item->jenis_pengarang }}</td>
@@ -202,7 +202,11 @@
                         </a>
                       </td>
                     </tr>
-                  @endforeach
+                  @empty
+                    <tr>
+                      <td colspan="5" class="text-center">No results found.</td>
+                    </tr>
+                  @endforelse
                 </tbody>
               </table>
             </div>
@@ -223,7 +227,7 @@
               <table class="kv-grid-table table table-bordered table-striped kv-table-wrap">
                 <thead>
                   <tr>
-                    <th class="text-center">No</th>
+                    <th class="text-center" style="width: 60px;">No</th>
                     <th>Nama Subjek</th>
                     <th style="width: 150px;">Tipe Subjek</th>
                     <th style="width: 150px;">Jenis Subjek</th>
@@ -231,9 +235,9 @@
                   </tr>
                 </thead>
                 <tbody>
-                  @foreach ($dataSubjek as $item)
+                  @forelse ($dataSubjek as $item)
                     <tr>
-                      <td class="text-center" style="width: 50px;">{{ $loop->iteration }}.</td>
+                      <td class="text-center">{{ $loop->iteration }}.</td>
                       <td>{{ $item->subyek }}</td>
                       <td>{{ $item->tipe_subyek }}</td>
                       <td>{{ $item->jenis_subyek }}</td>
@@ -248,7 +252,11 @@
                         </a>
                       </td>
                     </tr>
-                  @endforeach
+                  @empty
+                    <tr>
+                      <td colspan="5" class="text-center">No results found.</td>
+                    </tr>
+                  @endforelse
                 </tbody>
               </table>
             </div>
@@ -261,36 +269,54 @@
           'tab-pane',
           'active' => session('tabActive') == 'dataPeraturanTerkait',
       ]) id="tab_5">
-
         <div class="box-header">
-          <a class="btn btn-success btn-flat" href="/backend/peraturan/tambah-peraturan-terkait?id=554"><i
-              class="fa fa-plus-circle"></i> Tambah Peraturan Terkait</a>
+          <a class="btn btn-success btn-flat"
+            href="{{ route('backend.form-peraturan-terkait.create', $peraturan->id) }}">
+            <i class="fa fa-plus-circle"></i> Tambah Peraturan Terkait
+          </a>
           <p></p>
-          <div id="w9" class="grid-view is-bs3 hide-resize" data-krajee-grid="kvGridInit_064b04f9"
-            data-krajee-ps="ps_w9_container">
+          <div id="w9" class="grid-view is-bs3 hide-resize">
             <div id="w9-container" class="table-responsive kv-grid-container">
               <table class="kv-grid-table table table-bordered table-striped kv-table-wrap">
                 <thead>
-
                   <tr>
-                    <th class="text-center">No</th>
-                    <th data-col-seq="1">Peraturan Terkait</th>
-                    <th data-col-seq="2">Status</th>
-                    <th data-col-seq="3">Catatan</th>
+                    <th class="text-center" style="width: 60px;">No</th>
+                    <th>Peraturan Terkait</th>
+                    <th style="width: 150px;">Status</th>
+                    <th style="min-width: 150px;">Catatan</th>
                     <th class="text-center" style="width: 150px;">Aksi</th>
                   </tr>
-
                 </thead>
                 <tbody>
-                  <tr>
-                    <td colspan="5">
-                      <div class="empty">No results found.</div>
-                    </td>
-                  </tr>
+                  @forelse ($dataPeraturanTerkait as $item)
+                    <tr>
+                      <td class="text-center">{{ $loop->iteration }}.</td>
+                      <td>
+                        <a href="{{ route('backend.peraturan.show', $item->peraturan_terkait) }}">{{ $item->judul_peraturan_terkait }}</a>
+                      </td>
+                      <td>{{ $item->status_perter }}</td>
+                      <td>{{ !empty($item->catatan_perter) ? $item->catatan_perter : '—' }}</td>
+                      <td class="text-center">
+                        <a href="{{ route('backend.form-peraturan-terkait.edit', [$peraturan->id, $item->id]) }}"
+                          class="btn btn-sm btn-warning">
+                          <b class="fa fa-pencil"></b>
+                        </a>&nbsp;
+                        <a href="{{ route('backend.form-peraturan-terkait.destroy', [$peraturan->id, $item->id]) }}"
+                          class="btn btn-sm btn-danger" data-confirm-delete="true">
+                          <b class="fa fa-trash"></b>
+                        </a>
+                      </td>
+                    </tr>
+                  @empty
+                    <tr>
+                      <td colspan="5">
+                        <div class="empty text-center">No results found.</div>
+                      </td>
+                    </tr>
+                  @endforelse
                 </tbody>
               </table>
             </div>
-
           </div>
         </div>
       </div>
@@ -299,18 +325,15 @@
           'tab-pane',
           'active' => session('tabActive') == 'dataDokumenTerkait',
       ]) id="tab_6">
-
         <div class="box-header">
-
-          <a class="btn btn-warning btn-flat" href="/backend/peraturan/tambah-dokumen-terkait-list?id=554"><i
-              class="fa fa-plus-circle"></i> Tambah Dokumen Terkait</a>
+          <a class="btn btn-warning btn-flat" href="/backend/peraturan/tambah-dokumen-terkait-list?id=554">
+            <i class="fa fa-plus-circle"></i> Tambah Dokumen Terkait
+          </a>
           <p></p>
-          <div id="w13" class="grid-view is-bs3 hide-resize" data-krajee-grid="kvGridInit_14632326"
-            data-krajee-ps="ps_w13_container">
+          <div id="w13" class="grid-view is-bs3 hide-resize">
             <div id="w13-container" class="table-responsive kv-grid-container">
               <table class="kv-grid-table table table-bordered table-striped kv-table-wrap">
                 <thead>
-
                   <tr>
                     <th class="text-center">No</th>
                     <th data-col-seq="1">Dokumen Terkait</th>
@@ -318,7 +341,6 @@
                     <th data-col-seq="3">Catatan</th>
                     <th class="text-center" style="width: 150px;">Aksi</th>
                   </tr>
-
                 </thead>
                 <tbody>
                   <tr>

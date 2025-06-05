@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\DataLampiran;
 use App\Models\DataSubjek;
 use App\Models\Document;
+use App\Models\PeraturanTerkait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -70,11 +71,19 @@ class PeraturanController extends Controller
       )->get();
 
     // Query data subjek
-    $dataSubjek = DataSubjek::where('id_dokumen', $id)->get();
+    $dataSubjek = DataSubjek::where('id_dokumen', (int) $id)->get();
+
+    // Query data peraturan terkait
+    $dataPeraturanTerkait = DB::table('peraturan_terkait')
+      ->where('id_dokumen', (int) $id)
+      ->leftJoin('document', 'peraturan_terkait.peraturan_terkait', '=', 'document.id')
+      ->select('peraturan_terkait.*', 'document.judul as judul_peraturan_terkait')
+      ->get();
 
     $titleAlert = 'Hapus data!';
     $textAlert  = "Yakin akan menghapus data ini?";
     confirmDelete($titleAlert, $textAlert);
+    
 
     return view('backend.pages.peraturan-view.peraturan-view', compact(
       'tipeDokumen',
@@ -82,6 +91,7 @@ class PeraturanController extends Controller
       'peraturan',
       'dataPengarang',
       'dataSubjek',
+      'dataPeraturanTerkait',
     ));
   }
 

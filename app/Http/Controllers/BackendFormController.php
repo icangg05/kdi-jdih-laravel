@@ -120,7 +120,7 @@ class BackendFormController extends Controller
 
     DataSubjek::create([
       'id_dokumen'   => (int) $idDokumen,
-      'subyek'       => $request->subyek,
+      'subyek'       => trim($request->subyek),
       'tipe_subyek'  => $request->tipe_subyek,
       'jenis_subyek' => $request->jenis_subyek,
       'created_at'   => Carbon::now(),
@@ -149,7 +149,7 @@ class BackendFormController extends Controller
     $subjek = DataSubjek::findOrFail($idSubjek);
     
     $subjek->update([
-      'subyek'       => $request->subyek,
+      'subyek'       => trim($request->subyek),
       'tipe_subyek'  => $request->tipe_subyek,
       'jenis_subyek' => $request->jenis_subyek,
       'updated_at'   => Carbon::now(),

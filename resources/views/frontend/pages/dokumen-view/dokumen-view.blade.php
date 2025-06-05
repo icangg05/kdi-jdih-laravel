@@ -74,7 +74,7 @@
             <div class="content">
               <div class="blog-list-simple-text post-meta" style="margin-bottom: -11px">
                 <div class="post-title">
-                  <h5>{{ __($data['judul']) }}</h5>
+                  <h5 style="font-size: 1.5rem;">{{ __($data['judul']) }}</h5>
                 </div>
               </div>
               <div class="row align-items-start">
@@ -114,10 +114,12 @@
                     Peraturan Terkait<br>
                     <ul class="mt-1">
                       @forelse ($peraturanTerkait as $item)
-                        <li class="list-group-item">
-                          {{ $item['status_perter'] }} :&nbsp;
-                          <a class="text-primary" href="{{ route('download_file', $item->peraturan_terkait) }}">
-                            Lihat detail</a>
+                        <li class="list-group-item" style="line-height: 24px;">
+                          {{ $item->status_perter }} :
+                          <a class="text-primary"
+                            href="{{ route('frontend.dokumen_view', ['peraturan', $item->peraturan_terkait]) }}">
+                            {{ $item->judul_peraturan_terkait }}
+                          </a>
                         </li>
                       @empty
                         <span class="text-extra-dark-gray font-weight-600 font-italic">Data Tidak Tersedia</span>
@@ -216,7 +218,7 @@
               </div>
 
               <div class="row align-items-end">
-                <div class="col-lg-12 col-md-12 mt-2">
+                <div class="col-lg-12 col-md-12 mt-2" style="line-height: 24px;">
                   <span class="text-extra-dark-gray font-weight-600"> SUBJEK : </span>
                   @forelse ($subjek as $i => $item)
                     {{ $item->subyek }} {{ $subjek->count() - 1 !== $i ? '|' : '' }}
@@ -246,7 +248,8 @@
                 <ul class="list-group mt-2">
                   @if ($kategori == 'peraturan')
                     <li class="list-group-item text-center">STATUS</li>
-                    <li class="list-group-item list-group-item-{{ strtolower($data['status']) == 'berlaku' ? 'success' : 'danger' }} text-center">
+                    <li
+                      class="list-group-item list-group-item-{{ strtolower($data['status']) == 'berlaku' ? 'success' : 'danger' }} text-center">
                       <strong>{{ $data['status'] }}</strong>
                     </li>
                   @elseif ($kategori == 'monografi')

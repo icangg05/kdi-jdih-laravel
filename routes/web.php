@@ -8,6 +8,7 @@ use App\Http\Controllers\Backend\PengumumanController as BackendPengumumanContro
 use App\Http\Controllers\Backend\PeraturanController as BackendPeraturanController;
 use App\Http\Controllers\Backend\VideoController as BackendVideoController;
 use App\Http\Controllers\BackendFormController;
+use App\Http\Controllers\BackendFormPeraturanTerkaitController;
 use App\Http\Controllers\Frontend\BerandaController;
 use App\Http\Controllers\Frontend\BeritaController;
 use App\Http\Controllers\Frontend\DokumenController;
@@ -76,6 +77,11 @@ Route::middleware('auth')->prefix('dashboard')->name('backend.')->group(function
   Route::patch('/peraturan/{idDokumen}/update-subjek/{idSubjek}', [BackendFormController::class, 'updateSubjek'])->name('form_subjek.update');
   Route::post('/peraturan/{idDokumen}/store-subjek', [BackendFormController::class, 'storeSubjek'])->name('form_subjek.store');
   Route::delete('/peraturan/{idDokumen}/{idDataPengarang}/destroy-subjek', [BackendFormController::class, 'destroySubjek'])->name('form_subjek.destroy');
+
+  // Route form peraturan terkait
+  Route::prefix('peraturan-terkait/{idDokumen}')->group(function () {
+    Route::resource('form-peraturan-terkait', BackendFormPeraturanTerkaitController::class)->except('index');
+  });
 });
 
 

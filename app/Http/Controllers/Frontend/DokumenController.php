@@ -60,6 +60,7 @@ class DokumenController extends Controller
     $data = $data->orderBy('created_at', 'desc')->paginate(6);
     // dd($data->first());
 
+
     return view('frontend.pages.dokumen.dokumen', compact(
       'kategori',
       'title',
@@ -72,7 +73,7 @@ class DokumenController extends Controller
   {
     $eksemplar = null;
     $data      = (array) DB::table('document')
-      ->where('document.id', $id)
+      ->where('document.id', (int) $id)
       ->leftJoin('data_lampiran', 'document.id', '=', 'data_lampiran.id_dokumen')
       ->select('document.*', 'data_lampiran.judul_lampiran', 'data_lampiran.dokumen_lampiran')
       ->first();
@@ -81,7 +82,7 @@ class DokumenController extends Controller
       $title = 'Peraturan dan Keputusan';
     } elseif ($kategori === 'monografi') {
       $title     = 'Monografi Hukum';
-      $eksemplar = DB::table('eksemplar')->where('id_dokumen', $data['id'])->get();
+      $eksemplar = DB::table('eksemplar')->where('id_dokumen', (int) $data['id'])->get();
     } elseif ($kategori === 'artikel') {
       $title = 'Artikel / Majalah Hukum';
     } elseif ($kategori === 'putusan') {
@@ -92,27 +93,31 @@ class DokumenController extends Controller
 
     abort_if(!$data, 404);
 
-    $subjek = DB::table('data_subyek')->where('id_dokumen', $data['id'])->get();
+    $subjek = DB::table('data_subyek')->where('id_dokumen', (int) $data['id'])->get();
     $dataPengarang = DB::table('data_pengarang')
-      ->where('data_pengarang.id_dokumen', $data['id'])
+      ->where('data_pengarang.id_dokumen', (int) $data['id'])
       ->join('pengarang', 'data_pengarang.nama_pengarang', 'pengarang.id')
       ->join('tipe_pengarang', 'data_pengarang.tipe_pengarang', '=', 'tipe_pengarang.id')
       ->join('jenis_pengarang', 'data_pengarang.jenis_pengarang', '=', 'jenis_pengarang.id')
       ->select('data_pengarang.*', 'pengarang.name as nama_pengarang', 'tipe_pengarang.name as tipe_pengarang', 'jenis_pengarang.name as jenis_pengarang')
       ->get();
     $dataStatus = DB::table('data_status')
-      ->where('id_dokumen', $data['id'])
+      ->where('id_dokumen', (int) $data['id'])
       ->first();
 
     $peraturanTerkait = DB::table('peraturan_terkait')
-      ->where('id_dokumen', $data['id'])
+      ->where('id_dokumen', (int) $data['id'])
+      ->leftJoin('document', 'peraturan_terkait.peraturan_terkait', '=', 'document.id')
+      ->select('peraturan_terkait.*', 'document.judul as judul_peraturan_terkait')
       ->get();
+      
     $dokumenTerkait = DB::table('document_terkait')
-      ->where('id_dokumen', $data['id'])
+      ->where('id_dokumen', (int) $data['id'])
       ->get();
     $hasilUjiMateri = DB::table('hasil_uji_materi')
-      ->where('id_dokumen', $data['id'])
+      ->where('id_dokumen', (int) $data['id'])
       ->get();
+
 
     return view('frontend.pages.dokumen-view.dokumen-view', compact(
       'title',
