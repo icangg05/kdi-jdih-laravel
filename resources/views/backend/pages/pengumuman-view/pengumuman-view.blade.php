@@ -25,6 +25,11 @@
         </div>
         <table class="table table-striped table-bordered detail-view">
           <tr>
+            <td colspan="2">
+              <x-backend.line-with-title title="Data Utama" />
+            </td>
+          </tr>
+          <tr>
             <th>Tanggal</th>
             <td>
               {{ Carbon\Carbon::parse($pengumuman->tanggal)->translatedFormat('d F Y') }}</td>
@@ -73,6 +78,11 @@
           <tr>
             <th>Status</th>
             <td>{{ $pengumuman->status == 1 ? 'Publish' : 'Tidak Publish' }}</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <x-backend.line-with-title title="Data Created" />
+            </td>
           </tr>
           <tr>
             <th>Created At</th>

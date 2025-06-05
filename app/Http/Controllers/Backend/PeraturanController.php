@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\DataLampiran;
+use App\Models\DataSubjek;
 use App\Models\Document;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -25,10 +26,6 @@ class PeraturanController extends Controller
 
   public function index()
   {
-    $title = 'Hapus peraturan!';
-    $text = "Yakin akan menghapus data ini?";
-    confirmDelete($title, $text);
-
     $peraturan = DB::table('document')
       ->where('tipe_dokumen', 1)
       ->leftJoin('data_status', 'document.id', '=', 'data_status.id_dokumen')
@@ -36,8 +33,55 @@ class PeraturanController extends Controller
       ->select('document.*', 'data_status.status_peraturan')
       ->paginate(15);
 
+    $titleAlert = 'Hapus data!';
+    $textAlert  = "Yakin akan menghapus data ini?";
+    confirmDelete($titleAlert, $textAlert);
+
+    
     return view('backend.pages.peraturan.peraturan', compact(
       'peraturan',
+    ));
+  }
+
+
+  public function show($id)
+  {
+    $tipeDokumen = 'peraturan';
+    $title     = 'Detail Peraturan';
+    $peraturan = DB::table('document')
+      ->where('document.id', $id)
+      ->leftJoin('data_lampiran', 'document.id', '=', 'data_lampiran.id_dokumen')
+      ->leftJoin('user as creator', 'document._created_by', '=', 'creator.id')
+      ->leftJoin('user as updater', 'document._created_by', '=', 'updater.id')
+      ->select('document.*', 'creator.username as _created_by', 'updater.username as _updated_by', 'data_lampiran.judul_lampiran', 'data_lampiran.deskripsi_lampiran', 'data_lampiran.dokumen_lampiran')
+      ->first();
+
+    // Query data pengarang
+    $dataPengarang = DB::table('data_pengarang')
+      ->where('id_dokumen', (int) $id)
+      ->leftJoin('pengarang', 'data_pengarang.nama_pengarang', '=', 'pengarang.id')
+      ->leftJoin('tipe_pengarang', 'data_pengarang.tipe_pengarang', '=', 'tipe_pengarang.id')
+      ->leftJoin('jenis_pengarang', 'data_pengarang.jenis_pengarang', '=', 'jenis_pengarang.id')
+      ->select(
+        'data_pengarang.id',
+        'pengarang.name as nama_pengarang',
+        'tipe_pengarang.name as tipe_pengarang',
+        'jenis_pengarang.name as jenis_pengarang',
+      )->get();
+
+    // Query data subjek
+    $dataSubjek = DataSubjek::where('id_dokumen', $id)->get();
+
+    $titleAlert = 'Hapus data!';
+    $textAlert  = "Yakin akan menghapus data ini?";
+    confirmDelete($titleAlert, $textAlert);
+
+    return view('backend.pages.peraturan-view.peraturan-view', compact(
+      'tipeDokumen',
+      'title',
+      'peraturan',
+      'dataPengarang',
+      'dataSubjek',
     ));
   }
 
@@ -74,6 +118,7 @@ class PeraturanController extends Controller
       'selectBidangHukum',
     ));
   }
+
 
   public function edit($id)
   {
@@ -172,8 +217,7 @@ class PeraturanController extends Controller
     }
 
 
-    toastr()->success('Data peraturan berhasil ditambahkan.');
-    return redirect()->route('backend.peraturan.index');
+    return redirect()->route('backend.peraturan.index')->with('success', 'Data peraturan berhasil ditambahkan.');
   }
 
 
@@ -239,16 +283,13 @@ class PeraturanController extends Controller
     }
 
 
-    toastr()->success('Data peraturan berhasil diupdate.');
-    return redirect()->route('backend.peraturan.index');
+    return redirect()->route('backend.peraturan.index')->with('success', 'Data peraturan berhasil diupdate.');
   }
 
 
   public function destroy($id)
   {
     Document::findOrFail((int) $id)->delete();
-
-    toastr()->info('Data peraturan berhasil dihapus.');
-    return redirect()->route('backend.peraturan.index');
+    return redirect()->route('backend.peraturan.index')->with('info', 'Data peraturan berhasil dihapus.');
   }
 }

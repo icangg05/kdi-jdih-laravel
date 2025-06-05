@@ -8,7 +8,7 @@
       @if ($index === count($listNav) - 1)
         <li class="active">{{ $item['label'] }}</li>
       @else
-        <li><a href="{{ route($item['route']) }}">{{ $item['label'] }}</a></li>
+        <li><a href="{{ $item['route'] }}">{{ $item['label'] }}</a></li>
       @endif
     @endforeach
   </ul>

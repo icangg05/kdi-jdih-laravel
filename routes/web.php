@@ -7,6 +7,7 @@ use App\Http\Controllers\Backend\InformasiHukumController as BackendInformasiHuk
 use App\Http\Controllers\Backend\PengumumanController as BackendPengumumanController;
 use App\Http\Controllers\Backend\PeraturanController as BackendPeraturanController;
 use App\Http\Controllers\Backend\VideoController as BackendVideoController;
+use App\Http\Controllers\BackendFormController;
 use App\Http\Controllers\Frontend\BerandaController;
 use App\Http\Controllers\Frontend\BeritaController;
 use App\Http\Controllers\Frontend\DokumenController;
@@ -63,6 +64,18 @@ Route::middleware('auth')->prefix('dashboard')->name('backend.')->group(function
   Route::resource('/video', BackendVideoController::class);
   Route::resource('/informasi-hukum', BackendInformasiHukumController::class);
   Route::resource('/informasi-hukum', BackendInformasiHukumController::class);
+
+  // Route form data pengarang
+  Route::get('/peraturan/{idDokumen}/create-teu', [BackendFormController::class, 'createTEU'])->name('form_teu.create');
+  Route::post('/peraturan/{idDokumen}/store-teu', [BackendFormController::class, 'storeTEU'])->name('form_teu.store');
+  Route::delete('/peraturan/{idDokumen}/{idDataPengarang}/destroy-teu', [BackendFormController::class, 'destroyTEU'])->name('form_teu.destroy');
+
+  // Route form data subjek
+  Route::get('/peraturan/{idDokumen}/create-subjek', [BackendFormController::class, 'createSubjek'])->name('form_subjek.create');
+  Route::get('/peraturan/{idDokumen}/edit-subjek/{idSubjek}', [BackendFormController::class, 'editSubjek'])->name('form_subjek.edit');
+  Route::patch('/peraturan/{idDokumen}/update-subjek/{idSubjek}', [BackendFormController::class, 'updateSubjek'])->name('form_subjek.update');
+  Route::post('/peraturan/{idDokumen}/store-subjek', [BackendFormController::class, 'storeSubjek'])->name('form_subjek.store');
+  Route::delete('/peraturan/{idDokumen}/{idDataPengarang}/destroy-subjek', [BackendFormController::class, 'destroySubjek'])->name('form_subjek.destroy');
 });
 
 

@@ -1,4 +1,4 @@
-<aside class="main-sidebar">
+<aside class="main-sidebar" style="z-index: 8">
   <section class="sidebar">
     <div class="user-panel">
       <div class="pull-left image">

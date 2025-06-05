@@ -37,7 +37,7 @@
                             </span>
                           </p>
                         </div>
-                        <p style="line-height: 22px;">
+                        <p style="line-height: 24px;">
                           <a class="titles" href="{{ route('frontend.dokumen_view', [$kategori, $item->id]) }}">
                             {{ $item->judul }}</a>
                         </p>

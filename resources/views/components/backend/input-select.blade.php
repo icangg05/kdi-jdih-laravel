@@ -1,4 +1,3 @@
-
 <div class="form-group field-pengumuman-status @error($key) has-error @enderror">
   <label class="control-label col-sm-2" for="{{ $key }}">
     {{ $label }}
@@ -9,7 +8,7 @@
       style="height: 34px">
       <option value="">{{ !empty($placeholder) ? $placeholder : 'Pilih...' }}</option>
       @foreach ($data as $item)
-        <option @selected(old($key, $value) != '' && old($key, $value) == $item['value']) value="{{ $item['value'] }}">{{ $item['label'] }}</option>
+        <option @selected(old($key, $value ?? '') != '' && old($key, $value ?? '') == $item['value']) value="{{ $item['value'] }}">{{ $item['label'] }}</option>
       @endforeach
     </select>
 
