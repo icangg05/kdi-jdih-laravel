@@ -11,7 +11,7 @@ use App\Http\Controllers\Backend\BeritaController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\FormHasilUjiMateriController;
 use App\Http\Controllers\Backend\FormStatusController;
-use App\Http\Controllers\BackendFormHasilUjiMateriController;
+
 
 // Dashboard route
 Route::middleware('auth')->prefix('dashboard')->name('backend.')->group(function () {
@@ -55,4 +55,13 @@ Route::middleware('auth')->prefix('dashboard')->name('backend.')->group(function
   Route::prefix('status/{idDokumen}')->group(function () {
     Route::resource('form-status', FormStatusController::class)->except('index');
   });
+
+  // Route redirect with session
+  Route::get('/back/{idDokumen}/{tabActive}', function ($idDokumen, $tabActive) {
+    return redirect()->route('backend.peraturan.show', $idDokumen)->with('tabActive', $tabActive);
+  })->name('redirect-session');
+
+  Route::get('/view/{route}/{idDokumen}/{tabActive}', function ($route, $idDokumen, $tabActive) {
+    return redirect()->route($route, $idDokumen)->with('tabActive', $tabActive);
+  })->name('redirect-view');
 });

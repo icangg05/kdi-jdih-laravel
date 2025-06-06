@@ -12,7 +12,7 @@
 
 
 	<div id="w1-danger" class="alert-danger alert fade in">
-		<i class="icon fa fa-ban"></i>Harap diperhatikan! Perubahan status berefek pada peraturan yang dituju dan status dari
+		<i class="icon fa fa-ban"></i>Harap diperhatikan! Perubahan status akan berefek pada peraturan yang dituju dan status dari
 		peraturan.
 	</div>
 
@@ -46,6 +46,7 @@
 						placeholder="--Pilih peraturan--"
 						:data="$selectPeraturan"
 						required />
+					<input type="hidden" name="id_dokumen_target_old" value="{{ $dataStatus->id_dokumen_target ?? '' }}">
 
 					{{-- Catatan hasil uji materi --}}
 					<x-backend.input.text
@@ -66,7 +67,7 @@
 				<div class="box-footer">
 					<button type="submit" class="btn btn-success btn-flat">
 						<i class="fa fa-save"></i> Simpan</button>&nbsp;
-					<a class="btn btn-danger btn-flat" href="{{ url()->previous() }}">
+					<a class="btn btn-danger btn-flat" href="{{ route('backend.redirect-session', [$idDokumen, 'dataStatus']) }}">
 						<i class="fa fa-remove"></i> Batal
 					</a>&nbsp;
 				</div>

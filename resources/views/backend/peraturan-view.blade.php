@@ -135,7 +135,7 @@
 						</tr>
 						<tr>
 							<th>Keterangan Status</th>
-							<td>{{ $peraturan->keterangan_status ?? '—' }}</td>
+							<td>{{ !empty($peraturan->status_terakhir) ? ucfirst($peraturan->status_terakhir) : '—' }}</td>
 						</tr>
 						<tr>
 							<td colspan="2">
@@ -409,7 +409,7 @@
 											<td class="text-center">{{ $loop->iteration }}.</td>
 											<td>{{ ucfirst($item->status_peraturan) }}</td>
 											<td>
-												<a href="{{ route('backend.peraturan.show', $item->id_dokumen_target) }}">
+												<a href="{{ route('backend.redirect-view', ['backend.peraturan.show', $item->id_dokumen_target, 'dataStatus']) }}">
 													{{ $item->judul_peraturan }}
 												</a>
 											</td>

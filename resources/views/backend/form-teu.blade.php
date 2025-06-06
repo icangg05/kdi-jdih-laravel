@@ -44,10 +44,10 @@
         <div class="box-footer">
           <button type="submit" class="btn btn-success btn-flat">
             <i class="fa fa-save"></i> Simpan</button>&nbsp;
-          <a class="btn btn-danger btn-flat" href="{{ route("backend.peraturan.show", $idDokumen) }}">
+          <a class="btn btn-danger btn-flat" href="{{ route('backend.redirect-session', [$idDokumen, 'dataTeu']) }}">
             <i class="fa fa-remove"></i> Batal
           </a>&nbsp;
-          <a class="btn btn-primary btn-flat" href="/backend/peraturan/tambah-pengarang2?id=553">
+          <a class="btn btn-primary btn-flat" href="#">
             <i class="fa fa-plus-circle"></i> Tambah TEU Baru
           </a>
         </div>
