@@ -1,16 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Backend;
 
+use App\Http\Controllers\Controller;
 use App\Models\Document;
 use App\Models\PeraturanTerkait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
-class BackendFormPeraturanTerkaitController extends Controller
+class FormPeraturanTerkaitController extends Controller
 {
-  // Functon create data peraturan terkait
+  // Function create data peraturan terkait
   public function create($idDokumen)
   {
     $title = 'Tambah Peraturan Terkait';
@@ -22,7 +23,7 @@ class BackendFormPeraturanTerkaitController extends Controller
       ->map(fn($judul, $id) => ['label' => $judul, 'value' => $id]);
 
 
-    return view('backend.pages.form-peraturan-terkait.form-peraturan-terkait', compact(
+    return view('backend.form-peraturan-terkait', compact(
       'idDokumen',
       'title',
       'dataStatus',
@@ -31,7 +32,7 @@ class BackendFormPeraturanTerkaitController extends Controller
   }
 
 
-  // Functon edit data peraturan terkait
+  // Function edit data peraturan terkait
   public function edit($idDokumen, $id)
   {
     $peraturanTerkait = PeraturanTerkait::findOrFail($id);
@@ -45,7 +46,7 @@ class BackendFormPeraturanTerkaitController extends Controller
       ->map(fn($judul, $id) => ['label' => $judul, 'value' => $id]);
 
 
-    return view('backend.pages.form-peraturan-terkait.form-peraturan-terkait', compact(
+    return view('backend.form-peraturan-terkait', compact(
       'idDokumen',
       'title',
       'dataStatus',
@@ -55,7 +56,7 @@ class BackendFormPeraturanTerkaitController extends Controller
   }
 
 
-  // Functon store data peraturan terkait
+  // Function store data peraturan terkait
   public function store(Request $request, $idDokumen)
   {
     $request->validate([
@@ -82,7 +83,7 @@ class BackendFormPeraturanTerkaitController extends Controller
   }
 
 
-  // Functon update data peraturan terkait
+  // Function update data peraturan terkait
   public function update(Request $request, $idDokumen, $idPeraturanTerkait)
   {
     $request->validate([
@@ -107,7 +108,7 @@ class BackendFormPeraturanTerkaitController extends Controller
   }
 
 
-  // Functon delete data peraturan terkait
+  // Function delete data peraturan terkait
   public function destroy($idDokumen, $idPeraturanTerkait)
   {
     PeraturanTerkait::findOrFail($idPeraturanTerkait)->delete();

@@ -137,15 +137,6 @@
                       <span class="btn btn-sm btn-warning">
                         <b class="fa fa-pencil"></b></span>&nbsp;
                     </a>
-                    {{-- <form action="{{ route("backend.$prefixRoute.destroy", $item['id']) }}" method="POST"
-                      style="display:inline;">
-                      @csrf
-                      @method('DELETE')
-                      <button style="outline: none;" data-confirm-delete="true" type="submit"
-                        class="btn btn-sm btn-danger">
-                        <b class="fa fa-trash"></b>
-                      </button>
-                    </form> --}}
                     <a href="{{ route("backend.$prefixRoute.destroy", $item['id']) }}" style="outline: none;" data-confirm-delete="true" type="submit"
                       class="btn btn-sm btn-danger">
                       <b class="fa fa-trash"></b>

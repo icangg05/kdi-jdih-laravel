@@ -14,7 +14,7 @@
 
         <div class="box-body">
           {{-- Nama pengarang --}}
-          <x-backend.input-select
+          <x-backend.input.select
             label="Nama Pengarang"
             key="nama_pengarang"
             placeholder="--Pilih nama pengarang--"
@@ -23,7 +23,7 @@
           />
 
           {{-- Tipe pengarang --}}
-          <x-backend.input-select
+          <x-backend.input.select
             label="Tipe Pengarang"
             key="tipe_pengarang"
             placeholder="--Pilih tipe pengarang--"
@@ -32,7 +32,7 @@
           />
 
           {{-- Tipe pengarang --}}
-          <x-backend.input-select
+          <x-backend.input.select
             label="Tipe Pengarang"
             key="jenis_pengarang"
             placeholder="--Pilih jenis pengarang--"

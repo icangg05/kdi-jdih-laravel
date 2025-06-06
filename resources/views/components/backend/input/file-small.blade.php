@@ -5,7 +5,7 @@
   </label>
   <div class="col-sm-8">
     <input type="hidden" name="{{ $key }}" value="">
-    <input type="file" id="{{ $key }}" class="form-control file-loading" name="{{ $key }}"
+    <input @required(!empty($required) && $required) type="file" id="{{ $key }}" class="form-control file-loading" name="{{ $key }}"
       data-krajee-fileinput="{{ $key }}">
     @error($key)
       <p class="help-block help-block-error">{{ $message }}</p>
@@ -14,7 +14,7 @@
     @if (checkFilePath(config('app.doc_directory'), $value))
       <button type="button"
         onclick="window.location.href='{{ asset('storage/' . config('app.doc_directory') . $value) }}'"
-        style="margin-top: 6px" class="btn btn-dark btn-sm">{{ $value }}</button>
+        style="margin-top: 6px; outline: none" class="btn btn-dark btn-sm">{{ $value }}</button>
     @endif
   </div>
 </div>

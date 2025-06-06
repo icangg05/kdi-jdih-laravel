@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\DataLampiran;
 use App\Models\DataSubjek;
 use App\Models\Document;
+use App\Models\HasilUjiMateri;
 use App\Models\PeraturanTerkait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -39,7 +40,7 @@ class PeraturanController extends Controller
     confirmDelete($titleAlert, $textAlert);
 
     
-    return view('backend.pages.peraturan.peraturan', compact(
+    return view('backend.peraturan', compact(
       'peraturan',
     ));
   }
@@ -80,18 +81,30 @@ class PeraturanController extends Controller
       ->select('peraturan_terkait.*', 'document.judul as judul_peraturan_terkait')
       ->get();
 
+    // Query data hasil uji materi
+    $dataHasilUjiMateri = HasilUjiMateri::where('id_dokumen', (int) $id)->get();
+
+    // Query data status
+    $dataStatus = DB::table('data_status')
+        ->where('id_dokumen', (int) $peraturan->id)
+        ->leftJoin('document', 'data_status.id_dokumen_target', '=', 'document.id')
+        ->select('data_status.*', 'document.judul as judul_peraturan')
+        ->get();
+
     $titleAlert = 'Hapus data!';
     $textAlert  = "Yakin akan menghapus data ini?";
     confirmDelete($titleAlert, $textAlert);
     
 
-    return view('backend.pages.peraturan-view.peraturan-view', compact(
+    return view('backend.peraturan-view', compact(
       'tipeDokumen',
       'title',
       'peraturan',
       'dataPengarang',
       'dataSubjek',
       'dataPeraturanTerkait',
+      'dataHasilUjiMateri',
+      'dataStatus',
     ));
   }
 
@@ -119,7 +132,7 @@ class PeraturanController extends Controller
       ->get()
       ->map(fn($item) => ['label' => $item->name, 'value' => $item->name])->toArray();
 
-    return view('backend.pages.peraturan-form.peraturan-form', compact(
+    return view('backend.peraturan-form', compact(
       'dataTipeDokumen',
       'selectTipeDokumen',
       'selectTempatPenetapan',
@@ -157,7 +170,7 @@ class PeraturanController extends Controller
       ->map(fn($item) => ['label' => $item->name, 'value' => $item->name])->toArray();
 
 
-    return view('backend.pages.peraturan-form.peraturan-form', compact(
+    return view('backend.peraturan-form', compact(
       'peraturan',
       'lampiran',
       'dataTipeDokumen',

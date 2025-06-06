@@ -25,7 +25,7 @@ class DashboardController extends Controller
       ->where('tipe_dokumen', 4)
       ->count();
 
-    return view('backend.pages.dashboard.dashboard', compact(
+    return view('backend.dashboard', compact(
       'countPeraturan',
       'countMonografi',
       'countArtikel',

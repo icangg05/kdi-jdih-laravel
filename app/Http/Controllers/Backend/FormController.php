@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Backend;
 
+use App\Http\Controllers\Controller;
 use App\Models\DataPengarang;
 use App\Models\DataSubjek;
 use Illuminate\Http\Request;
@@ -9,7 +10,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class BackendFormController extends Controller
+class FormController extends Controller
 {
   // Function create TEU
   public function createTEU($idDokumen)
@@ -19,7 +20,7 @@ class BackendFormController extends Controller
     $tipePengarang  = DB::table('tipe_pengarang')->get()->map(fn($item) => ['label' => $item->name, 'value' => $item->id]);
     $jenisPengarang = DB::table('jenis_pengarang')->get()->map(fn($item) => ['label' => $item->name, 'value' => $item->id]);
 
-    return view('backend.pages.form-teu.form-teu', compact(
+    return view('backend.form-teu', compact(
       'idDokumen',
       'title',
       'pengarang',
@@ -79,7 +80,7 @@ class BackendFormController extends Controller
       ['label' => 'Additional', 'value' => 'Additional']
     ];
 
-    return view('backend.pages.form-subjek.form-subjek', compact(
+    return view('backend.form-subjek', compact(
       'idDokumen',
       'title',
       'tipeKataKunci',
@@ -99,7 +100,7 @@ class BackendFormController extends Controller
     ];
     $subjek = DataSubjek::findOrFail($idSubjek);
 
-    return view('backend.pages.form-subjek.form-subjek', compact(
+    return view('backend.form-subjek', compact(
       'idDokumen',
       'title',
       'tipeKataKunci',
