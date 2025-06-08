@@ -41,6 +41,7 @@ class DocumentObserver
 
     // Delete abstrak file
     Storage::delete($this->docDirectory . $document->abstrak);
+    Storage::delete($this->imgDirectory . $document->gambar_sampul);
 
     // Delete lampiran file if not empty
     if ($lampiran->isNotEmpty()) {

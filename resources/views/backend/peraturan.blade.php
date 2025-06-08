@@ -8,7 +8,7 @@
       ],
       ['title' => 'Nomor', 'key' => 'nomor_peraturan'],
       ['title' => 'Tahun', 'key' => 'tahun_terbit'],
-      ['title' => 'Judul Peraturan', 'key' => 'judul'],
+      ['title' => 'Judul Peraturan', 'key' => 'judul', 'format' => 'href'],
       [
           'title' => 'Status Peraturan',
           'key' => 'status',

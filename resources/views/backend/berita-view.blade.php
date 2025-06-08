@@ -1,18 +1,18 @@
-<x-layouts.backend title="Detail Pengumuman" :listNav="[['label' => 'Pengumuman', 'route' => 'backend.pengumuman.index'], ['label' => 'Detail Pengumuman']]">
+<x-layouts.backend :title="$title" :listNav="[['label' => 'Berita', 'route' => 'backend.berita.index'], ['label' => $title]]">
 	<div class="box-body table-responsive no-padding">
 		<div class="box box-primary box-solid">
 			<div class="box-header with-border">
-				<b>Detail Data Pengumuman</b>
+				<b>Detail Data Berita</b>
 			</div>
 			<div class="box-body">
 				<div class="box-header">
-					<a class="btn btn-success btn-flat" href="{{ route('backend.pengumuman.index') }}">
+					<a class="btn btn-success btn-flat" href="{{ route('backend.berita.index') }}">
 						<i class="fa fa-mail-reply"></i> Kembali
 					</a>
-					<a class="btn btn-primary btn-flat" href="{{ route('backend.pengumuman.edit', $pengumuman->id) }}">
+					<a class="btn btn-primary btn-flat" href="{{ route('backend.berita.edit', $data->id) }}">
 						<i class="fa fa-pencil"></i> Ubah
 					</a>
-					<form style="display: inline" action="{{ route('backend.pengumuman.destroy', $pengumuman->id) }}"
+					<form style="display: inline" action="{{ route('backend.berita.destroy', $data->id) }}"
 						method="POST">
 						@csrf
 						@method('DELETE')
@@ -32,49 +32,45 @@
 					<tr>
 						<th>Tanggal</th>
 						<td>
-							{{ Carbon\Carbon::parse($pengumuman->tanggal)->translatedFormat('d F Y') }}</td>
+							{{ Carbon\Carbon::parse($data->tanggal)->translatedFormat('d F Y') }}</td>
 					</tr>
 					<tr>
 						<th>Judul</th>
 						<td>
-							{{ $pengumuman->judul }}</td>
-					</tr>
-					<tr>
-						<th>Tag</th>
-						<td>{{ $pengumuman->tag }}</td>
+							{{ $data->judul }}</td>
 					</tr>
 					<tr>
 						<th>Isi</th>
 						<td>
-							{!! $pengumuman->isi !!}
+							{!! $data->isi !!}
 						</td>
 					</tr>
 					<tr>
-						<th class="text-nowrap">Foto Pengumuman</th>
+						<th class="text-nowrap">Gambar Sampul</th>
 						@php
-							$image = checkFilePath(config('app.img_directory'), $pengumuman->image)
-							    ? 'storage/' . config('app.img_directory') . $pengumuman->image
+							$image = checkFilePath(config('app.img_directory'), $data->image)
+							    ? 'storage/' . config('app.img_directory') . $data->image
 							    : config('app.default_img');
 						@endphp
 						<td>
 							<img style="border: 1px solid #cccccc" src="{{ asset($image) }}" width="200" alt="image.jpg">
 						</td>
 					</tr>
-					<tr>
-						<th>Dokumen Pengumuman</th>
+					{{-- <tr>
+						<th>Dokumen Berita</th>
 						<td>
-							@if (checkFilePath(config('app.doc_directory'), $pengumuman->dokumen))
+							@if (checkFilePath(config('app.doc_directory'), $data->dokumen))
 								<form action="{{ route('download_file') }}" method="POST">
 									@csrf
 									<input type="hidden" name="filePath"
-										value="{{ config('app.doc_directory') . $pengumuman->dokumen }}">
+										value="{{ config('app.doc_directory') . $data->dokumen }}">
 									<button type="submit" class="btn btn-primary btn-sm badge">Download</button>
 								</form>
 							@else
 								<button disabled class="btn btn-primary btn-sm badge" style="opacity: .5">Download</a>
 							@endif
 						</td>
-					</tr>
+					</tr> --}}
 					<tr>
 						<th>Status</th>
 						<td>
@@ -82,10 +78,10 @@
 								'btn',
 								'btn-sm',
 								'badge',
-								'btn-success' => $pengumuman->status == 1,
-								'btn-danger' => $pengumuman->status == 0,
+								'btn-success' => $data->status == 1,
+								'btn-danger' => $data->status == 0,
 							])>
-								{{ $pengumuman->status == 1 ? 'Publish' : 'Tidak Publish' }}
+								{{ $data->status == 1 ? 'Publish' : 'Tidak Publish' }}
 							</span>
 						</td>
 					</tr>
@@ -97,20 +93,20 @@
 					<tr>
 						<th>Created At</th>
 						<td>
-							{{ Carbon\Carbon::parse($pengumuman->created_at)->translatedFormat('d F Y, H:i:s') }}</td>
+							{{ Carbon\Carbon::parse($data->created_at)->translatedFormat('d F Y, H:i:s') }}</td>
 					</tr>
 					<tr>
 						<th>Created By</th>
-						<td>{{ ucfirst($pengumuman->created_by) }}</td>
+						<td>{{ ucfirst($data->created_by) }}</td>
 					</tr>
 					<tr>
-						<th>Update At</th>
+						<th>Updated At</th>
 						<td>
-							{{ Carbon\Carbon::parse($pengumuman->updated_at)->translatedFormat('d F Y, H:i:s') }}</td>
+							{{ Carbon\Carbon::parse($data->updated_at)->translatedFormat('d F Y, H:i:s') }}</td>
 					</tr>
 					<tr>
 						<th>Updated By</th>
-						<td>{{ ucfirst($pengumuman->updated_by) }}</td>
+						<td>{{ ucfirst($data->updated_by) }}</td>
 					</tr>
 				</table>
 			</div>

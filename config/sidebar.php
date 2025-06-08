@@ -11,7 +11,7 @@ return [
     'icon'     => 'fa fa-bank',
     'label'    => 'Dokumen Hukum',
     'route'    => 'tes',
-    'isActive' => 'dashboard/peraturan*',
+    'isActive' => ['dashboard/peraturan*', 'dashboard/monografi*', 'dashboard/artikel*', 'dashboard/putusan*',],
     'subMenu'  => [
       [
         'icon'     => 'fa fa-pencil-square-o',
@@ -22,19 +22,19 @@ return [
       [
         'icon'     => 'fa fa-pencil-square-o',
         'label'    => 'Monografi Hukum',
-        'route'    => 'tes',
+        'route'    => 'backend.monografi.index',
         'isActive' => 'dashboard/monografi*',
       ],
       [
         'icon'     => 'fa fa-pencil-square-o',
         'label'    => 'Artikel Hukum',
-        'route'    => 'tes',
+        'route'    => 'backend.artikel.index',
         'isActive' => 'dashboard/artikel*',
       ],
       [
         'icon'     => 'fa fa-balance-scale',
         'label'    => 'Putusan',
-        'route'    => 'tes',
+        'route'    => 'backend.putusan.index',
         'isActive' => 'dashboard/putusan*',
       ],
     ],

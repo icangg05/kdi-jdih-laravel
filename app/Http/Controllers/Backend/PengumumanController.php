@@ -13,12 +13,24 @@ class PengumumanController extends Controller
 {
   protected string $docDirectory;
   protected string $imgDirectory;
+  protected array $validate;
 
   public function __construct()
   {
     $this->imgDirectory = config('app.img_directory');
     $this->docDirectory = config('app.doc_directory');
+    $this->validate     = [
+      'tanggal' => ['required', 'date'],
+      'judul'   => ['required'],
+      'tag'     => ['required'],
+      'isi'     => ['required'],
+      'image'   => ['required', 'mimes:jpg,jpeg,png', 'max:5120'],
+      'dokumen' => ['required', 'mimes:pdf', 'max:20480'],
+      'status'  => ['required'],
+    ];
   }
+
+
 
   public function index()
   {
@@ -26,10 +38,17 @@ class PengumumanController extends Controller
       ->orderBy('created_at', 'desc')
       ->paginate(15);
 
-    return view('backend.pages.pengumuman.pengumuman', compact(
+    $titleAlert = 'Hapus data!';
+    $textAlert  = "Yakin akan menghapus data ini?";
+    confirmDelete($titleAlert, $textAlert);
+
+
+    return view('backend.pengumuman', compact(
       'pengumuman'
     ));
   }
+
+
 
   public function show($id)
   {
@@ -40,31 +59,24 @@ class PengumumanController extends Controller
       ->select('pengumuman.*', 'creator.username as created_by', 'updater.username as updated_by')
       ->first();
 
-    return view('backend.pages.pengumuman-view.pengumuman-view', compact(
+    return view('backend.pengumuman-view', compact(
       'pengumuman'
     ));
   }
 
 
+
   public function create()
   {
     $title = 'Tambah Data Pengumuman';
-
-    return view('backend.pages.pengumuman-form.pengumuman-form', compact('title'));
+    return view('backend.pengumuman-form', compact('title'));
   }
+
 
 
   public function store(Request $request)
   {
-    $request->validate([
-      'tanggal' => ['required', 'date'],
-      'judul'   => ['required'],
-      'tag'     => ['required'],
-      'isi'     => ['required'],
-      'image'   => ['nullable', 'mimes:jpg,jpeg,png', 'max:5120'],
-      'dokumen' => ['nullable', 'mimes:pdf', 'max:20480'],
-      'status'  => ['required'],
-    ]);
+    $request->validate($this->validate);
 
     $tanggal = Carbon::createFromFormat('d-F-Y', $request->tanggal)->format('Y-m-d');
 
@@ -75,7 +87,7 @@ class PengumumanController extends Controller
     if ($request->file('dokumen'))
       $dokumen = uploadFile($this->docDirectory, $request->file('dokumen'));
 
-    Pengumuman::create([
+    $dataId = Pengumuman::create([
       'tanggal'    => $tanggal,
       'judul'      => trim($request->judul),
       'tag'        => trim($request->tag),
@@ -89,8 +101,9 @@ class PengumumanController extends Controller
       'updated_by' => Auth::user()->id,
     ]);
 
-    return redirect()->route('backend.pengumuman.index')->with('success', 'Sukses tambah data.');
+    return redirect()->route('backend.pengumuman.show', $dataId)->with('success', 'Data pengumuman berhasil ditambahkan');
   }
+
 
 
   public function edit($id)
@@ -99,24 +112,17 @@ class PengumumanController extends Controller
     $pengumuman = DB::table('pengumuman')->where('id', (int) $id)->first();
     abort_if(!$pengumuman, 404);
 
-    return view('backend.pages.pengumuman-form.pengumuman-form', compact(
+    return view('backend.pengumuman-form', compact(
       'title',
       'pengumuman',
     ));
   }
 
 
+
   public function update(Request $request, $id)
   {
-    $request->validate([
-      'tanggal' => ['required', 'date'],
-      'judul'   => ['required'],
-      'tag'     => ['required'],
-      'isi'     => ['required'],
-      'image'   => ['nullable', 'mimes:jpg,jpeg,png', 'max:5120'],
-      'dokumen' => ['nullable', 'mimes:pdf', 'max:20480'],
-      'status'  => ['required'],
-    ]);
+    $request->validate($this->validate);
 
     $tanggal    = Carbon::createFromFormat('d-F-Y', $request->tanggal)->format('Y-m-d');
     $pengumuman = Pengumuman::findOrFail((int) $id);
@@ -140,14 +146,15 @@ class PengumumanController extends Controller
       'updated_by' => Auth::user()->id,
     ]);
 
-    return redirect()->route('backend.pengumuman.index')->with('success', 'Data berhasil diupdate');
+    return redirect()->route('backend.pengumuman.show', $id)->with('success', 'Data pengumuman berhasil diupdate');
   }
+
 
 
   public function destroy($id)
   {
     Pengumuman::findOrFail((int) $id)->delete();
 
-    return redirect()->route('backend.pengumuman.index')->with('success', 'Data berhasil dihapus');
+    return redirect()->route('backend.pengumuman.index')->with('info', 'Data pengumuman berhasil dihapus');
   }
 }

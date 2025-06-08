@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Backend\ArtikelHukumController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\InformasiHukumController;
 use App\Http\Controllers\Backend\PengumumanController;
@@ -11,16 +12,21 @@ use App\Http\Controllers\Backend\BeritaController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\FormHasilUjiMateriController;
 use App\Http\Controllers\Backend\FormStatusController;
-
+use App\Http\Controllers\Backend\MonografiController;
+use App\Http\Controllers\Backend\PutusanController;
 
 // Dashboard route
 Route::middleware('auth')->prefix('dashboard')->name('backend.')->group(function () {
   Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
   Route::resource('/peraturan', PeraturanController::class);
+  Route::resource('/monografi', MonografiController::class);
+  Route::resource('/artikel', ArtikelHukumController::class);
+  Route::resource('/putusan', PutusanController::class);
+  Route::resource('/informasi-hukum', InformasiHukumController::class);
   Route::resource('/pengumuman', PengumumanController::class);
   Route::resource('/berita', BeritaController::class);
   Route::resource('/video', VideoController::class);
-  Route::resource('/informasi-hukum', InformasiHukumController::class);
+
 
   // Route form data teu
   Route::get('/peraturan/{idDokumen}/create-teu', [FormController::class, 'createTEU'])
@@ -29,6 +35,7 @@ Route::middleware('auth')->prefix('dashboard')->name('backend.')->group(function
     ->name('form_teu.store');
   Route::delete('/peraturan/{idDokumen}/{idDataPengarang}/destroy-teu', [FormController::class, 'destroyTEU'])
     ->name('form_teu.destroy');
+
 
   // Route form data subjek
   Route::get('/peraturan/{idDokumen}/create-subjek', [FormController::class, 'createSubjek'])
@@ -41,26 +48,32 @@ Route::middleware('auth')->prefix('dashboard')->name('backend.')->group(function
   Route::delete('/peraturan/{idDokumen}/{idDataPengarang}/destroy-subjek', [FormController::class, 'destroySubjek'])
     ->name('form_subjek.destroy');
 
+
   // Route form peraturan terkait
   Route::prefix('peraturan-terkait/{idDokumen}')->group(function () {
     Route::resource('form-peraturan-terkait', FormPeraturanTerkaitController::class)->except('index');
   });
+
 
   // Route form hasil uji materi
   Route::prefix('hasil-uji-materi/{idDokumen}')->group(function () {
     Route::resource('form-hasil-uji-materi', FormHasilUjiMateriController::class)->except('index');
   });
 
+
   // Route form keterangan status peraturan
   Route::prefix('status/{idDokumen}')->group(function () {
     Route::resource('form-status', FormStatusController::class)->except('index');
   });
+
 
   // Route redirect with session
   Route::get('/back/{idDokumen}/{tabActive}', function ($idDokumen, $tabActive) {
     return redirect()->route('backend.peraturan.show', $idDokumen)->with('tabActive', $tabActive);
   })->name('redirect-session');
 
+
+  // Route redirect with session
   Route::get('/view/{route}/{idDokumen}/{tabActive}', function ($route, $idDokumen, $tabActive) {
     return redirect()->route($route, $idDokumen)->with('tabActive', $tabActive);
   })->name('redirect-view');

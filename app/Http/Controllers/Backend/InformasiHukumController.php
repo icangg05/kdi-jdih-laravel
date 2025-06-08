@@ -3,25 +3,164 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\InformasiHukum;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class InformasiHukumController extends Controller
 {
+  protected string $docDirectory;
+  protected string $imgDirectory;
+  protected array $validate;
+
+  public function __construct()
+  {
+    $this->imgDirectory = config('app.img_directory');
+    $this->docDirectory = config('app.doc_directory');
+    $this->validate = [
+      'tanggal' => ['required', 'date'],
+      'judul'   => ['required'],
+      'isi'     => ['required'],
+      'image'   => ['required', 'image', 'max:10240'],
+      'dokumen' => ['required', 'max:10240'],
+      'status'  => ['required'],
+    ];
+  }
+
+
   public function index()
   {
     $informasiHukum = DB::table('informasi_hukum')
       ->orderBy('created_at', 'desc')
       ->paginate(15);
-    // dd($informasiHukum);
 
-    return view('backend.pages.informasi-hukum.informasi-hukum', compact(
+    $titleAlert = 'Hapus data!';
+    $textAlert  = "Yakin akan menghapus data ini?";
+    confirmDelete($titleAlert, $textAlert);
+
+
+    return view('backend.informasi-hukum', compact(
       'informasiHukum'
     ));
   }
 
+
+
+  public function show($id)
+  {
+    $title = 'Detail Informasi Hukum';
+    $data  = DB::table('informasi_hukum')
+      ->where('informasi_hukum.id', $id)
+      ->leftJoin('user as creator', 'informasi_hukum.created_by', '=', 'creator.id')
+      ->leftJoin('user as updater', 'informasi_hukum.updated_by', '=', 'updater.id')
+      ->select('informasi_hukum.*', 'creator.username as created_by', 'updater.username as updated_by')
+      ->first();
+
+    $titleAlert = 'Hapus data!';
+    $textAlert  = "Yakin akan menghapus data ini?";
+    confirmDelete($titleAlert, $textAlert);
+
+
+    return view('backend.informasi-hukum-view', compact(
+      'title',
+      'data',
+    ));
+  }
+
+
+
   public function create()
   {
-    return view('backend.pages.pengumuman-create.pengumuman-create');
+    $title = 'Tambah Data Informasi Hukum';
+    return view('backend.informasi-hukum-form', compact(
+      'title',
+    ));
+  }
+
+
+
+  public function store(Request $request)
+  {
+    // Validate data
+    $request->validate($this->validate);
+
+    // Upload image and dokumenif exists
+    if ($request->file('image'))
+      $image = uploadFile($this->imgDirectory, $request->file('image'));
+
+    if ($request->file('dokumen'))
+      $dokumen = uploadFile($this->docDirectory, $request->file('dokumen'));
+
+    // Set data
+    $data               = $request->except('_token');
+    $data['tanggal']    = Carbon::createFromFormat('d-F-Y', $request->tanggal)->format('Y-m-d');
+    $data['image']      = $image ?? null;
+    $data['dokumen']    = $dokumen ?? null;
+    $data['created_at'] = now();
+    $data['created_by'] = Auth::user()->id;
+    $data['updated_at'] = now();
+    $data['updated_by'] = Auth::user()->id;
+
+    $dataId = InformasiHukum::create($data);
+
+
+    return redirect()->route('backend.informasi-hukum.show', $dataId)->with('success', 'Data informasi hukum berhasil ditambahkan');
+  }
+
+
+
+  public function edit($id)
+  {
+    $title = 'Edit Data Informasi Hukum';
+    $data  = InformasiHukum::findOrFail($id);
+
+    return view('backend.informasi-hukum-form', compact(
+      'title',
+      'data',
+    ));
+  }
+
+
+
+  public function update(Request $request, $id)
+  {
+    // Validate data
+    $request->validate($this->validate);
+
+    // Get data 
+    $dataUpdate  = InformasiHukum::findOrFail($id);
+
+    // Upload image if exists
+    if ($request->file('image'))
+      $image = uploadFile($this->imgDirectory, $request->file('image'));
+
+    if ($request->file('dokumen'))
+      $dokumen = uploadFile($this->docDirectory, $request->file('dokumen'));
+
+    // Set data
+    $data               = $request->except('_token');
+    $data['tanggal']    = Carbon::createFromFormat('d-F-Y', $request->tanggal)->format('Y-m-d');
+    $data['image']      = $image ?? $dataUpdate->image;
+    $data['dokumen']    = $dokumen ?? $dataUpdate->dokumen;
+    $data['updated_at'] = now();
+    $data['updated_by'] = Auth::user()->id;
+
+    // Update data
+    $dataUpdate->update($data);
+
+
+    return redirect()->route('backend.informasi-hukum.show', $id)->with('success', 'Data informasi hukum berhasil diupdate');
+  }
+
+
+
+  public function destroy($id)
+  {
+    // Get data and delete
+    InformasiHukum::findOrFail($id)->delete();
+
+    return redirect()->route('backend.informasi-hukum.index')->with('info', 'Data informasi hukum berhasil dihapus');
   }
 }
