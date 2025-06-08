@@ -34,6 +34,7 @@ class DashboardController extends Controller
   }
 
 
+
   public function exportDatabase()
   {
     $dbName   = env('DB_DATABASE');
@@ -70,11 +71,13 @@ class DashboardController extends Controller
   }
 
 
+
   public function downloadFile(Request $request)
   {
     return Storage::download($request->filePath);
   }
 
+  
 
   public function generateWilayah()
   {

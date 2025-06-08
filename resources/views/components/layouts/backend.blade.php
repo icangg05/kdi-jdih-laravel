@@ -87,7 +87,7 @@
   <script src="{{ asset('assets') }}/backend/assets/687d7f9a/summernote/dist/summernote.js"></script>
 
   {{-- Script form input --}}
-  @if (Str::contains(Request()->path(), ['/create', '/edit']))
+  @if (Str::contains(Request()->path(), ['/create', '/edit', '/narasi']))
     <script src="{{ asset('assets') }}/backend/assets/e83a12bb/js/php-date-formatter.js"></script>
     <script src="{{ asset('assets') }}/backend/assets/8fbf74d4/js/datecontrol.js"></script>
     <script src="{{ asset('assets') }}/backend/assets/3ef8f6a7/js/kv-widgets.js"></script>

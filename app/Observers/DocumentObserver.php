@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Document;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -17,12 +18,49 @@ class DocumentObserver
     $this->docDirectory = config('app.doc_directory');
   }
 
+  public function getController($tipeDokumen)
+  {
+    if ($tipeDokumen == 1) {
+      $controller = 'Peraturan';
+    } elseif ($tipeDokumen == 2) {
+      $controller = 'Monografi';
+    } elseif ($tipeDokumen == 3) {
+      $controller = 'Artikel';
+    } else {
+      $controller = 'Putusan';
+    }
+
+    return $controller;
+  }
+
+
+  protected function logUser(Document $document, string $aksiPrefix): void
+  {
+    $controller = $this->getController($document->tipe_dokumen);
+    $aksi       = "{$aksiPrefix} {$controller}";
+    $username   = Auth::user()?->username ?? 'guest';
+    $userId     = Auth::id() ?? 0;
+
+    DB::table('log_pustakawan')->insert([
+      'controller' => $controller,
+      'aksi'       => $aksi,
+      'dokumen_id' => $document->id,
+      'keterangan' => textLog(strtolower("{$aksiPrefix} data {$controller}"), $username),
+      'created_at' => now(),
+      'updated_at' => now(),
+      'created_by' => $userId,
+      'updated_by' => $userId,
+    ]);
+  }
+
+  
+  
   /**
    * Handle the Document "created" event.
    */
   public function created(Document $document): void
   {
-    //
+    $this->logUser($document, 'Tambah');
   }
 
   /**
@@ -32,6 +70,11 @@ class DocumentObserver
   {
     if ($document->isDirty('abstrak'))
       Storage::delete($this->docDirectory . $document->getOriginal('abstrak'));
+  }
+
+  public function updated(Document $document): void
+  {
+    $this->logUser($document, 'Ubah');
   }
 
   public function deleting(Document $document)
@@ -57,7 +100,7 @@ class DocumentObserver
    */
   public function deleted(Document $document): void
   {
-    // 
+    $this->logUser($document, 'Hapus');
   }
 
   /**

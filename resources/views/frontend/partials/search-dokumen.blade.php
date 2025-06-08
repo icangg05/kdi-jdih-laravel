@@ -1,6 +1,6 @@
 <div class="border-bottom padding-20px-bottom margin-30px-bottom">
   <div class="widget search mb-4">
-    <form action="{{ route('frontend.dokumen', $kategori) }}" method="GET">
+    <form action="{{ route('frontend.dokumen.index', $kategori) }}" method="GET">
       @foreach (request()->except('q') as $key => $value)
         <input type="hidden" name="{{ $key }}" value="{{ $value }}">
       @endforeach

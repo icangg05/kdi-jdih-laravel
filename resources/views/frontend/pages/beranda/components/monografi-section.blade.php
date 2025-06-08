@@ -68,7 +68,7 @@
             </div>
           </div>
           <div class="col-lg-12">
-            <a href="http://jdih.kendarikota.go.id/dokumen/view/44" class="btn btn-secondary">
+            <a wire:navigate href="{{ route('frontend.dokumen.show', ['monografi', $monografi->id]) }}" class="btn btn-secondary">
               <i class="fa-solid fa-book"></i> &nbsp;Lihat Detail &nbsp;<i class="fa-solid fa-arrow-right"></i>
             </a>
           </div>

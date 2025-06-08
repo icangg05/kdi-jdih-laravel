@@ -17,13 +17,17 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+
+    protected $dateFormat = 'U'; // U = Unix timestamp
+
     protected $table = 'user';
 
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    protected $guarded = [];
+    // protected $fillable = [
+    //     'name',
+    //     'email',
+    //     'password',
+    // ];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -52,5 +56,4 @@ class User extends Authenticatable
     {
         return $this->password_hash;
     }
-
 }

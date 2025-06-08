@@ -20,41 +20,44 @@
 									class='glyphicon glyphicon-export'></i> <span class="caret"></span></button>
 							<ul id="w2" class="dropdown-menu dropdown-menu-right">
 								<li role="presentation" class="dropdown-header">Export Page Data</li>
-								<li title="Hyper Text Markup Language"><a class="export-html" href="#" data-mime="text/plain"
-										data-hash="1450bf5556aa938b8dd8b5c9414327979429f393e8d46f685972916ebe5244e8gridviewgrid-exporttext/plainutf-811{&quot;cssFile&quot;:[&quot;https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css&quot;]}"
-										data-hash-export-config="1"
-										data-css-styles='{".kv-group-even":{"background-color":"#f0f1ff"},".kv-group-odd":{"background-color":"#f9fcff"},".kv-grouped-row":{"background-color":"#fff0f5","font-size":"1.3em","padding":"10px"},".kv-table-caption":{"border":"1px solid #ddd","border-bottom":"none","font-size":"1.5em","padding":"8px"},".kv-table-footer":{"border-top":"4px double #ddd","font-weight":"bold"},".kv-page-summary td":{"background-color":"#ffeeba","border-top":"4px double #ddd","font-weight":"bold"},".kv-align-center":{"text-align":"center"},".kv-align-left":{"text-align":"left"},".kv-align-right":{"text-align":"right"},".kv-align-top":{"vertical-align":"top"},".kv-align-bottom":{"vertical-align":"bottom"},".kv-align-middle":{"vertical-align":"middle"},".kv-editable-link":{"color":"#428bca","text-decoration":"none","background":"none","border":"none","border-bottom":"1px dashed","margin":"0","padding":"2px 1px"}}'
-										tabindex="-1"><i class="text-info glyphicon glyphicon-save"></i> HTML</a></li>
-								<li title="Comma Separated Values"><a class="export-csv" href="#" data-mime="application/csv"
-										data-hash="f40cf76ebbd65719690faacd2c724db9af52765aa2474aafa0d1212711ac1cb9gridviewgrid-exportapplication/csvutf-811{&quot;colDelimiter&quot;:&quot;,&quot;,&quot;rowDelimiter&quot;:&quot;\r\n&quot;}"
-										data-hash-export-config="1" data-css-styles='[]' tabindex="-1"><i
-											class="text-primary glyphicon glyphicon-floppy-open"></i> CSV</a></li>
-								<li title="Tab Delimited Text"><a class="export-txt" href="#" data-mime="text/plain"
-										data-hash="69526c215e2a70bc3fdb4cb8aa84ccfbaf4c878f8ec50acaa5eecd9171c543efgridviewgrid-exporttext/plainutf-811{&quot;colDelimiter&quot;:&quot;\t&quot;,&quot;rowDelimiter&quot;:&quot;\r\n&quot;}"
-										data-hash-export-config="1" data-css-styles='[]' tabindex="-1"><i
-											class="text-muted glyphicon glyphicon-floppy-save"></i> Text</a></li>
-								<li title="Microsoft Excel 95+"><a class="export-xls" href="#"
-										data-mime="application/vnd.ms-excel"
-										data-hash="43c49a7468fcfe1b4281f34e63210177fa444efe723310c81bcf250b1dd35b67gridviewgrid-exportapplication/vnd.ms-excelutf-811{&quot;worksheet&quot;:&quot;ExportWorksheet&quot;,&quot;cssFile&quot;:&quot;&quot;}"
-										data-hash-export-config="1"
-										data-css-styles='{".kv-group-even":{"background-color":"#f0f1ff"},".kv-group-odd":{"background-color":"#f9fcff"},".kv-grouped-row":{"background-color":"#fff0f5","font-size":"1.3em","padding":"10px"},".kv-table-caption":{"border":"1px solid #ddd","border-bottom":"none","font-size":"1.5em","padding":"8px"},".kv-table-footer":{"border-top":"4px double #ddd","font-weight":"bold"},".kv-page-summary td":{"background-color":"#ffeeba","border-top":"4px double #ddd","font-weight":"bold"},".kv-align-center":{"text-align":"center"},".kv-align-left":{"text-align":"left"},".kv-align-right":{"text-align":"right"},".kv-align-top":{"vertical-align":"top"},".kv-align-bottom":{"vertical-align":"bottom"},".kv-align-middle":{"vertical-align":"middle"},".kv-editable-link":{"color":"#428bca","text-decoration":"none","background":"none","border":"none","border-bottom":"1px dashed","margin":"0","padding":"2px 1px"}}'
-										tabindex="-1"><i class="text-success glyphicon glyphicon-floppy-remove"></i> Excel</a>
+								<li>
+									<a class="export-html" href="#">
+										<i class="text-info glyphicon glyphicon-save"></i> HTML
+									</a>
 								</li>
-								<li title="Portable Document Format"><a class="export-pdf" href="#" data-mime="application/pdf"
-										data-hash="bf24eca471f0dddfb8bff1368f45ad55629e254ae57364fb4c26e42c994db64cgridviewgrid-exportapplication/pdfutf-811{&quot;mode&quot;:&quot;UTF-8&quot;,&quot;format&quot;:&quot;A4-L&quot;,&quot;destination&quot;:&quot;D&quot;,&quot;marginTop&quot;:20,&quot;marginBottom&quot;:20,&quot;cssInline&quot;:&quot;.kv-wrap{padding:20px}&quot;,&quot;methods&quot;:{&quot;SetHeader&quot;:[{&quot;odd&quot;:{&quot;L&quot;:{&quot;content&quot;:&quot;Yii2 Grid Export (PDF)&quot;,&quot;font-size&quot;:8,&quot;color&quot;:&quot;#333333&quot;},&quot;C&quot;:{&quot;content&quot;:&quot;Grid Export&quot;,&quot;font-size&quot;:16,&quot;color&quot;:&quot;#333333&quot;},&quot;R&quot;:{&quot;content&quot;:&quot;Generated: Sun, 01-Jun-2025&quot;,&quot;font-size&quot;:8,&quot;color&quot;:&quot;#333333&quot;}},&quot;even&quot;:{&quot;L&quot;:{&quot;content&quot;:&quot;Yii2 Grid Export (PDF)&quot;,&quot;font-size&quot;:8,&quot;color&quot;:&quot;#333333&quot;},&quot;C&quot;:{&quot;content&quot;:&quot;Grid Export&quot;,&quot;font-size&quot;:16,&quot;color&quot;:&quot;#333333&quot;},&quot;R&quot;:{&quot;content&quot;:&quot;Generated: Sun, 01-Jun-2025&quot;,&quot;font-size&quot;:8,&quot;color&quot;:&quot;#333333&quot;}}}],&quot;SetFooter&quot;:[{&quot;odd&quot;:{&quot;L&quot;:{&quot;content&quot;:&quot;© Krajee Yii2 Extensions&quot;,&quot;font-size&quot;:8,&quot;font-style&quot;:&quot;B&quot;,&quot;color&quot;:&quot;#999999&quot;},&quot;R&quot;:{&quot;content&quot;:&quot;[ {PAGENO} ]&quot;,&quot;font-size&quot;:10,&quot;font-style&quot;:&quot;B&quot;,&quot;font-family&quot;:&quot;serif&quot;,&quot;color&quot;:&quot;#333333&quot;},&quot;line&quot;:true},&quot;even&quot;:{&quot;L&quot;:{&quot;content&quot;:&quot;© Krajee Yii2 Extensions&quot;,&quot;font-size&quot;:8,&quot;font-style&quot;:&quot;B&quot;,&quot;color&quot;:&quot;#999999&quot;},&quot;R&quot;:{&quot;content&quot;:&quot;[ {PAGENO} ]&quot;,&quot;font-size&quot;:10,&quot;font-style&quot;:&quot;B&quot;,&quot;font-family&quot;:&quot;serif&quot;,&quot;color&quot;:&quot;#333333&quot;},&quot;line&quot;:true}}]},&quot;options&quot;:{&quot;title&quot;:&quot;Grid Export&quot;,&quot;subject&quot;:&quot;PDF export generated by kartik-v/yii2-grid extension&quot;,&quot;keywords&quot;:&quot;krajee, grid, export, yii2-grid, pdf&quot;},&quot;contentBefore&quot;:&quot;&quot;,&quot;contentAfter&quot;:&quot;&quot;}"
-										data-hash-export-config="1"
-										data-css-styles='{".kv-group-even":{"background-color":"#f0f1ff"},".kv-group-odd":{"background-color":"#f9fcff"},".kv-grouped-row":{"background-color":"#fff0f5","font-size":"1.3em","padding":"10px"},".kv-table-caption":{"border":"1px solid #ddd","border-bottom":"none","font-size":"1.5em","padding":"8px"},".kv-table-footer":{"border-top":"4px double #ddd","font-weight":"bold"},".kv-page-summary td":{"background-color":"#ffeeba","border-top":"4px double #ddd","font-weight":"bold"},".kv-align-center":{"text-align":"center"},".kv-align-left":{"text-align":"left"},".kv-align-right":{"text-align":"right"},".kv-align-top":{"vertical-align":"top"},".kv-align-bottom":{"vertical-align":"bottom"},".kv-align-middle":{"vertical-align":"middle"},".kv-editable-link":{"color":"#428bca","text-decoration":"none","background":"none","border":"none","border-bottom":"1px dashed","margin":"0","padding":"2px 1px"}}'
-										tabindex="-1"><i class="text-danger glyphicon glyphicon-floppy-disk"></i> PDF</a></li>
-								<li title="JavaScript Object Notation"><a class="export-json" href="#"
-										data-mime="application/json"
-										data-hash="559fd8e010ca5a34b0fde5b33f1dfdbcd660434167fb38e862aa01ea09da2f14gridviewgrid-exportapplication/jsonutf-811{&quot;colHeads&quot;:[],&quot;slugColHeads&quot;:false,&quot;indentSpace&quot;:4}"
-										data-hash-export-config="1" data-css-styles='[]' tabindex="-1"><i
-											class="text-warning glyphicon glyphicon-floppy-open"></i> JSON</a></li>
+								<li>
+									<a class="export-html" href="#">
+										<i class="text-primary glyphicon glyphicon-floppy-open"></i> CSV
+									</a>
+								</li>
+								<li>
+									<a class="export-html" href="#">
+										<i class="text-muted glyphicon glyphicon-floppy-save"></i> Text
+									</a>
+								</li>
+								<li>
+									<a class="export-html" href="#">
+										<i class="text-success glyphicon glyphicon-floppy-remove"></i> Excel
+									</a>
+								</li>
+								<li>
+									<a class="export-html" href="#">
+										<i class="text-danger glyphicon glyphicon-floppy-disk"></i> PDF
+									</a>
+								</li>
+								<li>
+									<a class="export-html" href="#">
+										<i class="text-warning glyphicon glyphicon-floppy-open"></i> JSON
+									</a>
+								</li>
 							</ul>
 						</div>
-						<div class="btn-group"><a id="w0-togdata-page" class="btn btn-default"
-								href="/backend/pengumuman/index?_tog1149016d=all" title="Show all data"><i
-									class='glyphicon glyphicon-resize-full'></i> All</a></div>
+						<div class="btn-group">
+							<a id="w0-togdata-page" class="btn btn-default"
+								href="#" title="Show all data">
+								<i class='glyphicon glyphicon-resize-full'></i> All
+							</a>
+						</div>
 					</div>
 					<div class="clearfix"></div>
 				</div>

@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 
 if (! function_exists('checkFilePath')) {
@@ -25,5 +26,18 @@ if (! function_exists('uploadFile')) {
     $file->storeAs($directory, $filename);
 
     return $filename;
+  }
+}
+
+
+
+if (!function_exists('textLog')) {
+  function textLog($controller, $username)
+  {
+    $now = Carbon::now()->locale('id')->isoFormat('DD MMMM YYYY [Pukul] HH:mm:ss');
+
+    $message = "User {$username} melakukan {$controller} pada {$now}";
+
+    return $message;
   }
 }

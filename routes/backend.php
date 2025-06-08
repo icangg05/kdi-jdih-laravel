@@ -13,10 +13,20 @@ use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\FormHasilUjiMateriController;
 use App\Http\Controllers\Backend\FormStatusController;
 use App\Http\Controllers\Backend\MonografiController;
+use App\Http\Controllers\Backend\NarasiController;
+use App\Http\Controllers\Backend\ProfilController;
 use App\Http\Controllers\Backend\PutusanController;
 
 // Dashboard route
 Route::middleware('auth')->prefix('dashboard')->name('backend.')->group(function () {
+  // Route profil admin
+  Route::get('/profil', [ProfilController::class, 'index'])
+    ->name('profil');
+  Route::post('/change-password', [ProfilController::class, 'changePassword'])
+    ->name('change-password');
+  Route::post('/change-image-profil', [ProfilController::class, 'changeImageProfil'])
+    ->name('change-image-profil');
+
   Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
   Route::resource('/peraturan', PeraturanController::class);
   Route::resource('/monografi', MonografiController::class);
@@ -47,6 +57,13 @@ Route::middleware('auth')->prefix('dashboard')->name('backend.')->group(function
   Route::post('/peraturan/{idDokumen}/store-subjek', [FormController::class, 'storeSubjek'])->name('form_subjek.store');
   Route::delete('/peraturan/{idDokumen}/{idDataPengarang}/destroy-subjek', [FormController::class, 'destroySubjek'])
     ->name('form_subjek.destroy');
+
+
+  // Route narasi
+  Route::get('/narasi', [NarasiController::class, 'edit'])
+    ->name('narasi.edit');
+  Route::patch('/narasi/{id}/update', [NarasiController::class, 'update'])
+    ->name('narasi.update');
 
 
   // Route form peraturan terkait

@@ -66,7 +66,7 @@
   <div class="main-wrapper">
     @include('frontend.partials.header')
 
-    @yield('content')
+    {{ $slot }}
 
     @include('frontend.partials.footer')
   </div>

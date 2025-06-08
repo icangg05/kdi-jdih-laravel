@@ -20,10 +20,10 @@
 
           <div class="box-search col-lg-8">
             <div class="">
-              <form id="w0" class="shadow-sm rounded mb-8" action="/dokumen/index" method="get" data-pjax="1">
+              <form id="w0" class="shadow-sm rounded mb-8" action="{{ route('frontend.dokumen.index', 'peraturan') }}" method="get" data-pjax="1">
                 <div class="row align-items-center justify-content-center">
                   <div class="col-lg-9 px-2 mt-2">
-                    <input type="text" class="form-control" id="dokumensearch-judul" name="DokumenSearch[judul]"
+                    <input type="text" class="form-control" id="dokumensearch-judul" name="q"
                       placeholder="Masukkan Kata Kunci Pencarian..">
                   </div>
                   <button type="submit" class="butn btn-primary col-lg-3 px-2 mt-2">Search <i

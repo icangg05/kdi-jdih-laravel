@@ -10,7 +10,7 @@
     </div>
     <div class="row content">
       <div class="card-model col-sm-6 col-md-4 col-lg-3">
-        <a href="dokumen/peraturan">
+        <a wire:navigate href="{{ route('frontend.dokumen.index', 'peraturan') }}">
           <div class="feature-inner display-table">
             <div class="vertical-align-middle">
               <div class="icon">
@@ -25,7 +25,7 @@
         </a>
       </div>
       <div class="card-model col-sm-6 col-md-4 col-lg-3">
-        <a href="dokumen/monografi">
+        <a wire:navigate href="{{ route('frontend.dokumen.index', 'monografi') }}">
           <div class="feature-inner display-table">
             <div class="vertical-align-middle">
               <div class="icon">
@@ -40,7 +40,7 @@
         </a>
       </div>
       <div class="card-model col-sm-6 col-md-4 col-lg-3">
-        <a href="dokumen/artikel">
+        <a wire:navigate href="{{ route('frontend.dokumen.index', 'artikel') }}">
           <div class="feature-inner display-table">
             <div class="vertical-align-middle">
               <div class="icon">
@@ -55,7 +55,7 @@
         </a>
       </div>
       <div class="card-model col-sm-6 col-md-4 col-lg-3">
-        <a href="dokumen/putusan">
+        <a wire:navigate href="{{ route('frontend.dokumen.index', 'putusan') }}">
           <div class="feature-inner display-table">
             <div class="vertical-align-middle">
               <div class="icon">

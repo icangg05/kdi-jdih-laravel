@@ -2,50 +2,45 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Backend\DashboardController;
-use App\Http\Controllers\Frontend\BerandaController;
-use App\Http\Controllers\Frontend\BeritaController;
 use App\Http\Controllers\Frontend\DokumenController;
 use App\Http\Controllers\Frontend\InformasiHukumController;
 use App\Http\Controllers\Frontend\PengumumanController;
-use App\Http\Controllers\Frontend\ProfilController;
+use App\Livewire\Beranda;
+use App\Livewire\Berita;
+use App\Livewire\BeritaShow;
+use App\Livewire\Dokumen;
+use App\Livewire\DokumenShow;
+use App\Livewire\Pengumuman;
+use App\Livewire\PengumumanShow;
+use App\Livewire\Profil;
 use Illuminate\Support\Facades\Route;
 
 
 
 // Auth route
-Route::get('/backend', [AuthController::class, 'login'])
-  ->middleware('guest')->name('login');
-Route::post('/backend', [AuthController::class, 'authenticate'])
-  ->middleware('guest')->name('authenticate');
-Route::get('/logout', [AuthController::class, 'logout'])
-  ->middleware('auth')->name('logout');
+Route::get('/backend', [AuthController::class, 'login'])->middleware('guest')->name('login');
+Route::post('/backend', [AuthController::class, 'authenticate'])->middleware('guest')->name('authenticate');
+Route::get('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 
 
 // Frontend route
 Route::name('frontend.')->group(function () {
-  Route::get('/', [BerandaController::class, 'index'])
-    ->name('beranda');
+  Route::get('/', Beranda::class)->name('beranda');
+  Route::get('/profil/{kategori}', Profil::class)->name('profil');
 
-  Route::get('/profil/{kategori}', [ProfilController::class, 'index'])
-    ->name('profil');
+  Route::get('/pengumuman', Pengumuman::class)->name('pengumuman.index');
+  Route::get('/pengumuman/{id}', PengumumanShow::class)->name('pengumuman.show');
 
-  Route::get('/dokumen/{kategori}', [DokumenController::class, 'index'])
-    ->name('dokumen');
-  Route::get('/dokumen/{kategori}/{id}', [DokumenController::class, 'viewById'])
-    ->name('dokumen_view');
+  Route::get('/dokumen/{kategori}', Dokumen::class)->name('dokumen.index');
+  Route::get('/dokumen/{kategori}/{id}', DokumenShow::class)->name('dokumen.show');
+  
+  Route::get('/berita', Berita::class)->name('berita.index'); 
+  Route::get('/berita/{id}', BeritaShow::class)->name('berita.show');
 
-  Route::get('/pengumuman', [PengumumanController::class, 'index'])
-    ->name('pengumuman');
-  Route::get('/pengumuman/{id}', [PengumumanController::class, 'viewById'])
-    ->name('pengumuman_view');
+
 
   Route::get('/informasi-hukum/{id}', [InformasiHukumController::class, 'index'])
     ->name('informasi_hukum');
-
-  Route::get('/berita', [BeritaController::class, 'index'])
-    ->name('berita');
-  Route::get('/berita/{id}', [BeritaController::class, 'viewById'])
-    ->name('berita_view');
 });
 
 
@@ -53,4 +48,6 @@ Route::name('frontend.')->group(function () {
 Route::get('/tes', [DashboardController::class, 'downloadFile'])->name('tes');
 Route::post('/download', [DashboardController::class, 'downloadFile'])->name('download_file');
 Route::get('/exportdb', [DashboardController::class, 'exportDatabase'])->name('exrpot_db');
-Route::get('/generate-wilayah', [DashboardController::class, 'generateWilayah'])->name('generate_wilayah');
+Route::get('/generate-wilayah', [DashboardController::class, 'generateWilayah'])
+  ->middleware('auth')
+  ->name('generate_wilayah');
