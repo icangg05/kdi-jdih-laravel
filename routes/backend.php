@@ -17,6 +17,7 @@ use App\Http\Controllers\Backend\NarasiController;
 use App\Http\Controllers\Backend\ProfilController;
 use App\Http\Controllers\Backend\PutusanController;
 
+
 // Dashboard route
 Route::middleware('auth')->prefix('dashboard')->name('backend.')->group(function () {
   // Route profil admin

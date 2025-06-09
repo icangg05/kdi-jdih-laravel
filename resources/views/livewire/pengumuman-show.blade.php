@@ -70,11 +70,14 @@
 								<h3>Cari Pengumuman</h3>
 							</div>
 							<div class="input-group my-0">
-								<form id="w0" action="/pengumuman/index" method="get" data-pjax="1">
+								<form action="{{ route('frontend.pengumuman.index') }}" method="get">
 									<div class="form-group field-pengumumansearch-judul">
-										<div class="input-group-append"><input type="text" id="pengumumansearch-judul" class="form-control"
-												name="PengumumanSearch[judul]" placeholder="Search"><button type="submit"
-												class="btn btn-primary"><span class="ti-search"></span></button></div>
+										<div class="input-group-append">
+											<input type="text" id="pengumumansearch-judul" class="form-control"
+												name="q" placeholder="Search">
+											<button type="submit"
+												class="btn btn-primary"><span class="ti-search"></span></button>
+										</div>
 									</div>
 								</form>
 							</div>

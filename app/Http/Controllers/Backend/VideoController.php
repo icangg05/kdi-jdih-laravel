@@ -27,11 +27,25 @@ class VideoController extends Controller
   }
 
 
-  public function index()
+  public function index(Request $request)
   {
-    $data = DB::table('video')
-      ->orderBy('created_at', 'desc')
-      ->paginate(15);
+    // Set session MySQL agar nama bulan/hari pakai Bahasa Indonesia
+    DB::statement("SET lc_time_names = 'id_ID'");
+
+    $data = DB::table('video');
+
+    if ($request->filled('judul'))
+      $data->where('judul', 'like', '%' . $request->judul . '%');
+
+    if ($request->filled('tanggal')) {
+      $data->whereRaw("DATE_FORMAT(created_at, '%d %M %Y') LIKE ?", ['%' . $request->tanggal . '%']);
+    }
+
+    if ($request->filled('link')) {
+      $data->where('link', 'like', '%' . $request->link . '%');
+    }
+
+    $data = $data->orderBy('created_at', 'desc')->paginate(15)->withQueryString();
 
     $titleAlert = 'Hapus data!';
     $textAlert  = "Yakin akan menghapus data ini?";

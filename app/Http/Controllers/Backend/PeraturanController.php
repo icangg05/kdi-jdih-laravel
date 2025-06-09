@@ -24,14 +24,42 @@ class PeraturanController extends Controller
   }
 
 
-  public function index()
+  public function index(Request $request)
   {
-    $peraturan = DB::table('document')
+    $data = DB::table('document')
       ->where('tipe_dokumen', 1)
       ->leftJoin('data_status', 'document.id', '=', 'data_status.id_dokumen')
-      ->orderBy('created_at', 'desc')
-      ->select('document.*', 'data_status.status_peraturan')
-      ->paginate(15);
+      ->select(
+        'document.id',
+        'bentuk_peraturan',
+        'document.nomor_peraturan',
+        'tahun_terbit',
+        'judul',
+        'document.status as status',
+        'data_status.status_peraturan as status_peraturan',
+        'document.created_at',
+      );
+
+    if ($request->filled('bentuk_peraturan'))
+      $data->where('bentuk_peraturan', $request->bentuk_peraturan);
+
+    if ($request->filled('status'))
+      $data->where('document.status', $request->status);
+
+    if ($request->filled('status_peraturan'))
+      $data->where('data_status.status_peraturan', $request->status_peraturan);
+
+    if ($request->filled('nomor_peraturan'))
+      $data->where('nomor_peraturan', 'like', '%' . $request->nomor_peraturan . '%');
+
+    if ($request->filled('tahun_terbit'))
+      $data->where('tahun_terbit', 'like', '%' . $request->tahun_terbit . '%');
+
+    if ($request->filled('judul'))
+      $data->where('judul', 'like', '%' . $request->judul . '%');
+
+    $data = $data->orderBy('created_at', 'desc')->paginate(15)->withQueryString();
+
 
     $titleAlert = 'Hapus data!';
     $textAlert  = "Yakin akan menghapus data ini?";
@@ -39,7 +67,7 @@ class PeraturanController extends Controller
 
 
     return view('backend.peraturan', compact(
-      'peraturan',
+      'data',
     ));
   }
 
@@ -122,7 +150,7 @@ class PeraturanController extends Controller
     ));
   }
 
-  
+
 
   public function store(Request $request)
   {
@@ -223,7 +251,7 @@ class PeraturanController extends Controller
     ));
   }
 
-  
+
 
   public function update(Request $request, $id)
   {

@@ -32,11 +32,30 @@ class PengumumanController extends Controller
 
 
 
-  public function index()
+  public function index(Request $request)
   {
-    $pengumuman = DB::table('pengumuman')
-      ->orderBy('created_at', 'desc')
-      ->paginate(15);
+    // Set session MySQL agar nama bulan/hari pakai Bahasa Indonesia
+    DB::statement("SET lc_time_names = 'id_ID'");
+
+    $data = DB::table('pengumuman');
+
+    if ($request->filled('judul'))
+      $data->where('judul', 'like', '%' . $request->judul . '%');
+
+    if ($request->filled('tanggal')) {
+      $data->whereRaw("DATE_FORMAT(created_at, '%d %M %Y') LIKE ?", ['%' . $request->tanggal . '%']);
+    }
+
+    if ($request->filled('isi')) {
+      $data->where('isi', 'like', '%' . $request->isi . '%');
+    }
+
+    if ($request->filled('tag')) {
+      $data->where('tag', 'like', '%' . $request->tag . '%');
+    }
+
+    $data = $data->orderBy('created_at', 'desc')->paginate(15)->withQueryString();
+
 
     $titleAlert = 'Hapus data!';
     $textAlert  = "Yakin akan menghapus data ini?";
@@ -44,7 +63,7 @@ class PengumumanController extends Controller
 
 
     return view('backend.pengumuman', compact(
-      'pengumuman'
+      'data'
     ));
   }
 

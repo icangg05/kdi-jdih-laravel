@@ -76,30 +76,52 @@
 							<tr id="w0-filters" class="filters skip-export">
 								<td>&nbsp;</td>
 
-								@foreach ($columns as $col)
-									@if (!empty($col['type_search']) && $col['type_search'] === 'select')
+								<form action="{{ route("backend.$prefixRoute.index") }}" method="get" id="filter-form">
+									@foreach ($columns as $col)
 										<td>
-											<select id="{{ $col['key'] . '-select' }}" class="form-control {{ $col['key'] }}"
-												name="name">
-												<option value="">Pilih...</option>
-												@foreach ($col['data_type_search'] as $item)
-													<option value="{{ $item }}">{{ $item }}</option>
-												@endforeach
-											</select>
+											@if (!empty($col['type_search']) && $col['type_search'] === 'select')
+												<select id="{{ $col['key'] . '-select' }}"
+													name="{{ $col['key'] }}"
+													class="form-control {{ $col['key'] }}"
+													data-autosubmit="true">
+													<option value="">Pilih...</option>
+													@foreach ($col['data_type_search'] as $item)
+														<option value="{{ is_array($item) ? $item['value'] : $item }}"
+															{{ request($col['key']) == (is_array($item) ? $item['value'] : $item) ? 'selected' : '' }}>
+															{!! is_array($item) ? $item['label'] : ucfirst($item) !!}
+														</option>
+													@endforeach
+												</select>
+											@else
+												<input value="{{ request($col['key']) }}"
+													type="text"
+													class="form-control"
+													name="{{ $col['key'] }}"
+													autocomplete="off">
+											@endif
 										</td>
+									@endforeach
+								</form>
 
-										@push('script')
-											<script>
-												$(document).ready(function() {
-													$(".{{ $col['key'] }}").select2();
-												});
-											</script>
-										@endpush
-									@else
-										<td><input type="text" class="form-control" name="{{ $col['key'] }}" autocomplete="off">
-										</td>
-									@endif
-								@endforeach
+								@push('script')
+									<script>
+										$(document).ready(function() {
+											$('select[data-autosubmit="true"]').each(function() {
+												$(this).select2();
+											});
+
+											$(document).on('change', 'select[data-autosubmit="true"]', function() {
+												$('#filter-form').submit(); // Form tunggal
+											});
+
+											$(document).on('keypress', 'input.form-control', function(e) {
+												if (e.which == 13) {
+													$('#filter-form').submit();
+												}
+											});
+										});
+									</script>
+								@endpush
 
 								<td>&nbsp;</td>
 							</tr>

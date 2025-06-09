@@ -30,11 +30,25 @@ class BeritaController extends Controller
 
 
 
-  public function index()
+  public function index(Request $request)
   {
-    $berita = DB::table('berita')
-      ->orderBy('created_at', 'desc')
-      ->paginate(15);
+    // Set session MySQL agar nama bulan/hari pakai Bahasa Indonesia
+    DB::statement("SET lc_time_names = 'id_ID'");
+
+    $data = DB::table('berita');
+
+    if ($request->filled('judul'))
+      $data->where('judul', 'like', '%' . $request->judul . '%');
+
+    if ($request->filled('tanggal')) {
+      $data->whereRaw("DATE_FORMAT(created_at, '%d %M %Y') LIKE ?", ['%' . $request->tanggal . '%']);
+    }
+
+    if ($request->filled('isi')) {
+      $data->where('isi', 'like', '%' . $request->isi . '%');
+    }
+
+    $data = $data->orderBy('created_at', 'desc')->paginate(15)->withQueryString();
 
     $titleAlert = 'Hapus data!';
     $textAlert  = "Yakin akan menghapus data ini?";
@@ -42,7 +56,7 @@ class BeritaController extends Controller
 
 
     return view('backend.berita', compact(
-      'berita'
+      'data'
     ));
   }
 
