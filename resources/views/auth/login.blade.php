@@ -1,88 +1,127 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<html lang="id">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Login - Situs Resmi JDIH Kota Kendari</title>
-  <link href="{{ asset('assets') }}/backend/assets/5bd7bfbf/css/font-awesome.min.css" rel="stylesheet">
-  <link href="{{ asset('assets') }}/backend/assets/63e477e8/css/bootstrap.css" rel="stylesheet">
-  <link href="{{ asset('assets') }}/backend/assets/687d7f9a/plugins/jvectormap/jquery-jvectormap-1.2.2.css"
-    rel="stylesheet">
-  <link href="{{ asset('assets') }}/backend/assets/687d7f9a/css/AdminLTE.min.css" rel="stylesheet">
-  <link href="{{ asset('assets') }}/backend/assets/687d7f9a/css/skins/_all-skins.min.css" rel="stylesheet">
-  <link href="{{ asset('assets') }}/backend/assets/687d7f9a/css/style.css" rel="stylesheet">
-  <link href="{{ asset('assets') }}/backend/assets/687d7f9a/summernote/dist/summernote.css" rel="stylesheet">
+  <title>Login - JDIH Kota Kendari</title>
+
+  <!-- Font Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.92rem;
+      background: url('{{ asset("assets/img/bg-login.jpg") }}') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .login-box {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+      max-width: 400px;
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .login-logo img {
+      max-width: 160px;
+      margin-bottom: 1.2rem;
+    }
+
+    h4 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    label {
+      font-weight: 500;
+      color: #fff;
+    }
+
+    .form-control {
+      font-size: 0.9rem;
+      background-color: rgba(255, 255, 255, 0.8);
+      border: none;
+    }
+
+    .form-control:focus {
+      border-color: #FF891E;
+      box-shadow: 0 0 0 0.2rem rgba(255, 137, 30, 0.25);
+    }
+
+    .btn-primary {
+      background-color: #FF891E;
+      border-color: #FF891E;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .btn-primary:hover {
+      background-color: #e67b1a;
+      border-color: #e67b1a;
+    }
+
+    .text-danger {
+      font-size: 0.85rem;
+      color: #ffd1c0;
+    }
+
+    .form-check-label {
+      color: #f1f1f1;
+    }
+  </style>
 </head>
 
-<body class="login-page">
+<body>
   <div class="login-box">
-    <div class="login-logo">
-      <center>
-        <a href="{{ route('frontend.beranda') }}">
-          <img class="img-responsive" src="{{ asset('assets') }}/backend/assets_b/img/jdul.png" alt="User Image">
-        </a>
-      </center>
+    <div class="login-logo text-center">
+      <a href="{{ route('frontend.beranda') }}">
+        <img src="{{ asset('assets/img/jdih-logo.png') }}" alt="Logo JDIH">
+      </a>
     </div>
-    <div class="box box-warning direct-chat direct-chat-warning">
-      <div class="login-box-body">
-        <p class="login-box-msg">Silahkan Login</p>
-        <form id="login-form" action="{{ route('authenticate') }}" method="POST">
-          @csrf
-          <div class="form-group has-feedback field-loginform-username required">
-            <input type="text" id="loginform-username" class="form-control" name="username" placeholder="Username"
-              aria-required="true" value="{{ old('username') }}" required autofocus>
-            @error('username')
-              <div class="text-danger text-sm mt-1">{{ $message }}</div>
-            @enderror
-          </div>
-          <div class="form-group has-feedback field-loginform-password required">
-            <input type="password" id="loginform-password" class="form-control" name="password" placeholder="Password"
-              aria-required="true" required>
-            @error('password')
-              <div class="text-danger text-sm mt-1">{{ $message }}</div>
-            @enderror
-          </div>
-          <div class="row">
-            <div class="col-xs-8">
-              <div class="form-group field-loginform-rememberme">
-                <div class="checkbox">
-                  <label for="loginform-rememberme">
-                    <input type="hidden" name="rememberMe" value="0">
-                    <input type="checkbox" id="loginform-rememberme" name="rememberMe">
-                    Remember Me
-                  </label>
-                  <p class="help-block help-block-error"></p>
-                </div>
-              </div>
-            </div>
-            <div class="col-xs-4">
-              <button type="submit" class="btn btn-primary btn-block btn-flat">Sign in</button>
-            </div>
-          </div>
-        </form>
+    <h4 class="text-center mb-3">Silakan Login</h4>
+    <form action="{{ route('authenticate') }}" method="POST">
+      @csrf
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" id="username" name="username" class="form-control" required autofocus value="{{ old('username') }}">
+        @error('username')
+        <small class="text-white mt-2">{{ $message }}</small>
+        @enderror
       </div>
-    </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" id="password" name="password" class="form-control" required>
+        @error('password')
+        <small class="text-white mt-2">{{ $message }}</small>
+        @enderror
+      </div>
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="rememberMe" name="rememberMe" value="1">
+        <label class="form-check-label" for="rememberMe">Remember Me</label>
+      </div>
+      <div class="d-grid">
+        <button type="submit" class="btn btn-primary">Sign In</button>
+      </div>
+    </form>
   </div>
 
-  <script src="{{ asset('assets') }}/backend/assets/3e5a9e6a/jquery.js"></script>
-  <script src="{{ asset('assets') }}/backend/assets/f07c8c94/yii.js"></script>
-  <script src="{{ asset('assets') }}/backend/assets/f07c8c94/yii.activeForm.js"></script>
-  <script src="{{ asset('assets') }}/backend/assets/63e477e8/js/bootstrap.js"></script>
-  <script src="{{ asset('assets') }}/backend/assets/687d7f9a/plugins/fastclick/fastclick.min.js"></script>
-  <script src="{{ asset('assets') }}/backend/assets/687d7f9a/js/app.min.js"></script>
-  <script src="{{ asset('assets') }}/backend/assets/687d7f9a/plugins/sparkline/jquery.sparkline.min.js"></script>
-  <script src="{{ asset('assets') }}/backend/assets/687d7f9a/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
-  <script src="{{ asset('assets') }}/backend/assets/687d7f9a/plugins/jvectormap/jquery-jvectormap-world-mill-en.js">
-  </script>
-  <script src="{{ asset('assets') }}/backend/assets/687d7f9a/plugins/slimScroll/jquery.slimscroll.min.js"></script>
-  <script src="{{ asset('assets') }}/backend/assets/687d7f9a/plugins/chartjs/Chart.min.js"></script>
-  <script src="{{ asset('assets') }}/backend/assets/687d7f9a/summernote/dist/summernote.js"></script>
-  <script>
-    jQuery(function($) {
-      jQuery('#login-form').yiiActiveForm([], []);
-    });
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

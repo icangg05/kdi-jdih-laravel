@@ -12,15 +12,10 @@
 					<a class="btn btn-primary btn-flat" href="{{ route('backend.pengumuman.edit', $pengumuman->id) }}">
 						<i class="fa fa-pencil"></i> Ubah
 					</a>
-					<form style="display: inline" action="{{ route('backend.pengumuman.destroy', $pengumuman->id) }}"
-						method="POST">
-						@csrf
-						@method('DELETE')
-						<button type="submit" style="outline: none" class="btn btn-danger btn-flat"
-							data-confirm="Yakin menghapus data ini?">
-							<i class="fa fa-trash"></i> Hapus
-						</button>
-					</form>
+					<a type="submit" href="{{ route('backend.pengumuman.destroy', $pengumuman->id) }}" class="btn btn-danger btn-flat"
+						data-confirm-delete="true">
+						<i class="fa fa-trash"></i> Hapus
+					</a>
 					<p></p>
 				</div>
 				<table class="table table-striped table-bordered detail-view">

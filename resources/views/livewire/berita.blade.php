@@ -5,11 +5,11 @@
 		<div class="container">
 			<div class="border-bottom padding-20px-bottom margin-30px-bottom">
 				<div class="widget search mb-4">
-					<form id="w0" action="/berita/index" method="get" data-pjax="1">
+					<form id="w0" action="{{ route('frontend.berita.index') }}" method="get">
 						<div class="form-row align-items-center">
 							<div class="col-md-10 my-1">
-								<input type="text" class="form-control" id="beritasearch-judul" name="BeritaSearch[judul]"
-									placeholder="cari berita lainnya...">
+								<input type="text" class="form-control" id="beritasearch-judul" name="q"
+									placeholder="cari berita lainnya..." value="{{ request()->q }}">
 							</div>
 							<div class="col-md-2 my-1">
 								<button type="submit" class="butn btn-block">Cari</button>
@@ -46,7 +46,7 @@
 						</div>
 					</div>
 				@empty
-					<div class="empty">No results found.</div>
+					<div class="empty mx-auto">No results found.</div>
 				@endforelse
 			</div>
 

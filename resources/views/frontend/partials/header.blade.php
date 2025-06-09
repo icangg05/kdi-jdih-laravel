@@ -40,10 +40,12 @@
 									<span class="submenu-button"></span>
 									<a wire:navigate.hover href=#>Jenis Dokumen</a>
 									<ul>
-										<li><a wire:navigate.hover href="{{ route('frontend.dokumen.index', 'peraturan') }}">Peraturan dan Keputusan</a>
+										<li><a wire:navigate.hover href="{{ route('frontend.dokumen.index', 'peraturan') }}">Peraturan dan
+												Keputusan</a>
 										</li>
 										<li><a wire:navigate.hover href="{{ route('frontend.dokumen.index', 'monografi') }}">Monografi</a></li>
-										<li><a wire:navigate.hover href="{{ route('frontend.dokumen.index', 'artikel') }}">Artikel / Majalah Hukum</a></li>
+										<li><a wire:navigate.hover href="{{ route('frontend.dokumen.index', 'artikel') }}">Artikel / Majalah
+												Hukum</a></li>
 										<li><a wire:navigate.hover href="{{ route('frontend.dokumen.index', 'putusan') }}">Putusan</a></li>
 									</ul>
 								</li>
@@ -51,14 +53,22 @@
 									class="{{ Request::routeIs('frontend.pengumuman.index') || Request::routeIs('frontend.pengumuman.show') ? 'current' : '' }}">
 									<a wire:navigate.hover href="{{ route('frontend.pengumuman.index') }}">Pengumuman</a>
 								</li>
-								<li class="{{ Request::routeIs('frontend.informasi_hukum') ? 'current' : '' }} has-sub">
+								<li class="{{ Request::is('informasi-hukum*') ? 'current' : '' }} has-sub">
 									<span class="submenu-button"></span>
 									<a wire:navigate.hover href=#>Informasi Hukum</a>
+
+									@php
+										$jenisInformasiHukum = DB::table('jenis_informasi_hukum')->pluck('singkatan', 'id');
+									@endphp
+
 									<ul>
-										<li><a wire:navigate.hover href="{{ route('frontend.informasi_hukum', 4) }}">Ranperwali</a></li>
-										<li><a wire:navigate.hover href="{{ route('frontend.informasi_hukum', 3) }}">Ranperda</a></li>
-										<li><a wire:navigate.hover href="{{ route('frontend.informasi_hukum', 2) }}">Propemperkada</a></li>
-										<li><a wire:navigate.hover href="{{ route('frontend.informasi_hukum', 1) }}">Propemperda</a></li>
+										@foreach ($jenisInformasiHukum as $key => $item)
+											<li>
+												<a wire:navigate.hover href="{{ route('frontend.informasi-hukum.index', $key) }}">
+													{{ $item }}
+												</a>
+											</li>
+										@endforeach
 									</ul>
 								</li>
 								<li

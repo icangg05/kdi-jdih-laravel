@@ -11,6 +11,7 @@ class Pengumuman extends Component
 	{
 		$data = DB::table('pengumuman')
 			->orderBy('created_at', 'desc')
+			->where('judul', 'like', '%'. request()->q. '%')
 			->paginate(8);
 
 		return view('livewire.pengumuman', compact(

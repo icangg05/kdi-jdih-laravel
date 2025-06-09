@@ -88,6 +88,6 @@ class ProfilController extends Controller
       'updated_at' => now(),
     ]);
 
-    return back()->with('success', 'Password berhasil diperbarui.');
+    return back()->with('success', 'Foto profil berhasil diperbarui.');
   }
 }

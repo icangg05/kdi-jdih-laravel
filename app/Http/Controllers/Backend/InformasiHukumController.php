@@ -23,8 +23,8 @@ class InformasiHukumController extends Controller
       'tanggal' => ['required', 'date'],
       'judul'   => ['required'],
       'isi'     => ['required'],
-      'image'   => ['required', 'image', 'max:10240'],
-      'dokumen' => ['required', 'max:10240'],
+      'image'   => ['nullable', 'image', 'max:10240'],
+      'dokumen' => ['nullable', 'max:10240'],
       'status'  => ['required'],
     ];
   }
@@ -96,8 +96,8 @@ class InformasiHukumController extends Controller
     // Set data
     $data               = $request->except('_token');
     $data['tanggal']    = Carbon::createFromFormat('d-F-Y', $request->tanggal)->format('Y-m-d');
-    $data['image']      = $image ?? null;
-    $data['dokumen']    = $dokumen ?? null;
+    $data['image']      = $image ?? '';
+    $data['dokumen']    = $dokumen ?? '';
     $data['created_at'] = now();
     $data['created_by'] = Auth::user()->id;
     $data['updated_at'] = now();

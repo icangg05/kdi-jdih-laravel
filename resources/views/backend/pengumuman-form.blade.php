@@ -26,8 +26,8 @@
           <x-backend.input.editor :value="$pengumuman->isi ?? ''" label="Isi" key="isi" :required="true"
             placeholder="Tulis isi pengumuman..." />
 
-          <x-backend.input.file label="Gambar" key="image" required :mimes="['jpg', 'jpeg', 'png']" />
-          <x-backend.input.file label="Dokumen" key="dokumen" required :mimes="['pdf']" />
+          <x-backend.input.file label="Gambar" key="image" :mimes="['jpg', 'jpeg', 'png']" />
+          <x-backend.input.file label="Dokumen" key="dokumen" :mimes="['pdf']" />
 
           <x-backend.input.select :value="$pengumuman->status ?? ''" label="Status" key="status" placeholder="Pilih Status..."
             :required="true" :data="[['label' => 'Publish', 'value' => 1], ['label' => 'Tidak Publish', 'value' => 0]]" />

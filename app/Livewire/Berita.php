@@ -11,6 +11,7 @@ class Berita extends Component
 	{
 		$data = DB::table('berita')
 			->orderBy('created_at', 'desc')
+			->where('judul', 'like', '%'. request()->q. '%')
 			->paginate(9);
 
 		return view('livewire.berita', compact(

@@ -1,15 +1,15 @@
 <div>
-	<x-frontend.breadcrumb title="Pengumuman" :listNav="[['label' => 'Pengumuman']]" />
+	<x-frontend.breadcrumb title="Informasi Hukum" :listNav="[['label' => 'Informasi Hukum']]" />
 
 	<section class="news">
 		<div class="container">
 			<div class="border-bottom padding-20px-bottom margin-30px-bottom">
 				<div class="widget search mb-4">
-					<form id="w0" action="{{ route('frontend.pengumuman.index') }}" method="get">
+					<form id="w0" action="{{ route('frontend.informasi-hukum.index', $jenisInformasiHukumId) }}" method="get" data-pjax="1">
 						<div class="form-row align-items-center">
 							<div class="col-md-10 my-1">
 								<input type="text" class="form-control" id="pengumumansearch-judul" name="q"
-									placeholder="cari pengumuman lainnya..." value="{{ request()->q }}">
+									placeholder="cari informasi hukum lainnya..." value="{{ request()->q }}">
 							</div>
 							<div class="col-md-2 my-1">
 								<button type="submit" class="butn btn-block">Cari</button>
@@ -32,11 +32,11 @@
 									@endphp
 									<img class="card-img-top col-lg-3" src="{{ $image }}" alt="img">
 									<div class="card-body padding-30px-all col-lg-9">
-										<label for="category">{{ $item->tag }}</label>
+										<label for="category">{{ $item->jenis }}</label>
 										<h5 class="card-title font-size22 font-weight-500 magin-20px-bottom">
 											<a href="#" class="text-extra-dark-gray">
 												<a wire:navigate
-													href="{{ route('frontend.pengumuman.show', $item->id) }}">{{ str()->limit($item->judul, 40) }}</a>
+													href="{{ route('frontend.informasi-hukum.show', $item->id) }}">{{ str()->limit($item->judul, 40) }}</a>
 											</a>
 										</h5>
 										<div class="detail">

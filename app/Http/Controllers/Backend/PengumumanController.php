@@ -24,8 +24,8 @@ class PengumumanController extends Controller
       'judul'   => ['required'],
       'tag'     => ['required'],
       'isi'     => ['required'],
-      'image'   => ['required', 'mimes:jpg,jpeg,png', 'max:5120'],
-      'dokumen' => ['required', 'mimes:pdf', 'max:20480'],
+      'image'   => ['nullable', 'mimes:jpg,jpeg,png', 'max:5120'],
+      'dokumen' => ['nullable', 'mimes:pdf', 'max:20480'],
       'status'  => ['required'],
     ];
   }
@@ -58,6 +58,11 @@ class PengumumanController extends Controller
       ->where('pengumuman.id', (int) $id)
       ->select('pengumuman.*', 'creator.username as created_by', 'updater.username as updated_by')
       ->first();
+
+    $titleAlert = 'Hapus data!';
+    $textAlert  = "Yakin akan menghapus data ini?";
+    confirmDelete($titleAlert, $textAlert);
+
 
     return view('backend.pengumuman-view', compact(
       'pengumuman'

@@ -4,7 +4,7 @@
 	<!-- start listing-list section -->
 	<section class="dokumen">
 		<div class="container">
-      
+
 			@include('frontend.partials.search-dokumen')
 
 			<div class="row">
@@ -32,18 +32,29 @@
 														{{ $item->judul }}</a>
 												</p>
 												<div class="d-flex left-content-between align-items-left">
-													<button @disabled(!checkFilePath(config('app.doc_directory'), $item->dokumen_lampiran))
-														onclick="window.location='{{ $item->dokumen_lampiran ? route('download_file', $item->dokumen_lampiran) : '#' }}'"
-														style="opacity: {{ !checkFilePath(config('app.doc_directory'), $item->dokumen_lampiran) ? '.4' : '1' }};"
-														class="btn-custom mr-3">
-														<i class="fa-solid fa-file-lines"></i>&nbsp; Download
-													</button>
-													<button @disabled(!checkFilePath(config('app.doc_directory'), $item->abstrak))
-														onclick="window.location='{{ $item->abstrak ? route('download_file', $item->abstrak) : '#' }}'"
-														style="opacity: {{ !checkFilePath(config('app.doc_directory'), $item->abstrak) ? '.4' : '1' }};"
-														class="btn-custom-2">
-														<i class="fa-solid fa-file-lines"></i>&nbsp; ABSTRAK
-													</button>
+													<form action="{{ route('download_file') }}" method="POST" style="display: inline">
+														@csrf
+														<input type="hidden" name="filePath"
+															value="{{ config('app.doc_directory') . $item->dokumen_lampiran }}">
+														<button @disabled(!checkFilePath(config('app.doc_directory'), $item->dokumen_lampiran))
+															onclick="window.location='{{ $item->dokumen_lampiran ? route('download_file', $item->dokumen_lampiran) : '#' }}'"
+															style="opacity: {{ !checkFilePath(config('app.doc_directory'), $item->dokumen_lampiran) ? '.4' : '1' }};"
+															class="btn-custom mr-3">
+															<i class="fa-solid fa-file-lines"></i>&nbsp; Download
+														</button>
+													</form>
+
+													<form action="{{ route('download_file') }}" method="POST" style="display: inline">
+														@csrf
+														<input type="hidden" name="filePath"
+															value="{{ config('app.doc_directory') . $item->abstrak }}">
+														<button @disabled(!checkFilePath(config('app.doc_directory'), $item->abstrak))
+															onclick="window.location='{{ $item->abstrak ? route('download_file', $item->abstrak) : '#' }}'"
+															style="opacity: {{ !checkFilePath(config('app.doc_directory'), $item->abstrak) ? '.4' : '1' }};"
+															class="btn-custom-2 mr-3">
+															<i class="fa-solid fa-file-lines"></i>&nbsp; Abstrak
+														</button>
+													</form>
 												</div>
 											</div>
 										</div>

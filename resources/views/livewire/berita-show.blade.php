@@ -36,11 +36,11 @@
 								<h3>Cari Berita</h3>
 							</div>
 							<div class="input-group mb-3">
-								<form id="w0" action="/berita/index" method="get" data-pjax="1">
+								<form id="w0" action="{{ route('frontend.berita.index') }}" method="get">
 									<div class="form-group field-beritasearch-judul">
 										<div class="input-group-append">
-											<input type="text" id="beritasearch-judul" class="form-control" name="BeritaSearch[judul]"
-												placeholder="Search">
+											<input type="text" id="beritasearch-judul" class="form-control" name="q"
+												placeholder="Search...">
 											<button type="submit" class="btn btn-primary">
 												<span class="ti-search"></span>
 											</button>

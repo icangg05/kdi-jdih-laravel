@@ -55,14 +55,12 @@
 						label="Sampul"
 						key="image"
 						:value="$data->image ?? ''"
-						required
 						:mimes="['jpg', 'jpeg', 'png']" />
 
 					<x-backend.input.file
 						label="Dokumen"
 						key="dokumen"
 						:value="$data->dokumen ?? ''"
-						required
 						:mimes="['pdf']" />
 
 					<x-backend.input.select

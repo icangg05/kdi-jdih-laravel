@@ -10,6 +10,8 @@ use App\Livewire\Berita;
 use App\Livewire\BeritaShow;
 use App\Livewire\Dokumen;
 use App\Livewire\DokumenShow;
+use App\Livewire\InformasiHukum;
+use App\Livewire\InformasiHukumShow;
 use App\Livewire\Pengumuman;
 use App\Livewire\PengumumanShow;
 use App\Livewire\Profil;
@@ -33,14 +35,12 @@ Route::name('frontend.')->group(function () {
 
   Route::get('/dokumen/{kategori}', Dokumen::class)->name('dokumen.index');
   Route::get('/dokumen/{kategori}/{id}', DokumenShow::class)->name('dokumen.show');
-  
-  Route::get('/berita', Berita::class)->name('berita.index'); 
+
+  Route::get('/informasi-hukum/jenis/{id}', InformasiHukum::class)->name('informasi-hukum.index');
+  Route::get('/informasi-hukum/{id}', InformasiHukumShow::class)->name('informasi-hukum.show');
+
+  Route::get('/berita', Berita::class)->name('berita.index');
   Route::get('/berita/{id}', BeritaShow::class)->name('berita.show');
-
-
-
-  Route::get('/informasi-hukum/{id}', [InformasiHukumController::class, 'index'])
-    ->name('informasi_hukum');
 });
 
 

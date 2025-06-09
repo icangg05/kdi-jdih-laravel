@@ -37,10 +37,10 @@
                 Populer</span>
               <div class="searchs display-inline-block mt-3">
                 <ul class="no-margin-bottom">
-                  <li><a class="text-white" href="/dokumen/peraturan">Peraturan</a></li>
-                  <li><a class="text-white" href="/dokumen/monografi">Monografi</a></li>
-                  <li><a class="text-white" href="/dokumen/artikel">Artikel</a></li>
-                  <li><a class="text-white" href="/dokumen/putusan">Putusan</a></li>
+                  <li><a wire:navigate class="text-white" href="/dokumen/peraturan">Peraturan</a></li>
+                  <li><a wire:navigate class="text-white" href="/dokumen/monografi">Monografi</a></li>
+                  <li><a wire:navigate class="text-white" href="/dokumen/artikel">Artikel</a></li>
+                  <li><a wire:navigate class="text-white" href="/dokumen/putusan">Putusan</a></li>
                 </ul>
               </div>
             </div>
