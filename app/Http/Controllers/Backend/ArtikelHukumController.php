@@ -59,11 +59,6 @@ class ArtikelHukumController extends Controller
 		$data = $data->orderBy('document.created_at', 'desc')->paginate(15)->withQueryString();
 
 
-		$titleAlert = 'Hapus data!';
-		$textAlert  = "Yakin akan menghapus data ini?";
-		confirmDelete($titleAlert, $textAlert);
-
-
 		return view('backend.artikel-hukum', compact(
 			'title',
 			'data',
@@ -83,11 +78,6 @@ class ArtikelHukumController extends Controller
 			->leftJoin('user as updater', 'document._created_by', '=', 'updater.id')
 			->select('document.*', 'creator.username as _created_by', 'updater.username as _updated_by', 'data_lampiran.judul_lampiran', 'data_lampiran.deskripsi_lampiran', 'data_lampiran.dokumen_lampiran')
 			->first();
-
-
-		$titleAlert = 'Hapus data!';
-		$textAlert  = "Yakin akan menghapus data ini?";
-		confirmDelete($titleAlert, $textAlert);
 
 
 		return view('backend.artikel-view', compact(

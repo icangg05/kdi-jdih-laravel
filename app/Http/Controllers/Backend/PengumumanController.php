@@ -57,11 +57,6 @@ class PengumumanController extends Controller
     $data = $data->orderBy('created_at', 'desc')->paginate(15)->withQueryString();
 
 
-    $titleAlert = 'Hapus data!';
-    $textAlert  = "Yakin akan menghapus data ini?";
-    confirmDelete($titleAlert, $textAlert);
-
-
     return view('backend.pengumuman', compact(
       'data'
     ));
@@ -77,11 +72,6 @@ class PengumumanController extends Controller
       ->where('pengumuman.id', (int) $id)
       ->select('pengumuman.*', 'creator.username as created_by', 'updater.username as updated_by')
       ->first();
-
-    $titleAlert = 'Hapus data!';
-    $textAlert  = "Yakin akan menghapus data ini?";
-    confirmDelete($titleAlert, $textAlert);
-
 
     return view('backend.pengumuman-view', compact(
       'pengumuman'

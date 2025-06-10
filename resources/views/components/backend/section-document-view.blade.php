@@ -1,13 +1,16 @@
 <x-layouts.backend :title="$title" :listNav="$listNav">
 	<div class="nav-tabs-custom">
 		<ul class="nav nav-tabs dashboard_tabs_cl">
-			<li class="tab-item" data-tab="dataUtama" @class(['active' => !session('tabActive')]) onclick="localStorage.setItem('tabActive', 'dataUtama');">
+			<li class="tab-item" data-tab="dataUtama" @class(['active' => !session('tabActive')])
+				onclick="localStorage.setItem('tabActive', 'dataUtama');">
 				<a href="#tab_1" data-toggle="tab">Data Utama</a>
 			</li>
-			<li class="tab-item" data-tab="dataTeu" @class(['active' => session('tabActive') == 'dataTeu']) onclick="localStorage.setItem('tabActive', 'dataTeu');">
+			<li class="tab-item" data-tab="dataTeu" @class(['active' => session('tabActive') == 'dataTeu'])
+				onclick="localStorage.setItem('tabActive', 'dataTeu');">
 				<a href="#tab_2" data-toggle="tab">T.E.U</a>
 			</li>
-			<li class="tab-item" data-tab="dataSubjek" @class(['active' => session('tabActive') == 'dataSubjek']) onclick="localStorage.setItem('tabActive', 'dataSubjek');">
+			<li class="tab-item" data-tab="dataSubjek" @class(['active' => session('tabActive') == 'dataSubjek'])
+				onclick="localStorage.setItem('tabActive', 'dataSubjek');">
 				<a href="#tab_3" data-toggle="tab">Subjek</a>
 			</li>
 
@@ -59,10 +62,17 @@
 											<td>{{ $item->tipe_pengarang }}</td>
 											<td>{{ $item->jenis_pengarang }}</td>
 											<td class="text-center">
-												<a href="{{ route('backend.form_teu.destroy', [$data->id, $item->id]) }}"
-													class="btn btn-sm btn-danger" data-confirm-delete="true">
-													<b class="fa fa-trash"></b>
-												</a>
+												<form style="display: inline" action="{{ route('backend.form_teu.destroy', [$data->id, $item->id]) }}"
+													method="post">
+													@csrf
+													@method('delete')
+
+													<button style="outline: none;"
+														type="submit"
+														class="btn btn-sm btn-danger" onclick="return confirm('Yakin akan menghapus data ini?')">
+														<b class="fa fa-trash"></b>
+													</button>
+												</form>
 											</td>
 										</tr>
 									@empty
@@ -112,10 +122,18 @@
 													class="btn btn-sm btn-warning">
 													<b class="fa fa-pencil"></b>
 												</a>&nbsp;
-												<a href="{{ route('backend.form_subjek.destroy', [$data->id, $item->id]) }}"
-													class="btn btn-sm btn-danger" data-confirm-delete="true">
-													<b class="fa fa-trash"></b>
-												</a>
+
+												<form style="display: inline" action="{{ route('backend.form_subjek.destroy', [$data->id, $item->id]) }}"
+													method="post">
+													@csrf
+													@method('delete')
+
+													<button style="outline: none;"
+														type="submit"
+														class="btn btn-sm btn-danger" onclick="return confirm('Yakin akan menghapus data ini?')">
+														<b class="fa fa-trash"></b>
+													</button>
+												</form>
 											</td>
 										</tr>
 									@empty

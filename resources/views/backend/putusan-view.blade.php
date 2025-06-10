@@ -4,7 +4,8 @@
 	:listNav="[['label' => 'Putusan', 'route' => route('backend.putusan.index')], ['label' => $title]]">
 
 	<x-slot:tabPane>
-		<li class="tab-item" data-tab="dataPeraturanTerkait" onclick="localStorage.setItem('tabActive', 'dataPeraturanTerkait');">
+		<li class="tab-item" data-tab="dataPeraturanTerkait"
+			onclick="localStorage.setItem('tabActive', 'dataPeraturanTerkait');">
 			<a
 				href="#tab_5"
 				data-toggle="tab">Peraturan Terkait</a>
@@ -204,10 +205,19 @@
 											class="btn btn-sm btn-warning">
 											<b class="fa fa-pencil"></b>
 										</a>&nbsp;
-										<a href="{{ route('backend.form-peraturan-terkait.destroy', [$data->id, $item->id]) }}"
-											class="btn btn-sm btn-danger" data-confirm-delete="true">
-											<b class="fa fa-trash"></b>
-										</a>
+
+										<form style="display: inline"
+											action="{{ route('backend.form-peraturan-terkait.destroy', [$data->id, $item->id]) }}"
+											method="post">
+											@csrf
+											@method('delete')
+
+											<button style="outline: none;"
+												type="submit"
+												class="btn btn-sm btn-danger" onclick="return confirm('Yakin akan menghapus data ini?')">
+												<b class="fa fa-trash"></b>
+											</button>
+										</form>
 									</td>
 								</tr>
 							@empty

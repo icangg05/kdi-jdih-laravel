@@ -50,10 +50,6 @@ class InformasiHukumController extends Controller
 
     $data = $data->orderBy('created_at', 'desc')->paginate(15)->withQueryString();
 
-    $titleAlert = 'Hapus data!';
-    $textAlert  = "Yakin akan menghapus data ini?";
-    confirmDelete($titleAlert, $textAlert);
-
 
     return view('backend.informasi-hukum', compact(
       'data'
@@ -71,11 +67,6 @@ class InformasiHukumController extends Controller
       ->leftJoin('user as updater', 'informasi_hukum.updated_by', '=', 'updater.id')
       ->select('informasi_hukum.*', 'creator.username as created_by', 'updater.username as updated_by')
       ->first();
-
-    $titleAlert = 'Hapus data!';
-    $textAlert  = "Yakin akan menghapus data ini?";
-    confirmDelete($titleAlert, $textAlert);
-
 
     return view('backend.informasi-hukum-view', compact(
       'title',

@@ -65,11 +65,6 @@ class PutusanController extends Controller
 		$data = $data->orderBy('document.created_at', 'desc')->paginate(15)->withQueryString();
 
 
-		$titleAlert = 'Hapus data!';
-		$textAlert  = "Yakin akan menghapus data ini?";
-		confirmDelete($titleAlert, $textAlert);
-
-
 		return view('backend.putusan', compact(
 			'title',
 			'data',
@@ -95,12 +90,6 @@ class PutusanController extends Controller
 			->leftJoin('document', 'peraturan_terkait.peraturan_terkait', '=', 'document.id')
 			->select('peraturan_terkait.*', 'document.judul as judul_peraturan_terkait')
 			->get();
-
-
-
-		$titleAlert = 'Hapus data!';
-		$textAlert  = "Yakin akan menghapus data ini?";
-		confirmDelete($titleAlert, $textAlert);
 
 
 		return view('backend.putusan-view', compact(

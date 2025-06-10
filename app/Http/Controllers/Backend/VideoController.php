@@ -47,11 +47,6 @@ class VideoController extends Controller
 
     $data = $data->orderBy('created_at', 'desc')->paginate(15)->withQueryString();
 
-    $titleAlert = 'Hapus data!';
-    $textAlert  = "Yakin akan menghapus data ini?";
-    confirmDelete($titleAlert, $textAlert);
-
-
     return view('backend.video', compact(
       'data'
     ));
@@ -69,10 +64,6 @@ class VideoController extends Controller
       ->select('video.*', 'creator.username as created_by', 'updater.username as updated_by')
       ->first();
     abort_if(!$data, 404);
-
-    $titleAlert = 'Hapus data!';
-    $textAlert  = "Yakin akan menghapus data ini?";
-    confirmDelete($titleAlert, $textAlert);
 
 
     return view('backend.video-view', compact(

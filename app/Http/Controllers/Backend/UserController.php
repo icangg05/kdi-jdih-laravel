@@ -24,11 +24,6 @@ class UserController extends Controller
 		$data = $data->paginate(15)->withQueryString();
 
 
-		$titleAlert = 'Hapus data!';
-		$textAlert  = "Yakin akan menghapus data ini?";
-		confirmDelete($titleAlert, $textAlert);
-
-
 		return view('backend.user', compact(
 			'data'
 		));

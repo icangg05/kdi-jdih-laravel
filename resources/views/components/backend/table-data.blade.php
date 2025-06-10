@@ -11,7 +11,7 @@
 					</h3>
 					<div class="clearfix"></div>
 				</div>
-				<div class="kv-panel-before">
+				<div class="kv-panel-before" style="padding-top: 10px; padding-right: 10px">
 					<div class="btn-toolbar kv-grid-toolbar toolbar-container pull-right">
 						<div class="btn-group">
 							<a onclick="localStorage.setItem('tabActive', 'dataUtama');" class="btn btn-success"
@@ -175,12 +175,12 @@
 
 											@if (auth()->user()->id != $item['id'])
 												@if ($item['status'] == 10)
-													<a href="{{ route("backend.change-active-user", [$item['id'], $item['status']]) }}">
+													<a href="{{ route('backend.change-active-user', [$item['id'], $item['status']]) }}">
 														<span class="btn btn-sm btn-success">
 															<b class="fa fa-check-square"></b></span>&nbsp;
 													</a>
 												@else
-													<a href="{{ route("backend.change-active-user", [$item['id'], $item['status']]) }}">
+													<a href="{{ route('backend.change-active-user', [$item['id'], $item['status']]) }}">
 														<span class="btn btn-sm btn-warning">
 															<b class="fa fa-ban"></b></span>&nbsp;
 													</a>
@@ -188,11 +188,17 @@
 											@endif
 
 											@if (auth()->user()->id != $item['id'])
-												<a href="{{ route("backend.$prefixRoute.destroy", $item['id']) }}" style="outline: none;"
-													data-confirm-delete="true" type="submit"
-													class="btn btn-sm btn-danger">
-													<b class="fa fa-trash"></b>
-												</a>
+												<form style="display: inline" action="{{ route("backend.$prefixRoute.destroy", $item['id']) }}"
+													method="post">
+													@csrf
+													@method('delete')
+
+													<button style="outline: none;"
+														type="submit"
+														class="btn btn-sm btn-danger" onclick="return confirm('Yakin akan menghapus data ini?')">
+														<b class="fa fa-trash"></b>
+													</button>
+												</form>
 											@endif
 										</td>
 									@else
@@ -207,11 +213,18 @@
 												<span class="btn btn-sm btn-warning">
 													<b class="fa fa-pencil"></b></span>&nbsp;
 											</a>
-											<a href="{{ route("backend.$prefixRoute.destroy", $item['id']) }}" style="outline: none;"
-												data-confirm-delete="true" type="submit"
-												class="btn btn-sm btn-danger">
-												<b class="fa fa-trash"></b>
-											</a>
+
+											<form style="display: inline" action="{{ route("backend.$prefixRoute.destroy", $item['id']) }}"
+												method="post">
+												@csrf
+												@method('delete')
+
+												<button style="outline: none;"
+													type="submit"
+													class="btn btn-sm btn-danger" onclick="return confirm('Yakin akan menghapus data ini?')">
+													<b class="fa fa-trash"></b>
+												</button>
+											</form>
 										</td>
 									@endif
 
@@ -235,7 +248,3 @@
 		</div>
 	</div>
 </div>
-
-@push('link')
-	<link href="{{ asset('assets') }}/backend/assets/be3f94da/css/kv-grid.css" rel="stylesheet">
-@endpush

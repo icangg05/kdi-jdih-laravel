@@ -33,11 +33,13 @@
 					<x-backend.input.text
 						label="Password"
 						key="password"
+						type="password"
 						required />
 
 					<x-backend.input.text
 						label="Konfirmasi Password"
 						key="password_confirmation"
+						type="password"
 						required />
 
 				</div>

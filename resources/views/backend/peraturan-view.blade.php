@@ -221,10 +221,19 @@
 											class="btn btn-sm btn-warning">
 											<b class="fa fa-pencil"></b>
 										</a>&nbsp;
-										<a href="{{ route('backend.form-peraturan-terkait.destroy', [$peraturan->id, $item->id]) }}"
-											class="btn btn-sm btn-danger" data-confirm-delete="true">
-											<b class="fa fa-trash"></b>
-										</a>
+
+										<form style="display: inline"
+											action="{{ route('backend.form-peraturan-terkait.destroy', [$peraturan->id, $item->id]) }}"
+											method="post">
+											@csrf
+											@method('delete')
+
+											<button style="outline: none;"
+												type="submit"
+												class="btn btn-sm btn-danger" onclick="return confirm('Yakin akan menghapus data ini?')">
+												<b class="fa fa-trash"></b>
+											</button>
+										</form>
 									</td>
 								</tr>
 							@empty
@@ -281,10 +290,19 @@
 											class="btn btn-sm btn-warning">
 											<b class="fa fa-pencil"></b>
 										</a>&nbsp;
-										<a href="{{ route('backend.form-hasil-uji-materi.destroy', [$peraturan->id, $item->id]) }}"
-											class="btn btn-sm btn-danger" data-confirm-delete="true">
-											<b class="fa fa-trash"></b>
-										</a>
+
+										<form style="display: inline"
+											action="{{ route('backend.form-hasil-uji-materi.destroy', [$peraturan->id, $item->id]) }}"
+											method="post">
+											@csrf
+											@method('delete')
+
+											<button style="outline: none;"
+												type="submit"
+												class="btn btn-sm btn-danger" onclick="return confirm('Yakin akan menghapus data ini?')">
+												<b class="fa fa-trash"></b>
+											</button>
+										</form>
 									</td>
 								</tr>
 							@empty
@@ -339,10 +357,19 @@
 											class="btn btn-sm btn-warning">
 											<b class="fa fa-pencil"></b>
 										</a>&nbsp;
-										<a href="{{ route('backend.form-status.destroy', [$peraturan->id, $item->id]) }}"
-											class="btn btn-sm btn-danger" data-confirm-delete="true">
-											<b class="fa fa-trash"></b>
-										</a>
+
+										<form style="display: inline"
+											action="{{ route('backend.form-status.destroy', [$peraturan->id, $item->id]) }}"
+											method="post">
+											@csrf
+											@method('delete')
+
+											<button style="outline: none;"
+												type="submit"
+												class="btn btn-sm btn-danger" onclick="return confirm('Yakin akan menghapus data ini?')">
+												<b class="fa fa-trash"></b>
+											</button>
+										</form>
 									</td>
 								</tr>
 							@empty

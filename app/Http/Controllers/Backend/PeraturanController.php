@@ -61,11 +61,6 @@ class PeraturanController extends Controller
     $data = $data->orderBy('created_at', 'desc')->paginate(15)->withQueryString();
 
 
-    $titleAlert = 'Hapus data!';
-    $textAlert  = "Yakin akan menghapus data ini?";
-    confirmDelete($titleAlert, $textAlert);
-
-
     return view('backend.peraturan', compact(
       'data',
     ));
@@ -101,11 +96,6 @@ class PeraturanController extends Controller
       ->select('data_status.*', 'document.judul as judul_peraturan')
       ->get();
       
-
-    $titleAlert = 'Hapus data!';
-    $textAlert  = "Yakin akan menghapus data ini?";
-    confirmDelete($titleAlert, $textAlert);
-
 
     return view('backend.peraturan-view', compact(
       'tipeDokumen',
