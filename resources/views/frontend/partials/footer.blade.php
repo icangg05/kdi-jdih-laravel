@@ -5,7 +5,7 @@
 				<div class="col-lg-3 col-sm-6 sm-margin-40px-bottom">
 
 					<!-- start logo -->
-					<img class="margin-10px-bottom xs-margin-5px-bottom" src="{{ asset('assets/frontend/img/logos/jdul.png') }}"
+					<img class="margin-10px-bottom xs-margin-5px-bottom" src="{{ asset('assets/img/jdul.png') }}"
 						alt="">
 					<!-- end logo -->
 					<p class="paragraph">JDIH Kota Kendari hadir untuk meningkatkan pelayanan kepada masyarakat atas

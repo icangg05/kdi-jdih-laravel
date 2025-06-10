@@ -14,17 +14,17 @@ class Beranda extends Component
 			[
 				'nama'    => 'dr. Hj. SISKA KARINA IMRAN, SKM',
 				'jabatan' => 'Wali Kota Kendari',
-				'gambar'  => "assets/frontend/img/1.jpg",
+				'gambar'  => "assets/img/1.jpg",
 			],
 			[
 				'nama'    => 'SUDIRMAN',
 				'jabatan' => 'Wakil Wali Kota Kendari',
-				'gambar'  => "assets/frontend/img/2.jpg",
+				'gambar'  => "assets/img/2.jpg",
 			],
 			[
 				'nama'    => 'AMIR HASAN, STP, SH, M.Si',
 				'jabatan' => 'PJ Sekretaris Daerah Kota Kendari',
-				'gambar'  => "assets/frontend/img/3.jpg",
+				'gambar'  => "assets/img/3.jpg",
 			],
 		];
 

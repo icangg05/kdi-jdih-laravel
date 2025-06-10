@@ -1,5 +1,5 @@
 <section class="page-title-section bg-img cover-background" data-overlay-dark="7"
-	data-background="{{ asset('assets/frontend/img/banner/header.jpg') }}">
+	data-background="{{ asset('assets/img/header.jpg') }}">
 	<div class="container">
 		<h1>{{ __($title) }}</h1>
 		<ul class="text-center">

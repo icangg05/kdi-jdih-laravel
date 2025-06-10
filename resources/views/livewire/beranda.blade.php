@@ -1,10 +1,10 @@
 <div>
-	@include('frontend.pages.beranda.components.hero-section')
-	@include('frontend.pages.beranda.components.pejabat-section')
-	@include('frontend.pages.beranda.components.statistik-section')
-	@include('frontend.pages.beranda.components.peraturan-section')
-	@include('frontend.pages.beranda.components.monografi-section')
-	@include('frontend.pages.beranda.components.pengumuman-section')
-	@include('frontend.pages.beranda.components.video-section')
-	@include('frontend.pages.beranda.components.berita-section')
+	@include('components.frontend.hero-section')
+	@include('components.frontend.pejabat-section')
+	@include('components.frontend.statistik-section')
+	@include('components.frontend.peraturan-section')
+	@include('components.frontend.monografi-section')
+	@include('components.frontend.pengumuman-section')
+	@include('components.frontend.video-section')
+	@include('components.frontend.berita-section')
 </div>
