@@ -1,4 +1,4 @@
-<x-layouts.backend title="Detail Pengumuman" :listNav="[['label' => 'Pengumuman', 'route' => 'backend.pengumuman.index'], ['label' => 'Detail Pengumuman']]">
+<x-layouts.backend title="Detail Pengumuman" :listNav="[['label' => 'Pengumuman', 'route' => route('backend.pengumuman.index')], ['label' => 'Detail Pengumuman']]">
 	<div class="box-body table-responsive no-padding">
 		<div class="box box-primary box-solid">
 			<div class="box-header with-border">

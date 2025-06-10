@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,14 +20,33 @@ class AuthController extends Controller
       'password' => ['required'],
     ]);
 
+    // Cari user berdasarkan username
+    $user = User::where('username', $credentials['username'])->first();
+
+    if (!$user) {
+      return back()->withErrors([
+        'username' => 'Username atau password salah.',
+      ])->onlyInput('username');
+    }
+
+    // Cek apakah statusnya 10
+    if ($user->status != 10) {
+      return back()->withErrors([
+        'username' => 'Username atau password salah.',
+      ])->onlyInput('username');
+    }
+
+    // Lanjutkan autentikasi
     if (Auth::attempt($credentials)) {
+      $user->update(['auth_key' => str()->random(32)]);
+
       $request->session()->regenerate();
 
       return redirect()->intended('dashboard');
     }
 
     return back()->withErrors([
-      'username' => 'Username atau email salah.',
+      'username' => 'Username atau password salah.',
     ])->onlyInput('username');
   }
 

@@ -30,7 +30,7 @@ class ArtikelHukumController extends Controller
 	}
 
 
-	public function index()
+	public function index(Request $request)
 	{
 		$title = 'Artikel / Majalah Hukum';
 		$data  = DB::table('document')
@@ -42,8 +42,22 @@ class ArtikelHukumController extends Controller
 				'judul',
 				'tahun_terbit',
 				'sumber',
-			)
-			->paginate(15);
+			);
+
+		if ($request->filled('jenis_peraturan'))
+			$data->where('jenis_peraturan', $request->jenis_peraturan);
+
+		if ($request->filled('judul'))
+			$data->where('judul', 'like', "%$request->judul%");
+
+		if ($request->filled('tahun_terbit'))
+			$data->where('tahun_terbit', 'like', "%$request->tahun_terbit%");
+
+		if ($request->filled('sumber'))
+			$data->where('sumber', 'like', '%' . $request->sumber . '%');
+
+		$data = $data->orderBy('document.created_at', 'desc')->paginate(15)->withQueryString();
+
 
 		$titleAlert = 'Hapus data!';
 		$textAlert  = "Yakin akan menghapus data ini?";

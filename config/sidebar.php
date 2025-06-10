@@ -11,7 +11,7 @@ return [
     'icon'     => 'fa fa-bank',
     'label'    => 'Dokumen Hukum',
     'route'    => 'backend.dashboard',
-    'isActive' => ['dashboard/peraturan*', 'dashboard/monografi*', 'dashboard/artikel*', 'dashboard/putusan*',],
+    'isActive' => ['dashboard/peraturan*', 'dashboard/monografi*', 'dashboard/artikel*', 'dashboard/putusan*','dashboard/form*',],
     'subMenu'  => [
       [
         'icon'     => 'fa fa-pencil-square-o',
@@ -125,24 +125,24 @@ return [
         'route'    => 'backend.dashboard',
         'isActive' => 'backend/kala-terbit*',
       ],
-      [
-        'icon'     => 'fa fa-circle-o',
-        'label'    => 'Penerbit',
-        'route'    => 'backend.dashboard',
-        'isActive' => 'backend/penerbit*',
-      ],
+      // [
+      //   'icon'     => 'fa fa-circle-o',
+      //   'label'    => 'Penerbit',
+      //   'route'    => 'backend.dashboard',
+      //   'isActive' => 'backend/penerbit*',
+      // ],
       [
         'icon'     => 'fa fa-circle-o',
         'label'    => 'Pengarang',
         'route'    => 'backend.dashboard',
         'isActive' => 'backend/pengarang*',
       ],
-      [
-        'icon'     => 'fa fa-circle-o',
-        'label'    => 'Pola Eksemplar',
-        'route'    => 'backend.dashboard',
-        'isActive' => 'backend/pola-eksemplar*',
-      ],
+      // [
+      //   'icon'     => 'fa fa-circle-o',
+      //   'label'    => 'Pola Eksemplar',
+      //   'route'    => 'backend.dashboard',
+      //   'isActive' => 'backend/pola-eksemplar*',
+      // ],
       // [
       //   'icon'     => 'fa fa-circle-o',
       //   'label'    => 'Tempat Penetapan',
@@ -161,24 +161,24 @@ return [
         'route'    => 'backend.dashboard',
         'isActive' => 'backend/tipe-pengarang*',
       ],
-      [
-        'icon'     => 'fa fa-circle-o',
-        'label'    => 'Tipe Dokumen',
-        'route'    => 'backend.dashboard',
-        'isActive' => 'backend/tipe-dokumen*',
-      ],
+      // [
+      //   'icon'     => 'fa fa-circle-o',
+      //   'label'    => 'Tipe Dokumen',
+      //   'route'    => 'backend.dashboard',
+      //   'isActive' => 'backend/tipe-dokumen*',
+      // ],
       [
         'icon'     => 'fa fa-circle-o',
         'label'    => 'Tipe Kata Kunci',
         'route'    => 'backend.dashboard',
         'isActive' => 'backend/tipe-kata-kunci*',
       ],
-      [
-        'icon'     => 'fa fa-circle-o',
-        'label'    => 'Klasifikasi',
-        'route'    => 'backend.dashboard',
-        'isActive' => 'backend/klasifikasi*',
-      ],
+      // [
+      //   'icon'     => 'fa fa-circle-o',
+      //   'label'    => 'Klasifikasi',
+      //   'route'    => 'backend.dashboard',
+      //   'isActive' => 'backend/klasifikasi*',
+      // ],
       [
         'icon'     => 'fa fa-circle-o',
         'label'    => 'Bidang Hukum',
@@ -208,7 +208,7 @@ return [
       [
         'icon'     => 'fa fa-users',
         'label'    => 'User',
-        'route'    => 'backend.dashboard',
+        'route'    => 'backend.user.index',
         'isActive' => 'backend/admin/user*',
       ],
       // [

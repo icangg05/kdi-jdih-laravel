@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Document;
 use App\Models\HasilUjiMateri;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -45,9 +46,12 @@ class FormHasilUjiMateriController extends Controller
     ]);
 
 
-    return redirect()->route('backend.peraturan.show', $idDokumen)->with([
-      'success'   => 'Data hasil uji materi berhasil ditambahkan.',
-      'tabActive' => 'dataHasilUjiMateri',
+    $tipeDokumen = Document::find($idDokumen)->tipe_dokumen;
+    $prefixRoute = checkPrefixRoute($tipeDokumen);
+
+
+    return redirect()->route("backend.$prefixRoute.show", $idDokumen)->with([
+      'success' => 'Data hasil uji materi berhasil ditambahkan.',
     ]);
   }
 
@@ -96,10 +100,13 @@ class FormHasilUjiMateriController extends Controller
       '_updated_by'      => Auth::user()->id,
     ]);
 
+    $tipeDokumen = Document::find($idDokumen)->tipe_dokumen;
+    $prefixRoute = checkPrefixRoute($tipeDokumen);
+
+
     // Redirect ke halaman dengan pesan sukses
-    return redirect()->route('backend.peraturan.show', $idDokumen)->with([
-      'success'   => 'Data hasil uji materi berhasil diperbarui.',
-      'tabActive' => 'dataHasilUjiMateri',
+    return redirect()->route("backend.$prefixRoute.show", $idDokumen)->with([
+      'success' => 'Data hasil uji materi berhasil diperbarui.',
     ]);
   }
 
@@ -109,9 +116,12 @@ class FormHasilUjiMateriController extends Controller
   {
     HasilUjiMateri::findOrFail($idHasilUjiMateri)->delete();
 
-    return redirect()->route("backend.peraturan.show", $idDokumen)->with([
-      'info'      => 'Data hasil uji materi berhasil dihapus.',
-      'tabActive' => 'dataHasilUjiMateri',
+    $tipeDokumen = Document::find($idDokumen)->tipe_dokumen;
+    $prefixRoute = checkPrefixRoute($tipeDokumen);
+
+
+    return redirect()->route("backend.$prefixRoute.show", $idDokumen)->with([
+      'info' => 'Data hasil uji materi berhasil dihapus.',
     ]);
   }
 }

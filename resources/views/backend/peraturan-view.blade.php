@@ -1,27 +1,29 @@
 <x-backend.section-document-view
 	:title="$title"
 	:data="$peraturan"
-	:listNav="[['label' => 'Peraturan', 'route' => 'backend.peraturan.index'], ['label' => $title]]">
+	:listNav="[['label' => 'Peraturan', 'route' => route('backend.peraturan.index')], ['label' => $title]]">
 
 	<x-slot:tabPane>
-		<li @class(['active' => session('tabActive') == 'dataPeraturanTerkait'])>
+		<li class="tab-item" data-tab="dataPeraturanTerkait"
+			onclick="localStorage.setItem('tabActive', 'dataPeraturanTerkait');">
 			<a
 				href="#tab_5"
 				data-toggle="tab">Peraturan Terkait</a>
 		</li>
-		<li @class(['active' => session('tabActive') == 'dataHasilUjiMateri'])>
+		<li class="tab-item" data-tab="dataHasilUjiMateri" onclick="localStorage.setItem('tabActive', 'dataHasilUjiMateri');">
 			<a
 				href="#tab_7"
 				data-toggle="tab">Hasil Uji Materi</a>
 		</li>
-		<li @class(['active' => session('tabActive') == 'dataStatus'])>
+		<li class="tab-item" data-tab="dataStatus" onclick="localStorage.setItem('tabActive', 'dataStatus');">
 			<a
 				href="#tab_8"
 				data-toggle="tab">Status</a>
 		</li>
 	</x-slot:tabPane>
 
-	<div @class(['tab-pane', 'active' => !session('tabActive')]) id="tab_1">
+
+	<div class="tab-pane tab-item" data-tab="dataUtama" id="tab_1">
 		<div class="box-header">
 			<a
 				class="btn btn-success btn-flat"
@@ -185,10 +187,7 @@
 	</div>
 
 	{{-- Tab data peraturan terkait --}}
-	<div @class([
-		'tab-pane',
-		'active' => session('tabActive') == 'dataPeraturanTerkait',
-	]) id="tab_5">
+	<div class="tab-pane tab-item" data-tab="dataPeraturanTerkait" id="tab_5">
 		<div class="box-header">
 			<a class="btn btn-success btn-flat"
 				href="{{ route('backend.form-peraturan-terkait.create', $peraturan->id) }}">
@@ -243,10 +242,7 @@
 	</div>
 
 	{{-- Tab data hasil uji materi --}}
-	<div @class([
-		'tab-pane',
-		'active' => session('tabActive') == 'dataHasilUjiMateri',
-	]) id="tab_7">
+	<div class="tab-pane tab-item" data-tab="dataHasilUjiMateri" id="tab_7">
 		<div class="box-header">
 			<a class="btn btn-success btn-flat"
 				href="{{ route('backend.form-hasil-uji-materi.create', $peraturan->id) }}"><i
@@ -306,7 +302,7 @@
 	</div>
 
 	{{-- Tab data status --}}
-	<div @class(['tab-pane', 'active' => session('tabActive') == 'dataStatus']) id="tab_8">
+	<div class="tab-pane tab-item" data-tab="dataStatus" id="tab_8">
 		<div class="box-header">
 			<a class="btn btn-success btn-flat" href="{{ route('backend.form-status.create', $peraturan->id) }}">
 				<i class="fa fa-plus-circle"></i> Tambah Status
@@ -332,7 +328,7 @@
 									<td>{{ ucfirst($item->status_peraturan) }}</td>
 									<td>
 										<a
-											href="{{ route('backend.redirect-view', ['backend.peraturan.show', $item->id_dokumen_target, 'dataStatus']) }}">
+											href="{{ route('backend.peraturan.show', $item->id_dokumen_target) }}">
 											{{ $item->judul_peraturan }}
 										</a>
 									</td>

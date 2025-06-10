@@ -31,12 +31,11 @@ class MonografiController extends Controller
   }
 
 
-  public function index()
+  public function index(Request $request)
   {
     $title = 'Monografi Hukum';
-    $monografi = DB::table('document')
+    $data  = DB::table('document')
       ->where('tipe_dokumen', 2)
-      ->orderBy('document.created_at', 'desc')
       ->leftJoin('data_subyek', 'document.id', '=', 'data_subyek.id_dokumen')
       ->leftJoin('eksemplar', 'document.id', '=', 'eksemplar.id_dokumen')
       ->select(
@@ -47,8 +46,28 @@ class MonografiController extends Controller
         'document.sumber_perolehan',
         'data_subyek.subyek',
         'eksemplar.kode_eksemplar'
-      )
-      ->paginate(15);
+      );
+
+    if ($request->filled('jenis_peraturan'))
+      $data->where('jenis_peraturan', $request->jenis_peraturan);
+
+    if ($request->filled('judul'))
+      $data->where('judul', 'like', "%$request->judul%");
+
+    if ($request->filled('tahun_terbit'))
+      $data->where('tahun_terbit', 'like', "%$request->tahun_terbit%");
+
+    if ($request->filled('sumber_perolehan'))
+      $data->where('document.sumber_perolehan', 'like', '%' . $request->sumber_perolehan . '%');
+
+    if ($request->filled('subyek'))
+      $data->where('subyek', 'like', '%' . $request->subyek . '%');
+
+    if ($request->filled('kode_eksemplar'))
+      $data->where('kode_eksemplar', 'like', '%' . $request->kode_eksemplar . '%');
+
+    $data = $data->orderBy('document.created_at', 'desc')->paginate(15)->withQueryString();
+
 
     $titleAlert = 'Hapus data!';
     $textAlert  = "Yakin akan menghapus data ini?";
@@ -57,7 +76,7 @@ class MonografiController extends Controller
 
     return view('backend.monografi', compact(
       'title',
-      'monografi',
+      'data',
     ));
   }
 

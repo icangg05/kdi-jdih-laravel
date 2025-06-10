@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -11,22 +12,22 @@ use Illuminate\Support\Facades\Storage;
 
 class ProfilController extends Controller
 {
-  public function index()
-  {
-    $logUser = DB::table('log_pustakawan')
-      ->orderBy('created_at', 'desc')
-      ->paginate(10);
-    $logCount = DB::table('log_pustakawan')->count();
+  // public function index()
+  // {
+  //   $logUser = DB::table('log_pustakawan')
+  //     ->orderBy('created_at', 'desc')
+  //     ->paginate(10);
+  //   $logCount = DB::table('log_pustakawan')->count();
 
-    return view('backend.profil', compact(
-      'logUser',
-      'logCount',
-    ));
-  }
+  //   return view('backend.profil', compact(
+  //     'logUser',
+  //     'logCount',
+  //   ));
+  // }
 
 
 
-  public function changePassword(Request $request)
+  public function changePassword(Request $request, $idUser)
   {
     $request->validate([
       'old_password'          => ['required'],
@@ -40,7 +41,7 @@ class ProfilController extends Controller
       'password_confirmation.same'     => 'Konfirmasi password tidak cocok.',
     ]);
 
-    $user = Auth::user();
+    $user = User::findOrFail($idUser);
 
     // Cek apakah password lama cocok
     if (!Hash::check($request->old_password, $user->password_hash)) {
@@ -60,7 +61,7 @@ class ProfilController extends Controller
   }
 
 
-  public function changeImageProfil(Request $request)
+  public function changeImageProfil(Request $request, $idUser)
   {
     try {
       $request->validate([
@@ -77,7 +78,7 @@ class ProfilController extends Controller
         ->with('tabActive', 'tabUpdateImage');
     }
 
-    $user = Auth::user();
+    $user = User::findOrFail($idUser);
 
     $imageUpdate = uploadFile(config('app.img_directory'), $request->file('imgProfil'));
     Storage::delete(config('app.img_directory') . $user->picture);

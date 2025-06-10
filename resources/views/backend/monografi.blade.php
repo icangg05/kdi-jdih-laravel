@@ -1,10 +1,18 @@
 <x-layouts.backend :title="$title" :listNav="[['label' => $title]]">
-	<x-backend.table-data :title="$title" :data="$monografi" prefixRoute="monografi" :columns="[
+	@php
+		$selectJenisMonografi = DB::table('document')
+		    ->where('tipe_dokumen', 2)
+		    ->select('jenis_peraturan')
+		    ->distinct()
+		    ->pluck('jenis_peraturan');
+	@endphp
+
+	<x-backend.table-data :title="$title" :data="$data" prefixRoute="monografi" :columns="[
 	    [
 	        'title' => 'Jenis Monografi',
 	        'key' => 'jenis_peraturan',
 	        'type_search' => 'select',
-	        'data_type_search' => ['UNDANG-UNDANG DASAR', 'KETETAPAN MPR', 'UNDANG-UNDANG'],
+	        'data_type_search' => $selectJenisMonografi,
 	    ],
 	    ['title' => 'Judul Monografi', 'key' => 'judul', 'format' => 'href'],
 	    ['title' => 'Tahun', 'key' => 'tahun_terbit'],

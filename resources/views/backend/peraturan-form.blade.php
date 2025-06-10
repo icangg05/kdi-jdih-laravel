@@ -5,7 +5,7 @@
 
 <x-layouts.backend
 	:title="$title"
-	:listNav="[['label' => 'Peraturan', 'route' => 'backend.peraturan.index'], ['label' => $title]]">
+	:listNav="[['label' => 'Peraturan', 'route' => route('backend.peraturan.index')], ['label' => $title]]">
 
 	<div class="box-body no-padding">
 		<div class="section">

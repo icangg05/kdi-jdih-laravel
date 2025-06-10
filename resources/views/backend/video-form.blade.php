@@ -1,4 +1,4 @@
-<x-layouts.backend :title="$title" :listNav="[['label' => 'Informasi Hukum', 'route' => 'backend.video.index'], ['label' => $title]]">
+<x-layouts.backend :title="$title" :listNav="[['label' => 'Video', 'route' => route('backend.video.index')], ['label' => $title]]">
 	@php
 		$isCreate = request()->routeIs('backend.video.create') ? true : false;
 	@endphp

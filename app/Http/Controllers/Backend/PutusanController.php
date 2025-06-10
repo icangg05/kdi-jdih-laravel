@@ -32,7 +32,7 @@ class PutusanController extends Controller
 
 
 
-	public function index()
+	public function index(Request $request)
 	{
 		$title = 'Putusan';
 		$data  = DB::table('document')
@@ -45,8 +45,25 @@ class PutusanController extends Controller
 				'tahun_terbit',
 				'judul',
 				'amar_status',
-			)
-			->paginate(15);
+			);
+
+		if ($request->filled('jenis_peraturan'))
+			$data->where('jenis_peraturan', $request->jenis_peraturan);
+
+		if ($request->filled('judul'))
+			$data->where('judul', 'like', "%$request->judul%");
+
+		if ($request->filled('tahun_terbit'))
+			$data->where('tahun_terbit', 'like', "%$request->tahun_terbit%");
+
+		if ($request->filled('nomor_peraturan'))
+			$data->where('nomor_peraturan', 'like', '%' . $request->nomor_peraturan . '%');
+
+		if ($request->filled('amar_status'))
+			$data->where('amar_status', 'like', '%' . $request->amar_status . '%');
+
+		$data = $data->orderBy('document.created_at', 'desc')->paginate(15)->withQueryString();
+
 
 		$titleAlert = 'Hapus data!';
 		$textAlert  = "Yakin akan menghapus data ini?";

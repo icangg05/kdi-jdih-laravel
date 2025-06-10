@@ -1,7 +1,7 @@
-<x-layouts.backend title="Dashboard" :listNav="[['label' => 'Profil', 'route' => route('backend.profil')], ['label' => ucfirst(Auth()->user()->username)]]">
+<x-layouts.backend title="Dashboard" :listNav="[['label' => 'User', 'route' => route('backend.user.index')], ['label' => ucfirst($data->username)]]">
 	@php
-		$imgProfil = checkFilePath(config('app.img_directory'), auth()->user()->picture)
-		    ? asset('storage/' . config('app.img_directory') . auth()->user()->picture)
+		$imgProfil = checkFilePath(config('app.img_directory'), $data->picture)
+		    ? asset('storage/' . config('app.img_directory') . $data->picture)
 		    : asset('assets/img/default-user.jpg');
 	@endphp
 
@@ -13,8 +13,8 @@
 
 						<img class="profile-user-img img-responsive img-circle" src="{{ $imgProfil }}"
 							width="160" height="160" alt="myImage" style="object-fit: cover; aspect-ratio: 1/1;">
-						<h3 class="profile-username text-center">{{ auth()->user()->username }}</h3>
-						<p class="text-muted text-center">{{ auth()->user()->email }}</p>
+						<h3 class="profile-username text-center">{{ $data->username }}</h3>
+						<p class="text-muted text-center">{{ $data->email }}</p>
 						<ul class="list-group list-group-unbordered">
 							<li class="list-group-item">
 								<b>Hak Akses</b>
@@ -26,7 +26,7 @@
 							</li>
 							<li class="list-group-item">
 								<b>Tanggal dibuat</b> <a class="pull-right">
-									{{ Carbon\Carbon::parse(auth()->user()->created_at)->translatedFormat('d F Y') }}
+									{{ Carbon\Carbon::parse($data->created_at)->translatedFormat('d F Y') }}
 								</a>
 							</li>
 						</ul>
@@ -84,7 +84,7 @@
 							'tab-pane',
 							'active' => session('tabActive') == 'tabUpdatePassword',
 						]) id="tabUpdatePassword">
-							<form id="form-change" action="{{ route('backend.change-password') }}" method="post">
+							<form id="form-change" action="{{ route('backend.change-password', $data->id) }}" method="post">
 								@csrf
 
 								<div class="form-group required">
@@ -124,7 +124,7 @@
 							'tab-pane',
 							'active' => session('tabActive') == 'tabUpdateImage',
 						]) id="password">
-							<form id="form-change-picture" action="{{ route('backend.change-image-profil') }}" method="post"
+							<form id="form-change-picture" action="{{ route('backend.change-image-profil', $data->id) }}" method="post"
 								enctype="multipart/form-data">
 								@csrf
 

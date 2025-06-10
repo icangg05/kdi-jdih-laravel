@@ -16,12 +16,14 @@ class FormStatusController extends Controller
 	public function create($idDokumen)
 	{
 		$title = 'Tambah Status Peraturan';
+
 		$selectStatus = DB::table('status')->whereIn('id', [2, 4, 6, 7])->pluck('status')
 			->map(fn($status) => ['label' => ucfirst($status), 'value' => $status]);
+
 		$selectPeraturan = Document::where('tipe_dokumen', 1)
 			->where('id', '!=', (int) $idDokumen)
 			->pluck('judul', 'id')
-			->map(fn($status, $id) => ['label' => $status, 'value' => $id]);
+			->map(fn($judul, $id) => ['label' => $judul, 'value' => $id]);
 
 		return view('backend.form-status', compact(
 			'idDokumen',
@@ -85,7 +87,7 @@ class FormStatusController extends Controller
 
 		$map = $statusMap[$request->status_peraturan];
 
-		// Simpan status pada dokumen target
+		// Simpan data status pada dokumen target
 		DataStatus::create([
 			'id_dokumen'        => (int) $request->id_dokumen_target,
 			'status_peraturan'  => $map['status_dokumen_target'],
@@ -109,9 +111,13 @@ class FormStatusController extends Controller
 			'status_terakhir' => $map['status_dokumen_target'],
 		]);
 
-		return redirect()->route('backend.peraturan.show', $idDokumen)->with([
-			'success'   => 'Data status berhasil ditambahkan.',
-			'tabActive' => 'dataStatus',
+
+		$tipeDokumen = Document::find($idDokumen)->tipe_dokumen;
+		$prefixRoute = checkPrefixRoute($tipeDokumen);
+
+
+		return redirect()->route("backend.$prefixRoute.show", $idDokumen)->with([
+			'success' => 'Data status berhasil ditambahkan.',
 		]);
 	}
 
@@ -231,10 +237,12 @@ class FormStatusController extends Controller
 			'status_terakhir' => $map['status_dokumen_target'],
 		]);
 
+		$tipeDokumen = Document::find($idDokumen)->tipe_dokumen;
+		$prefixRoute = checkPrefixRoute($tipeDokumen);
 
-		return redirect()->route('backend.peraturan.show', $idDokumen)->with([
-			'success'   => 'Data status berhasil diupdate.',
-			'tabActive' => 'dataStatus',
+
+		return redirect()->route("backend.$prefixRoute.show", $idDokumen)->with([
+			'success' => 'Data status berhasil diupdate.',
 		]);
 	}
 
@@ -253,8 +261,10 @@ class FormStatusController extends Controller
 		// Hapus data status utama
 		$dataStatus->delete();
 
+		$tipeDokumen = Document::find($idDokumen)->tipe_dokumen;
+		$prefixRoute = checkPrefixRoute($tipeDokumen);
 
-		return redirect()->route('backend.peraturan.show', $idDokumen)->with([
+		return redirect()->route("backend.$prefixRoute.show", $idDokumen)->with([
 			'info'      => 'Data status berhasil dihapus',
 			'tabActive' => 'dataStatus',
 		]);

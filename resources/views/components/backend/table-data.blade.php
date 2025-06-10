@@ -13,8 +13,12 @@
 				</div>
 				<div class="kv-panel-before">
 					<div class="btn-toolbar kv-grid-toolbar toolbar-container pull-right">
-						<div class="btn-group"><a class="btn btn-success" href="{{ route("backend.$prefixRoute.create") }}"><i
-									class="fa fa-plus-circle"></i> Tambah Data</a></div>
+						<div class="btn-group">
+							<a onclick="localStorage.setItem('tabActive', 'dataUtama');" class="btn btn-success"
+								href="{{ route("backend.$prefixRoute.create") }}">
+								<i class="fa fa-plus-circle"></i> Tambah Data
+							</a>
+						</div>
 						<div class="btn-group">
 							<button id="w1" class="btn btn-default dropdown-toggle" title="Export" data-toggle="dropdown"><i
 									class='glyphicon glyphicon-export'></i> <span class="caret"></span></button>
@@ -153,28 +157,64 @@
 										@endphp
 										<td>
 											@if (!empty($col['format']) && $col['format'] === 'href')
-												<a href="{{ route("backend.$prefixRoute.show", $item['id']) }}">{!! $value !!}</a>
+												<a onclick="localStorage.setItem('tabActive', 'dataUtama');"
+													href="{{ route("backend.$prefixRoute.show", $item['id']) }}">{!! $value !!}</a>
 											@else
 												{!! $value !!}
 											@endif
 										</td>
 									@endforeach
 
-									<td class="text-center">
-										<a href="{{ route("backend.$prefixRoute.show", $item['id']) }}">
-											<span class="btn btn-sm btn-success">
-												<b class="fa fa-search-plus"></b></span>&nbsp;
-										</a>
-										<a href="{{ route("backend.$prefixRoute.edit", $item['id']) }}">
-											<span class="btn btn-sm btn-warning">
-												<b class="fa fa-pencil"></b></span>&nbsp;
-										</a>
-										<a href="{{ route("backend.$prefixRoute.destroy", $item['id']) }}" style="outline: none;"
-											data-confirm-delete="true" type="submit"
-											class="btn btn-sm btn-danger">
-											<b class="fa fa-trash"></b>
-											</button>
-									</td>
+
+									@if (request()->routeIs('backend.user.index'))
+										<td class="text-start">
+											<a href="{{ route("backend.$prefixRoute.show", $item['id']) }}">
+												<span class="btn btn-sm btn-primary">
+													<b class="fa fa-eye"></b></span>&nbsp;
+											</a>
+
+											@if (auth()->user()->id != $item['id'])
+												@if ($item['status'] == 10)
+													<a href="{{ route("backend.change-active-user", [$item['id'], $item['status']]) }}">
+														<span class="btn btn-sm btn-success">
+															<b class="fa fa-check-square"></b></span>&nbsp;
+													</a>
+												@else
+													<a href="{{ route("backend.change-active-user", [$item['id'], $item['status']]) }}">
+														<span class="btn btn-sm btn-warning">
+															<b class="fa fa-ban"></b></span>&nbsp;
+													</a>
+												@endif
+											@endif
+
+											@if (auth()->user()->id != $item['id'])
+												<a href="{{ route("backend.$prefixRoute.destroy", $item['id']) }}" style="outline: none;"
+													data-confirm-delete="true" type="submit"
+													class="btn btn-sm btn-danger">
+													<b class="fa fa-trash"></b>
+												</a>
+											@endif
+										</td>
+									@else
+										<td class="text-center">
+											<a onclick="localStorage.setItem('tabActive', 'dataUtama');"
+												href="{{ route("backend.$prefixRoute.show", $item['id']) }}">
+												<span class="btn btn-sm btn-success">
+													<b class="fa fa-search-plus"></b></span>&nbsp;
+											</a>
+											<a onclick="localStorage.setItem('tabActive', 'dataUtama');"
+												href="{{ route("backend.$prefixRoute.edit", $item['id']) }}">
+												<span class="btn btn-sm btn-warning">
+													<b class="fa fa-pencil"></b></span>&nbsp;
+											</a>
+											<a href="{{ route("backend.$prefixRoute.destroy", $item['id']) }}" style="outline: none;"
+												data-confirm-delete="true" type="submit"
+												class="btn btn-sm btn-danger">
+												<b class="fa fa-trash"></b>
+											</a>
+										</td>
+									@endif
+
 								</tr>
 							@empty
 								<tr>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Models\DataPengarang;
 use App\Models\DataSubjek;
+use App\Models\Document;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -51,9 +52,11 @@ class FormController extends Controller
     ]);
 
 
-    return redirect()->route("backend.peraturan.show", $idDokumen)->with([
-      'success'   => 'Data TEU berhasil ditambahkan.',
-      'tabActive' => 'dataTeu',
+    $tipeDokumen = Document::find($idDokumen)->tipe_dokumen;
+    $prefixRoute = checkPrefixRoute($tipeDokumen);
+
+    return redirect()->route("backend.$prefixRoute.show", $idDokumen)->with([
+      'success' => 'Data TEU berhasil ditambahkan.',
     ]);
   }
 
@@ -63,9 +66,11 @@ class FormController extends Controller
   {
     DataPengarang::findOrFail($idDataPengarang)->delete();
 
-    return redirect()->route("backend.peraturan.show", $idDokumen)->with([
-      'info'      => 'Data TEU berhasil dihapus.',
-      'tabActive' => 'dataTeu',
+    $tipeDokumen = Document::find($idDokumen)->tipe_dokumen;
+    $prefixRoute = checkPrefixRoute($tipeDokumen);
+
+    return redirect()->route("backend.$prefixRoute.show", $idDokumen)->with([
+      'info' => 'Data TEU berhasil dihapus.',
     ]);
   }
 
@@ -89,7 +94,7 @@ class FormController extends Controller
   }
 
 
-    // Function create subjek
+  // Function create subjek
   public function editSubjek($idDokumen, $idSubjek)
   {
     $title         = 'Edit Data Subjek';
@@ -130,15 +135,17 @@ class FormController extends Controller
       '_updated_by'  => Auth::user()->id,
     ]);
 
+    $tipeDokumen = Document::find($idDokumen)->tipe_dokumen;
+    $prefixRoute = checkPrefixRoute($tipeDokumen);
 
-    return redirect()->route("backend.peraturan.show", $idDokumen)->with([
-      'success'   => 'Data subjek berhasil ditambahkan.',
-      'tabActive' => 'dataSubjek',
+
+    return redirect()->route("backend.$prefixRoute.show", $idDokumen)->with([
+      'success' => 'Data subjek berhasil ditambahkan.',
     ]);
   }
 
 
-    // Functin store data TEU
+  // Functin store data TEU
   public function updateSubjek(Request $request, $idDokumen, $idSubjek)
   {
     $request->validate([
@@ -148,7 +155,7 @@ class FormController extends Controller
     ]);
 
     $subjek = DataSubjek::findOrFail($idSubjek);
-    
+
     $subjek->update([
       'subyek'       => trim($request->subyek),
       'tipe_subyek'  => $request->tipe_subyek,
@@ -158,9 +165,12 @@ class FormController extends Controller
     ]);
 
 
-    return redirect()->route("backend.peraturan.show", $idDokumen)->with([
-      'success'   => 'Data subjek berhasil diupdate.',
-      'tabActive' => 'dataSubjek',
+    $tipeDokumen = Document::find($idDokumen)->tipe_dokumen;
+    $prefixRoute = checkPrefixRoute($tipeDokumen);
+
+
+    return redirect()->route("backend.$prefixRoute.show", $idDokumen)->with([
+      'success' => 'Data subjek berhasil diupdate.',
     ]);
   }
 
@@ -170,9 +180,47 @@ class FormController extends Controller
   {
     DataSubjek::findOrFail($idSubjek)->delete();
 
-    return redirect()->route("backend.peraturan.show", $idDokumen)->with([
-      'info'      => 'Data subjek berhasil dihapus.',
-      'tabActive' => 'dataSubjek',
+    $tipeDokumen = Document::find($idDokumen)->tipe_dokumen;
+    $prefixRoute = checkPrefixRoute($tipeDokumen);
+
+    return redirect()->route("backend.$prefixRoute.show", $idDokumen)->with([
+      'info' => 'Data subjek berhasil dihapus.',
     ]);
+  }
+
+
+  public function createTEUPengarang(Request $request, $idDokumen)
+  {
+    $title          = 'Tambah Nama Pengarang Baru';
+    $pengarang      = DB::table('pengarang')->get()->map(fn($item) => ['label' => $item->name, 'value' => $item->id]);
+    $tipePengarang  = DB::table('tipe_pengarang')->get()->map(fn($item) => ['label' => $item->name, 'value' => $item->id]);
+    $jenisPengarang = DB::table('jenis_pengarang')->get()->map(fn($item) => ['label' => $item->name, 'value' => $item->id]);
+
+    return view('backend.form-teu', compact(
+      'idDokumen',
+      'title',
+      'pengarang',
+      'tipePengarang',
+      'jenisPengarang',
+    ));
+  }
+
+
+  public function storeTEUPengarang(Request $request, $idDokumen)
+  {
+    $request->validate([
+      'nama_pengarang' => 'required',
+    ]);
+
+    DB::table('pengarang')->insert([
+      'name'       => $request->nama_pengarang,
+      'status'     => 'Publish',
+      'created_at' => now(),
+      'updated_at' => now(),
+      'created_by' => Auth::user()->id,
+      'updated_by' => Auth::user()->id,
+    ]);
+
+    return redirect()->back()->with('success', 'Data pengarang baru berhasil ditambahkan');
   }
 }

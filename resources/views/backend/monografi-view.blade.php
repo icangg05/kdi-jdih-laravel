@@ -1,7 +1,7 @@
 <x-backend.section-document-view
 	:title="$title"
 	:data="$data"
-	:listNav="[['label' => 'Monografi', 'route' => 'backend.monografi.index'], ['label' => $title]]">
+	:listNav="[['label' => 'Monografi', 'route' => route('backend.monografi.index')], ['label' => $title]]">
 
 	<x-slot:tabPane>
 		<li @class(['active' => session('tabActive') == 'dataEksemplar'])>

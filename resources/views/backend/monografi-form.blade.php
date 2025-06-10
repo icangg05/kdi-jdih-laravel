@@ -5,7 +5,7 @@
 
 <x-layouts.backend
 	:title="$title"
-	:listNav="[['label' => 'Monografi', 'route' => 'backend.' . $prefixRoute . '.index'], ['label' => $title]]">
+	:listNav="[['label' => 'Monografi', 'route' => route('backend.' . $prefixRoute . '.index')], ['label' => $title]]">
 
 	<div class="box-body no-padding">
 		<div class="section">

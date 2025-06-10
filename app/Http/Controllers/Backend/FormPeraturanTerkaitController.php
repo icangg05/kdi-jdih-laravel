@@ -76,9 +76,12 @@ class FormPeraturanTerkaitController extends Controller
     ]);
 
 
-    return redirect()->route('backend.peraturan.show', $idDokumen)->with([
-      'success'   => 'Data peraturan terkait berhasil ditambahkan.',
-      'tabActive' => 'dataPeraturanTerkait',
+    $tipeDokumen = Document::find($idDokumen)->tipe_dokumen;
+    $prefixRoute = checkPrefixRoute($tipeDokumen);
+
+
+    return redirect()->route("backend.$prefixRoute.show", $idDokumen)->with([
+      'success' => 'Data peraturan terkait berhasil ditambahkan.',
     ]);
   }
 
@@ -101,9 +104,12 @@ class FormPeraturanTerkaitController extends Controller
     ]);
 
 
-    return redirect()->route('backend.peraturan.show', $idDokumen)->with([
-      'success'   => 'Data peraturan terkait berhasil diupdate.',
-      'tabActive' => 'dataPeraturanTerkait',
+    $tipeDokumen = Document::find($idDokumen)->tipe_dokumen;
+    $prefixRoute = checkPrefixRoute($tipeDokumen);
+
+
+    return redirect()->route("backend.$prefixRoute.show", $idDokumen)->with([
+      'success' => 'Data peraturan terkait berhasil diupdate.',
     ]);
   }
 
@@ -113,9 +119,11 @@ class FormPeraturanTerkaitController extends Controller
   {
     PeraturanTerkait::findOrFail($idPeraturanTerkait)->delete();
 
-    return redirect()->route("backend.peraturan.show", $idDokumen)->with([
-      'info'      => 'Data peraturan terkait berhasil dihapus.',
-      'tabActive' => 'dataPeraturanTerkait',
+    $tipeDokumen = Document::find($idDokumen)->tipe_dokumen;
+    $prefixRoute = checkPrefixRoute($tipeDokumen);
+
+    return redirect()->route("backend.$prefixRoute.show", $idDokumen)->with([
+      'info' => 'Data peraturan terkait berhasil dihapus.',
     ]);
   }
 }

@@ -16,17 +16,22 @@ use App\Http\Controllers\Backend\MonografiController;
 use App\Http\Controllers\Backend\NarasiController;
 use App\Http\Controllers\Backend\ProfilController;
 use App\Http\Controllers\Backend\PutusanController;
-
+use App\Http\Controllers\Backend\UserController;
 
 // Dashboard route
 Route::middleware('auth')->prefix('dashboard')->name('backend.')->group(function () {
   // Route profil admin
   Route::get('/profil', [ProfilController::class, 'index'])
     ->name('profil');
-  Route::post('/change-password', [ProfilController::class, 'changePassword'])
+  Route::post('/change-password/{idUser}', [ProfilController::class, 'changePassword'])
     ->name('change-password');
-  Route::post('/change-image-profil', [ProfilController::class, 'changeImageProfil'])
+  Route::post('/change-image-profil/{idUser}', [ProfilController::class, 'changeImageProfil'])
     ->name('change-image-profil');
+
+  Route::get('/change-image-profil/{idUser}/{status}', [UserController::class, 'changeActiveUser'])
+    ->name('change-active-user');
+
+
 
   Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
   Route::resource('/peraturan', PeraturanController::class);
@@ -37,26 +42,32 @@ Route::middleware('auth')->prefix('dashboard')->name('backend.')->group(function
   Route::resource('/pengumuman', PengumumanController::class);
   Route::resource('/berita', BeritaController::class);
   Route::resource('/video', VideoController::class);
+  Route::resource('/user', UserController::class);
 
 
   // Route form data teu
-  Route::get('/peraturan/{idDokumen}/create-teu', [FormController::class, 'createTEU'])
+  Route::get('/form/{idDokumen}/create-teu', [FormController::class, 'createTEU'])
     ->name('form_teu.create');
-  Route::post('/peraturan/{idDokumen}/store-teu', [FormController::class, 'storeTEU'])
+  Route::get('/form/{idDokumen}/create-teu/pengarang', [FormController::class, 'createTEUPengarang'])
+    ->name('form_teu.create.pengarang');
+    
+  Route::post('/form/{idDokumen}/store-teu', [FormController::class, 'storeTEU'])
     ->name('form_teu.store');
-  Route::delete('/peraturan/{idDokumen}/{idDataPengarang}/destroy-teu', [FormController::class, 'destroyTEU'])
+  Route::delete('/form/{idDokumen}/{idDataPengarang}/destroy-teu', [FormController::class, 'destroyTEU'])
     ->name('form_teu.destroy');
+  Route::post('/form/{idDokumen}/create-teu/pengarang', [FormController::class, 'storeTEUPengarang'])
+    ->name('form_teu.store.pengarang');
 
 
   // Route form data subjek
-  Route::get('/peraturan/{idDokumen}/create-subjek', [FormController::class, 'createSubjek'])
+  Route::get('/form/{idDokumen}/create-subjek', [FormController::class, 'createSubjek'])
     ->name('form_subjek.create');
-  Route::get('/peraturan/{idDokumen}/edit-subjek/{idSubjek}', [FormController::class, 'editSubjek'])
+  Route::get('/form/{idDokumen}/edit-subjek/{idSubjek}', [FormController::class, 'editSubjek'])
     ->name('form_subjek.edit');
-  Route::patch('/peraturan/{idDokumen}/update-subjek/{idSubjek}', [FormController::class, 'updateSubjek'])
+  Route::patch('/form/{idDokumen}/update-subjek/{idSubjek}', [FormController::class, 'updateSubjek'])
     ->name('form_subjek.update');
-  Route::post('/peraturan/{idDokumen}/store-subjek', [FormController::class, 'storeSubjek'])->name('form_subjek.store');
-  Route::delete('/peraturan/{idDokumen}/{idDataPengarang}/destroy-subjek', [FormController::class, 'destroySubjek'])
+  Route::post('/form/{idDokumen}/store-subjek', [FormController::class, 'storeSubjek'])->name('form_subjek.store');
+  Route::delete('/form/{idDokumen}/{idDataPengarang}/destroy-subjek', [FormController::class, 'destroySubjek'])
     ->name('form_subjek.destroy');
 
 
@@ -68,31 +79,19 @@ Route::middleware('auth')->prefix('dashboard')->name('backend.')->group(function
 
 
   // Route form peraturan terkait
-  Route::prefix('peraturan-terkait/{idDokumen}')->group(function () {
+  Route::prefix('form/{idDokumen}')->group(function () {
     Route::resource('form-peraturan-terkait', FormPeraturanTerkaitController::class)->except('index');
   });
 
 
   // Route form hasil uji materi
-  Route::prefix('hasil-uji-materi/{idDokumen}')->group(function () {
+  Route::prefix('form/{idDokumen}')->group(function () {
     Route::resource('form-hasil-uji-materi', FormHasilUjiMateriController::class)->except('index');
   });
 
 
-  // Route form keterangan status peraturan
-  Route::prefix('status/{idDokumen}')->group(function () {
+  // Route form status peraturan
+  Route::prefix('form/{idDokumen}')->group(function () {
     Route::resource('form-status', FormStatusController::class)->except('index');
   });
-
-
-  // Route redirect with session
-  Route::get('/back/{idDokumen}/{tabActive}', function ($idDokumen, $tabActive) {
-    return redirect()->route('backend.peraturan.show', $idDokumen)->with('tabActive', $tabActive);
-  })->name('redirect-session');
-
-
-  // Route redirect with session
-  Route::get('/view/{route}/{idDokumen}/{tabActive}', function ($route, $idDokumen, $tabActive) {
-    return redirect()->route($route, $idDokumen)->with('tabActive', $tabActive);
-  })->name('redirect-view');
 });

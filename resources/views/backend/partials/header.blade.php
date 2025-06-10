@@ -43,7 +43,7 @@
 						<!-- Menu Footer-->
 						<li class="user-footer">
 							<div class="pull-left">
-								<a class="btn btn-default btn-flat" href="{{ route('backend.profil') }}">Profile</a>
+								<a class="btn btn-default btn-flat" href="{{ route('backend.user.show', auth()->user()->id) }}">Profile</a>
 							</div>
 							<div class="pull-right">
 								<a class="btn btn-default btn-flat" href="{{ route('logout') }}">Sign out</a>

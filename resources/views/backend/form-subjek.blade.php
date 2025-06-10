@@ -41,7 +41,7 @@
 
 					{{-- Jenis subjek --}}
 					<x-backend.input.select
-						label="Tipe Subjek"
+						label="Jenis Subjek"
 						key="jenis_subyek"
 						:value="$subjek->jenis_subyek ?? ''"
 						placeholder="--Pilih jenis subjek--"
@@ -52,7 +52,7 @@
 				<div class="box-footer">
 					<button type="submit" class="btn btn-success btn-flat">
 						<i class="fa fa-save"></i> Simpan</button>&nbsp;
-					<a class="btn btn-danger btn-flat" href="{{ route('backend.redirect-session', [$idDokumen, 'dataSubjek']) }}">
+					<a class="btn btn-danger btn-flat" href="{{ url()->previous() }}">
 						<i class="fa fa-remove"></i> Batal
 					</a>
 				</div>

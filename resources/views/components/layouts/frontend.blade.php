@@ -100,60 +100,7 @@
     AOS.init();
   </script>
 
-  <script>
-    // Data untuk PERDA, PERWALI, dan PERDES
-    var data = {
-      labels: [
-        2021, 2022, 2023, 2024, 2025,
-      ],
-      datasets: [{
-          label: 'PERATURAN & KEPUTUSAN',
-          backgroundColor: 'rgba(75, 192, 192, 0.2)',
-          borderColor: 'rgba(75, 192, 192, 1)',
-          borderWidth: 1,
-          data: [
-            58, 80, 59, 73, 4,
-          ]
-        },
-        {
-          label: 'MONOGRAFI',
-          backgroundColor: 'rgba(255, 99, 132, 0.2)',
-          borderColor: 'rgba(255, 99, 132, 1)',
-          borderWidth: 1,
-          data: [
-            0, 0, 0, 0, 0,
-          ]
-        },
-        {
-          label: 'KEPUTUSAN',
-          backgroundColor: 'rgba(153, 102, 255, 0.2)',
-          borderColor: 'rgba(153, 102, 255, 1)',
-          borderWidth: 1,
-          data: [
-            1, 3, 0, 0, 0,
-          ]
-        }
-      ]
-    };
-
-    function getRandomValue() {
-      return Math.floor(Math.random() * (80 - 10 + 1) + 10);
-    }
-
-    var ctx = document.getElementById('myChart').getContext('2d');
-    var myChart = new Chart(ctx, {
-      type: 'bar',
-      data: data,
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true
-          },
-
-        },
-      }
-    });
-  </script>
+  @stack('script')
 </body>
 
 </html>

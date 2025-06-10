@@ -5,7 +5,7 @@
 
 <x-layouts.backend
 	:title="$title"
-	:listNav="[['label' => ucfirst($prefixRoute), 'route' => 'backend.' . $prefixRoute . '.index'], ['label' => $title]]">
+	:listNav="[['label' => ucfirst($prefixRoute), 'route' => route('backend.' . $prefixRoute . '.index')], ['label' => $title]]">
 
 	<div class="box-body no-padding">
 		<div class="section">

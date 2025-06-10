@@ -41,3 +41,22 @@ if (!function_exists('textLog')) {
     return $message;
   }
 }
+
+
+if (!function_exists('checkPrefixRoute')) {
+
+  function checkPrefixRoute($tipeDokumen)
+  {
+    if ($tipeDokumen == 1) {
+      $prefixRoute = 'peraturan';
+    } elseif ($tipeDokumen == 2) {
+      $prefixRoute = 'monografi';
+    } elseif ($tipeDokumen == 3) {
+      $prefixRoute = 'artikel';
+    } else {
+      $prefixRoute = 'putusan';
+    }
+
+    return $prefixRoute;
+  }
+}

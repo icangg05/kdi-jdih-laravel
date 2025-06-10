@@ -1,4 +1,4 @@
-<x-layouts.backend :title="$title" :listNav="[['label' => 'berita', 'route' => 'backend.berita.index'], ['label' => $title]]">
+<x-layouts.backend :title="$title" :listNav="[['label' => 'Berita', 'route' => route('backend.berita.index')], ['label' => $title]]">
 	@php
 		$isCreate = request()->routeIs('backend.berita.create') ? true : false;
 	@endphp

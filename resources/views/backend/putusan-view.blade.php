@@ -4,14 +4,14 @@
 	:listNav="[['label' => 'Putusan', 'route' => route('backend.putusan.index')], ['label' => $title]]">
 
 	<x-slot:tabPane>
-		<li @class(['active' => session('tabActive') == 'dataPeraturanTerkait'])>
+		<li class="tab-item" data-tab="dataPeraturanTerkait" onclick="localStorage.setItem('tabActive', 'dataPeraturanTerkait');">
 			<a
 				href="#tab_5"
 				data-toggle="tab">Peraturan Terkait</a>
 		</li>
 	</x-slot:tabPane>
 
-	<div @class(['tab-pane', 'active' => !session('tabActive')]) id="tab_1">
+	<div class="tab-pane tab-item" data-tab="dataUtama" id="tab_1">
 		<div class="box-header">
 			<a
 				class="btn btn-success btn-flat"
@@ -170,10 +170,7 @@
 		</div>
 	</div>
 
-	<div @class([
-		'tab-pane',
-		'active' => session('tabActive') == 'dataPeraturanTerkait',
-	]) id="tab_5">
+	<div class="tab-pane tab-item" data-tab="dataPeraturanTerkait" id="tab_5">
 		<div class="box-header">
 			<a class="btn btn-success btn-flat"
 				href="{{ route('backend.form-peraturan-terkait.create', $data->id) }}">

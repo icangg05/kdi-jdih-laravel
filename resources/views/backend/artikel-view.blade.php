@@ -1,9 +1,9 @@
 <x-backend.section-document-view
 	:title="$title"
 	:data="$data"
-	:listNav="[['label' => $title, 'route' => 'backend.artikel.index'], ['label' => $title]]">
+	:listNav="[['label' => 'Artikel', 'route' => route('backend.artikel.index')], ['label' => $title]]">
 
-	<div @class(['tab-pane', 'active' => !session('tabActive')]) id="tab_1">
+	<div class="tab-pane tab-item" data-tab="dataUtama" id="tab_1">
 		<div class="box-header">
 			<a
 				class="btn btn-success btn-flat"
