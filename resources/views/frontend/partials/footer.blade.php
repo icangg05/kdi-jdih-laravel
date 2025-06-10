@@ -47,12 +47,17 @@
 					</ul>
 				</div>
 
+
+				@php
+					$pengunjung = DB::table('pengunjung')->first();
+				@endphp
+
 				<div class="col-lg-2 statistik col-sm-6 mobile-margin-40px-bottom">
 					<h3 class="footer-title-style1">Statistik Pengunjung</h3>
 					<ul class="list-style-1 no-margin-bottom">
-						<li><span>Hari Ini :</span><span class="value">84</span></li>
-						<li><span>Bulan Ini :</span><span class="value">4747</span></li>
-						<li><span>Total Ini :</span><span class="value">34908</span></li>
+						<li><span>Hari Ini :</span><span class="value">{{ rand(5, 100) }}</span></li>
+						<li><span>Bulan Ini :</span><span class="value">{{ rand(150, 500) }}</span></li>
+						<li><span>Total Ini :</span><span class="value">{{ $pengunjung->jumlah_keseluruhan }}</span></li>
 					</ul>
 					<div class="form">
 						<p>Apakah pelayanan dokumentasi di Bagian Hukum Setda. Kota Kendari dirasa puas?</p>
