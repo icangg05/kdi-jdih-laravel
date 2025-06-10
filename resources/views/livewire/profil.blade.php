@@ -1,9 +1,7 @@
 <div>
-	<x-frontend.breadcrumb 
-  :title="$title"
-  :listNav="[
-    ['label' => 'Tentang Kami']
-  ]" />
+	<x-frontend.breadcrumb
+		:title="$title"
+		:listNav="[['label' => 'Tentang Kami']]" />
 
 	<section>
 		<div class="container">
@@ -13,24 +11,8 @@
 				</h4>
 			@endif
 
-			@if ($title === 'Sekilas Sejarah')
-				{!! __($data->isi) !!}
-			@endif
-
-			@if ($title === 'Dasar Hukum')
-				<ul>
-					@foreach ($data as $item)
-						<li>
-							<a href="#">
-								<p>{{ __($item->isi) }}</p>
-							</a>
-						</li>
-					@endforeach
-				</ul>
-			@endif
-
-			@if ($title === 'Visi' || $title === 'Misi')
-				{!! __($data->visi_misi) !!}
+			@if ($title === 'Sekilas Sejarah' || $title === 'Dasar Hukum' || $title === 'Visi' || $title === 'Misi')
+				{!! __($data) !!}
 			@endif
 
 			@if ($title === 'Struktur Organisasi')
