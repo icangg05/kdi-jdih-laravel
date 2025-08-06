@@ -95,7 +95,7 @@ class PeraturanController extends Controller
       ->leftJoin('document', 'data_status.id_dokumen_target', '=', 'document.id')
       ->select('data_status.*', 'document.judul as judul_peraturan')
       ->get();
-      
+
 
     return view('backend.peraturan-view', compact(
       'tipeDokumen',

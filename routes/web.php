@@ -2,9 +2,6 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Backend\DashboardController;
-use App\Http\Controllers\Frontend\DokumenController;
-use App\Http\Controllers\Frontend\InformasiHukumController;
-use App\Http\Controllers\Frontend\PengumumanController;
 use App\Livewire\Beranda;
 use App\Livewire\Berita;
 use App\Livewire\BeritaShow;
@@ -16,7 +13,6 @@ use App\Livewire\Pengumuman;
 use App\Livewire\PengumumanShow;
 use App\Livewire\Profil;
 use Illuminate\Support\Facades\Route;
-
 
 
 // Auth route
