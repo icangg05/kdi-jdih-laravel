@@ -10,7 +10,7 @@
 								<!-- start logo -->
 								<a wire:navigate.hover class="navbar-brand" href="{{ route('frontend.beranda') }}">
 									<img id="logo"
-										src="{{ asset('assets/img/jdul.png') }}" alt="logo"></a> <!-- end logo -->
+										src="{{ asset('assets/img/logo-new-jdih.png') }}" alt="logo"></a> <!-- end logo -->
 								<div class="title-logo">
 									<p>JARINGAN DOKUMENTASI DAN INFORMASI HUKUM</p>
 									<h3>PEMERINTAH KOTA KENDARI</h3>

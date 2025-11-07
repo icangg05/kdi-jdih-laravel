@@ -6,7 +6,7 @@ services:
     container_name: kdi-jdih-laravel-app
     restart: unless-stopped
     ports:
-      - "8010:80"
+      - "8003:80"
     volumes:
       - ./:/var/www/html
     networks:
