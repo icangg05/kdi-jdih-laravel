@@ -39,9 +39,9 @@
 					<h3 class="footer-title-style1">Tautan</h3>
 					<ul class="list-style-1 no-margin-bottom">
 						<li><a target="_blank" href="https://www.kemenkumham.go.id/">Portal Kemenkumham R.I.</a></li>
-						<li><a target="_blank" href="https://www.bphn.go.id/">Portal BPHN</a></li>
+						<li><a target="_blank" href="https://bphn.go.id/">Portal BPHN</a></li>
 						<li><a target="_blank" href="https://jdihn.go.id/">Portal JDIHN</a></li>
-						<li><a target="_blank" href="https://portal.kendarikota.go.id/">Portal eGovernment Kota Kendari</a></li>
+						<li><a target="_blank" href="https://kendarikota.go.id/">Portal eGovernment Kota Kendari</a></li>
 					</ul>
 				</div>
 

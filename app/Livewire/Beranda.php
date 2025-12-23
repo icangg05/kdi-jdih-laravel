@@ -23,7 +23,7 @@ class Beranda extends Component
 			],
 			[
 				'nama'    => 'AMIR HASAN, STP, SH, M.Si',
-				'jabatan' => 'PJ Sekretaris Daerah Kota Kendari',
+				'jabatan' => 'Sekretaris Daerah Kota Kendari',
 				'gambar'  => "assets/img/3.jpg",
 			],
 		];
