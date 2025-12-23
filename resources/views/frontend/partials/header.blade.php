@@ -1,86 +1,82 @@
-<header>
-	<div class="navbar-default"
-		style="border-bottom: 1px solid #616161; background: rgba(7, 7, 7, 0.77); box-shadow: 0px 5px 6px 0px rgba(0, 0, 0, 0.25); backdrop-filter: blur(4px);">
-		<div class="container">
-			<div class="row align-items-center">
-				<div class="col-md-12">
-					<div class="menu_area">
-						<nav class="navbar navbar-expand-lg navbar-light no-padding justify-content-between">
-							<div class="navbar-header navbar-header-custom d-flex align-items-center">
-								<!-- start logo -->
-								<a wire:navigate.hover class="navbar-brand" href="{{ route('frontend.beranda') }}">
-									<img id="logo"
-										src="{{ asset('assets/img/logo-new-jdih.png') }}" alt="logo"></a> <!-- end logo -->
-								<div class="title-logo">
-									<p>JARINGAN DOKUMENTASI DAN INFORMASI HUKUM</p>
-									<h3>PEMERINTAH KOTA KENDARI</h3>
-								</div>
-							</div>
+<header class="w-full fixed bg-black/70 backdrop-blur-sm text-white top-0 z-50">
+	<div class="max-w-7xl mx-auto px-4">
+		<div class="flex items-center justify-between h-20">
 
-							<div class="navbar-toggler"></div>
-
-							{{-- Menu --}}
-							<ul id="nav" class="navbar-nav ml-left">
-								<li class="{{ Request::routeIs('frontend.beranda') ? 'current' : '' }}">
-									<a wire:navigate.hover href="{{ route('frontend.beranda') }}">Beranda</a>
-								</li>
-								<li class="{{ Request::routeIs('frontend.profil') ? 'current' : '' }} has-sub">
-									<span class="submenu-button"></span>
-									<a wire:navigate.hover href="javascript:void(0)" class="href_class">Profil</a>
-									<ul>
-										<li><a wire:navigate.hover href="{{ route('frontend.profil', 'sekilas-sejarah') }}">Sekilas Sejarah</a></li>
-										<li><a wire:navigate.hover href="{{ route('frontend.profil', 'dasar-hukum') }}">Dasar Hukum</a></li>
-										<li><a wire:navigate.hover href="{{ route('frontend.profil', 'visi') }}">Visi </a></li>
-										<li><a wire:navigate.hover href="{{ route('frontend.profil', 'misi') }}">Misi</a></li>
-										<li><a wire:navigate.hover href="{{ route('frontend.profil', 'sto') }}">Struktur Organisasi</a></li>
-									</ul>
-								</li>
-								<li
-									class="{{ Request::routeIs('frontend.dokumen.index') || Request::routeIs('frontend.dokumen.show') ? 'current' : '' }} has-sub">
-									<span class="submenu-button"></span>
-									<a wire:navigate.hover href=#>Jenis Dokumen</a>
-									<ul>
-										<li><a wire:navigate.hover href="{{ route('frontend.dokumen.index', 'peraturan') }}">Peraturan dan
-												Keputusan</a>
-										</li>
-										<li><a wire:navigate.hover href="{{ route('frontend.dokumen.index', 'monografi') }}">Monografi</a></li>
-										<li><a wire:navigate.hover href="{{ route('frontend.dokumen.index', 'artikel') }}">Artikel / Majalah
-												Hukum</a></li>
-										<li><a wire:navigate.hover href="{{ route('frontend.dokumen.index', 'putusan') }}">Putusan</a></li>
-									</ul>
-								</li>
-								<li
-									class="{{ Request::routeIs('frontend.pengumuman.index') || Request::routeIs('frontend.pengumuman.show') ? 'current' : '' }}">
-									<a wire:navigate.hover href="{{ route('frontend.pengumuman.index') }}">Pengumuman</a>
-								</li>
-								<li class="{{ Request::is('informasi-hukum*') ? 'current' : '' }} has-sub">
-									<span class="submenu-button"></span>
-									<a wire:navigate.hover href=#>Informasi Hukum</a>
-
-									@php
-										$jenisInformasiHukum = DB::table('jenis_informasi_hukum')->pluck('singkatan', 'id');
-									@endphp
-
-									<ul>
-										@foreach ($jenisInformasiHukum as $key => $item)
-											<li>
-												<a wire:navigate.hover href="{{ route('frontend.informasi-hukum.index', $key) }}">
-													{{ $item }}
-												</a>
-											</li>
-										@endforeach
-									</ul>
-								</li>
-								<li
-									class="{{ Request::routeIs('frontend.berita.index') || Request::routeIs('frontend.berita.show') ? 'current' : '' }}">
-									<a wire:navigate.hover href="{{ route('frontend.berita.index') }}">Berita</a>
-								</li>
-							</ul>
-							{{-- End menu --}}
-						</nav>
-					</div>
+			<!-- LOGO + TITLE -->
+			<div class="flex items-center gap-4">
+				<img src="{{ asset('assets/img/logo-new-jdih.png') }}" alt="JDIH" class="h-12">
+				<div class="hidden md:block leading-tight">
+					<p class="text-xs uppercase text-slate-300">
+						Jaringan Dokumentasi dan Informasi Hukum
+					</p>
+					<p class="text-sm font-semibold text-primary">
+						Pemerintah Kota Kendari
+					</p>
 				</div>
 			</div>
+
+			<!-- DESKTOP MENU -->
+			<nav class="hidden lg:flex items-center gap-8 text-[13px] font-light">
+				<a href="/" class="text-primary/90 transition-all uppercase">Beranda</a>
+
+				<!-- PROFIL -->
+				<div class="relative group">
+					<button class="flex items-center gap-1 text-white/70 hover:text-primary transition-all uppercase">
+						Profil
+						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+								d="M19 9l-7 7-7-7" />
+						</svg>
+					</button>
+					<div
+						class="absolute left-0 mt-3 w-48 bg-white text-slate-800 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition">
+						<a href="#" class="block px-4 py-2 hover:bg-slate-100">Tentang JDIH</a>
+						<a href="#" class="block px-4 py-2 hover:bg-slate-100">Struktur</a>
+					</div>
+				</div>
+
+				<!-- JENIS DOKUMEN -->
+				<div class="relative group">
+					<button class="flex items-center gap-1 text-white/70 hover:text-primary transition-all uppercase">
+						Jenis Dokumen
+						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+								d="M19 9l-7 7-7-7" />
+						</svg>
+					</button>
+					<div
+						class="absolute left-0 mt-3 w-56 bg-white text-slate-800 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition">
+						<a href="#" class="block px-4 py-2 hover:bg-slate-100">Perda</a>
+						<a href="#" class="block px-4 py-2 hover:bg-slate-100">Perwali</a>
+						<a href="#" class="block px-4 py-2 hover:bg-slate-100">Keputusan</a>
+					</div>
+				</div>
+
+				<a href="#" class="text-white/70 hover:text-primary transition-all uppercase">Pengumuman</a>
+				<a href="#" class="text-white/70 hover:text-primary transition-all uppercase">Informasi Hukum</a>
+				<a href="#" class="text-white/70 hover:text-primary transition-all uppercase">Berita</a>
+			</nav>
+
+			<!-- MOBILE BUTTON -->
+			<button id="mobileBtn" class="lg:hidden">
+				<svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+						d="M4 6h16M4 12h16M4 18h16" />
+				</svg>
+			</button>
+
+		</div>
+	</div>
+
+	<!-- MOBILE MENU -->
+	<div id="mobileMenu" class="hidden lg:hidden bg-slate-900 border-t border-slate-700">
+		<div class="px-6 py-4 space-y-3 text-sm">
+			<a href="/" class="block text-primary">Beranda</a>
+			<a href="#" class="block">Profil</a>
+			<a href="#" class="block">Jenis Dokumen</a>
+			<a href="#" class="block">Pengumuman</a>
+			<a href="#" class="block">Informasi Hukum</a>
+			<a href="#" class="block">Berita</a>
 		</div>
 	</div>
 </header>

@@ -1,51 +1,73 @@
-<section class="bg-img screen-height cover-background line-banner" data-overlay-dark="7"
-    data-background="{{ asset('assets/img/background.webp') }}">
-    <div class="container position-relative">
-      <div class="header-text display-table z-index-1 width-100">
-        <div class="display-table-cell">
-          <!-- start bannder headline text -->
-          <img src="{{ asset('assets/img/kdi.png') }}" data-aos="fade-up">
-          <p class="font-size18 xs-font-size16 text-white text-center" data-aos-delay="200" data-aos="fade-up">
-            SELAMAT DATANG DI SITUS RESMI
-          </p>
-          <hr class="border-heading">
-          <h1 class="cd-headline slide col-lg-8 mt-4 mb-3" data-aos="fade-up" data-aos-delay="400">
-            JARINGAN DOKUMENTASI DAN INFORMASI HUKUM KOTA KENDARI
-          </h1>
-          <marquee class="mb-3 col-lg-8" style="color: #fafafa !important; font-size: 20px; padding-left:160px;">"Inae
-            konasara ie'e pinesara inae liasara ie'e pinekasara"</marquee>
-          <marquee class="mb-3 col-lg-8" style=" color: #fafafa !important; font-size: 18px;">Siapa yang menghargai
-            adat ia akan dihormati. Siapa yang melanggar adat ia akan diberi sanksi.</marquee>
-          <!-- end banner headline text -->
+<section class="relative h-200 lg:h-190 flex items-center justify-center text-white">
 
-          <div class="box-search col-lg-8">
-            <div class="">
-              <form id="w0" class="shadow-sm rounded mb-8" action="{{ route('frontend.dokumen.index', 'peraturan') }}" method="get" data-pjax="1">
-                <div class="row align-items-center justify-content-center">
-                  <div class="col-lg-9 px-2 mt-2">
-                    <input type="text" class="form-control" id="dokumensearch-judul" name="q"
-                      placeholder="Masukkan Kata Kunci Pencarian..">
-                  </div>
-                  <button type="submit" class="butn btn-primary col-lg-3 px-2 mt-2">Search <i
-                      class="fa-solid fa-magnifying-glass"></i></button>
-                </div>
-              </form>
-            </div>
+	<!-- BACKGROUND IMAGE -->
+	<div class="absolute inset-0">
+		<img
+			src="{{ asset('assets/img/background.webp') }}"
+			alt="Kota Kendari"
+			class="w-full h-full object-cover">
+		<div class="absolute inset-0 bg-black/65"></div>
+	</div>
 
-            <div class="margin-20px-top xs-margin-20px-top d-flex flex-column justify-content-center align-items-center">
-              <span class="margin-10px-right text-white xs-display-block xs-margin-20px-bottom">Pencarian
-                Populer</span>
-              <div class="searchs display-inline-block mt-3">
-                <ul class="no-margin-bottom">
-                  <li><a wire:navigate class="text-white" href="/dokumen/peraturan">Peraturan</a></li>
-                  <li><a wire:navigate class="text-white" href="/dokumen/monografi">Monografi</a></li>
-                  <li><a wire:navigate class="text-white" href="/dokumen/artikel">Artikel</a></li>
-                  <li><a wire:navigate class="text-white" href="/dokumen/putusan">Putusan</a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+	<!-- CONTENT -->
+	<div class="relative z-10 max-w-5xl mx-auto px-6 mt-10 text-center">
+
+		<!-- SUBTITLE -->
+		<p class="text-base tracking-widest uppercase text-slate-300 mb-3">
+			Selamat Datang di Situs Resmi
+		</p>
+
+		<div class="w-14 h-1 bg-[#ff891e] mx-auto mb-6"></div>
+
+		<!-- TITLE -->
+		<h1 class="text-3xl md:text-4xl font-bold leading-tight mb-6">
+			Jaringan Dokumentasi dan Informasi Hukum <br>
+			<span class="text-[#ff891e]">Kota Kendari</span>
+		</h1>
+
+		<!-- QUOTE -->
+		<p class="italic text-slate-200 max-w-3xl mx-auto mb-10">
+			“Inae konasara ie’e pinesara inae lia” <br>
+			<span class="not-italic text-sm text-slate-300">
+				Siapa yang menghargai adat ia akan dihormati
+			</span>
+		</p>
+
+		<!-- SEARCH BOX -->
+		<div class="bg-black/50 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-2xl max-w-4xl mx-auto">
+
+			<form class="flex flex-col md:flex-row gap-4">
+				<input
+					type="text"
+					placeholder="Masukkan Kata Kunci Pencarian..."
+					class="bg-white text-sm flex-1 rounded px-5 py-3 text-slate-800 focus:ring-2 focus:ring-[#ff891e] outline-none">
+
+				<button
+					type="submit"
+					class="bg-[#ff891e] hover:bg-orange-600 text-white text-sm font-semibold px-8 py-3 rounded flex items-center justify-center gap-2 transition">
+					SEARCH
+					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+							d="M21 21l-4.35-4.35M16 10a6 6 0 11-12 0 6 6 0 0112 0z" />
+					</svg>
+				</button>
+			</form>
+
+			<!-- POPULAR SEARCH -->
+			<div class="mt-6">
+				<p class="text-sm text-slate-300 mb-3">Pencarian Populer</p>
+				<div class="flex flex-wrap justify-center gap-3">
+					<span
+						class="px-4 py-2 bg-white/15 rounded text-sm hover:bg-white/10 transition cursor-pointer">Peraturan</span>
+					<span
+						class="px-4 py-2 bg-white/15 rounded text-sm hover:bg-white/10 transition cursor-pointer">Monografi</span>
+					<span
+						class="px-4 py-2 bg-white/15 rounded text-sm hover:bg-white/10 transition cursor-pointer">Artikel</span>
+					<span
+						class="px-4 py-2 bg-white/15 rounded text-sm hover:bg-white/10 transition cursor-pointer">Putusan</span>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</section>

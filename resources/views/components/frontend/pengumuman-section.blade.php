@@ -1,42 +1,80 @@
-<section class="news">
-	<div class="container">
-		<div class="text-center margin-60px-bottom">
-			<h3 class="margin-10px-bottom">Pengumuman Terbaru</h3>
-			<p>Menyajikan pengumuman baru up-to-date dari <b>Jaringan Dokumentasi Dan Informasi Hukum Pemerintah Kota
-					Kendari</b></p>
+<section class="bg-slate-50 py-20">
+	<div class="max-w-6xl mx-auto px-6">
+
+		<!-- Header -->
+		<div class="mb-12">
+			<h2 class="text-3xl font-bold text-slate-900">
+				Pengumuman Terbaru
+			</h2>
+			<p class="mt-2 text-slate-600 max-w-3xl">
+				Menyajikan pengumuman terbaru dari Jaringan Dokumentasi dan Informasi
+				Hukum Pemerintah Kota Kendari
+			</p>
 		</div>
-		<div class="row pengumuman mx-1">
-			@foreach ($pengumuman as $item)
-				<div class="col-lg-12 sm-margin-30px-bottom">
-					<div class="card row h-100">
-						@php
-							$image = checkFilePath(config('app.img_directory'), $item->image)
-							    ? asset('storage/' . config('app.img_directory') . $item->image)
-							    : asset('assets/img/default-img.jpg');
-						@endphp
-						<img class="card-img-top col-lg-3" src="{{ $image }}" alt="img">
-						<div class="card-body padding-30px-all col-lg-9">
-							<label for="category">Pemberitahuan Putusan</label>
-							<h5 class="card-title font-size22 font-weight-500 magin-20px-bottom">
-								<a wire:navigate href="{{ route('frontend.pengumuman.show', $item->id) }}" style="color: #595959">
-									{{ __(Str::limit($item->judul, 29)) }}</a>
-							</h5>
-							<div class="detail">
-								<p>
-									<i class="fa-regular fa-calendar-days"></i>
-									{{ Carbon\Carbon::parse($item->tanggal)->translatedFormat('d F Y') }}
+
+		<!-- List -->
+		<div class="space-y-6">
+
+			@for ($i = 0; $i < 3; $i++)
+				<article
+					class="group bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-md transition">
+
+					<div class="flex flex-col sm:flex-row">
+
+						<!-- Image -->
+						<div class="sm:w-60 shrink-0">
+							<img
+								src="https://jdih.kendarikota.go.id/assets/img/default-img.jpg"
+								alt="Pengumuman JDIH"
+								class="h-44 sm:h-full w-full object-cover" />
+						</div>
+
+						<!-- Content -->
+						<div class="p-6 flex flex-col justify-between">
+
+							<!-- Badge -->
+							<span
+								class="mb-3 inline-block w-fit rounded-full bg-orange-100 text-primary text-xs font-semibold px-3 py-1">
+								Pemberitahuan Putusan
+							</span>
+
+							<div>
+								<h3
+									class="text-lg font-semibold text-slate-900 group-hover:text-primary transition">
+									RELAS PEMBERITAHUAN PUTUSAN N...
+								</h3>
+
+								<p class="mt-2 text-sm text-slate-600 line-clamp-2">
+									telah memberitahukan kepada LA MANSYUR ALIAS LA MANSYUR BIN LA
+									sesuai ketentuan peraturan perundang-undangan yang berlaku...
 								</p>
 							</div>
-							<p class="no-margin-bottom">{{ __(Str::limit(strip_tags($item->isi), 63)) }}</p>
+
+							<div class="mt-4 flex items-center justify-between">
+								<span class="text-sm text-slate-500">
+									11 November 2025
+								</span>
+
+								<a href="#"
+									class="text-sm font-semibold text-primary hover:text-orange-700">
+									Baca Selengkapnya →
+								</a>
+							</div>
+
 						</div>
 					</div>
-				</div>
-			@endforeach
+				</article>
+			@endfor
+
 		</div>
-		<div class="float-right mt-4 link">
-			<a class="btn btn-primary" href="{{ route('frontend.pengumuman.index') }}" wire:navigate>
-        <i class="fa-solid fa-bullhorn"></i> &nbsp; Pengumuman
-				Lainnya</a>
+
+		<!-- CTA -->
+		<div class="mt-14 text-center">
+			<a href="#"
+				class="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-lg font-semibold transition">
+				Pengumuman Lainnya
+			</a>
 		</div>
+
 	</div>
 </section>

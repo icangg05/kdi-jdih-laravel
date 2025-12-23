@@ -1,172 +1,140 @@
-<section class="document_hukum">
-	<div class="container">
-		<div class="text-center margin-40px-bottom heading">
-			<h3 class="margin-10px-bottom">STATISTIK</h3>
-			<p>Menyediakan informasi hukum terpercaya untuk membantu Anda mendapatkan wawasan yang Anda butuhkan.</p>
-			<div class="row justify-content-center align-items-center">
-				<hr class="border-heading">
-			</div>
-			<!-- <p class="no-margin-bottom">Lorem Ipsum is simply dummy printing</p> -->
+<!-- Container -->
+<section class="bg-[#292C36] py-14">
+	<div class="max-w-7xl mx-auto px-6">
+
+		<!-- Header -->
+		<div class="text-center mb-12">
+			<h1 class="text-white text-3xl font-bold tracking-wide">STATISTIK</h1>
+			<p class="text-gray-300 mt-2">
+				Menyediakan informasi hukum terpercaya untuk membantu Anda mendapatkan wawasan yang dibutuhkan.
+			</p>
+			<div class="w-12 h-1 bg-orange-500 mx-auto mt-4 rounded"></div>
 		</div>
-		<div class="row content">
-			<div class="card-model col-sm-6 col-md-4 col-lg-3">
-				<a wire:navigate href="{{ route('frontend.dokumen.index', 'peraturan') }}">
-					<div class="feature-inner display-table">
-						<div class="vertical-align-middle">
-							<div class="icon">
-								<img src="{{ asset('assets/img/peraturan.svg') }}" alt="img">
-							</div>
-							<div class="content">
-								<h6>{{ $countPeraturan }}+</h6>
-								<h5 class="font-size20">Peraturan</h5>
-							</div>
-						</div>
-					</div>
-				</a>
-			</div>
-			<div class="card-model col-sm-6 col-md-4 col-lg-3">
-				<a wire:navigate href="{{ route('frontend.dokumen.index', 'monografi') }}">
-					<div class="feature-inner display-table">
-						<div class="vertical-align-middle">
-							<div class="icon">
-								<img src="{{ asset('assets/img/monogrofi.svg') }}" alt="img">
-							</div>
-							<div class="content">
-								<h6>{{ $countMonografi }}</h6>
-								<h5 class="font-size20">Monografi</h5>
-							</div>
-						</div>
-					</div>
-				</a>
-			</div>
-			<div class="card-model col-sm-6 col-md-4 col-lg-3">
-				<a wire:navigate href="{{ route('frontend.dokumen.index', 'artikel') }}">
-					<div class="feature-inner display-table">
-						<div class="vertical-align-middle">
-							<div class="icon">
-								<img src="{{ asset('assets/img/artikel.svg') }}" alt="img">
-							</div>
-							<div class="content">
-								<h6>{{ $countArtikel }}</h6>
-								<h5 class="font-size20">Artikel</h5>
-							</div>
-						</div>
-					</div>
-				</a>
-			</div>
-			<div class="card-model col-sm-6 col-md-4 col-lg-3">
-				<a wire:navigate href="{{ route('frontend.dokumen.index', 'putusan') }}">
-					<div class="feature-inner display-table">
-						<div class="vertical-align-middle">
-							<div class="icon">
-								<img src="{{ asset('assets/img/yurisprudensi.svg') }}" alt="img">
-							</div>
-							<div class="content">
-								<h6>{{ $countPutusan }}</h6>
-								<h5 class="font-size20">Putusan</h5>
-							</div>
-						</div>
-					</div>
-				</a>
-			</div>
-		</div>
-		<div class="cart">
-			<div class="text-center margin-40px-bottom heading">
-				<h3 class="margin-10px-bottom">Grafik Peraturan</h3>
-				<p>Grafik menampilkan jumlah berkas 5 tahun terkahir dari masing-masing jenis dokumen</p>
-				<div class="row justify-content-center align-items-center">
-					<hr class="border-heading">
+
+		<div class="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-white">
+
+			<!-- PERATURAN -->
+			<div class="flex items-center gap-4">
+				<img class="w-14" src="{{ asset('assets/img/peraturan.svg') }}" alt="img">
+				<div>
+					<p class="text-3xl font-bold">694+</p>
+					<p class="text-blue-400 text-sm font-semibold tracking-wide">
+						PERATURAN
+					</p>
 				</div>
 			</div>
-			<canvas id="myChart"></canvas>
+
+			<!-- MONOGRAFI -->
+			<div class="flex items-center gap-4">
+				<img class="w-14" src="{{ asset('assets/img/monogrofi.svg') }}" alt="img">
+				<div>
+					<p class="text-3xl font-bold">3</p>
+					<p class="text-blue-400 text-sm font-semibold tracking-wide">
+						MONOGRAFI
+					</p>
+				</div>
+			</div>
+
+			<!-- ARTIKEL -->
+			<div class="flex items-center gap-4">
+				<img class="w-14" src="{{ asset('assets/img/artikel.svg') }}" alt="img">
+				<div>
+					<p class="text-3xl font-bold">10</p>
+					<p class="text-blue-400 text-sm font-semibold tracking-wide">
+						ARTIKEL
+					</p>
+				</div>
+			</div>
+
+			<!-- PUTUSAN -->
+			<div class="flex items-center gap-4">
+				<img class="w-14" src="{{ asset('assets/img/yurisprudensi.svg') }}" alt="img">
+				<div>
+					<p class="text-3xl font-bold">5</p>
+					<p class="text-blue-400 text-sm font-semibold tracking-wide">
+						PUTUSAN
+					</p>
+				</div>
+			</div>
+
+		</div>
+
+		<!-- Grafik Card -->
+		<div class="mt-10 bg-white rounded-2xl p-8 shadow-lg max-w-5xl mx-auto">
+			<h2 class="text-xl font-bold text-gray-800 text-center">
+				GRAFIK PERATURAN
+			</h2>
+			<p class="text-sm text-gray-500 text-center mt-1">
+				Jumlah berkas 5 tahun terakhir berdasarkan jenis dokumen
+			</p>
+			<div class="w-10 h-1 bg-orange-500 mx-auto my-4 rounded"></div>
+
+			<!-- Chart -->
+			<div class="relative h-[380px]">
+				<canvas id="statistikChart"></canvas>
+			</div>
 		</div>
 	</div>
 </section>
-<img src="{{ asset('assets/img/batas.svg') }}" class="mb-5" style="width: 100%;">
 
+<!-- Chart Script -->
+<script>
+	const ctx = document.getElementById('statistikChart').getContext('2d');
 
-@php
-	$peraturan = DB::table('document')
-	    ->where('tipe_dokumen', 1)
-	    ->select(DB::raw('YEAR(created_at) as year'), DB::raw('COUNT(*) as total'))
-	    ->whereBetween(DB::raw('YEAR(created_at)'), [2021, 2025])
-	    ->groupBy('year')
-	    ->pluck('total', 'year');
-
-	$monografi = DB::table('document')
-	    ->where('tipe_dokumen', 2)
-
-	    ->select(DB::raw('YEAR(created_at) as year'), DB::raw('COUNT(*) as total'))
-	    ->whereBetween(DB::raw('YEAR(created_at)'), [2021, 2025])
-	    ->groupBy('year')
-	    ->pluck('total', 'year');
-
-	$keputusan = DB::table('document')
-	    ->where('tipe_dokumen', 4)
-
-	    ->select(DB::raw('YEAR(created_at) as year'), DB::raw('COUNT(*) as total'))
-	    ->whereBetween(DB::raw('YEAR(created_at)'), [2021, 2025])
-	    ->groupBy('year')
-	    ->pluck('total', 'year');
-
-	$years = range(2021, 2025);
-
-	$peraturanData = [];
-	$monografiData = [];
-	$keputusanData = [];
-
-	foreach ($years as $year) {
-	    $peraturanData[] = $peraturan[$year] ?? 0;
-	    $monografiData[] = $monografi[$year] ?? 0;
-	    $keputusanData[] = $keputusan[$year] ?? 0;
-	}
-@endphp
-
-@push('script')
-	<script>
-		// Data untuk PERDA, PERWALI, dan PERDES
-		var data = {
-			labels: @json($years),
+	new Chart(ctx, {
+		type: 'bar',
+		data: {
+			labels: ['2021', '2022', '2023', '2024', '2025'],
 			datasets: [{
-					label: 'PERATURAN & KEPUTUSAN',
-					backgroundColor: 'rgba(75, 192, 192, 0.2)',
-					borderColor: 'rgba(75, 192, 192, 1)',
-					borderWidth: 1,
-					data: @json($peraturanData)
+					label: 'Peraturan & Keputusan',
+					data: [30, 95, 40, 290, 235],
+					backgroundColor: 'rgba(56, 189, 248, 0.7)',
+					borderRadius: 6
 				},
 				{
-					label: 'MONOGRAFI',
-					backgroundColor: 'rgba(255, 99, 132, 0.2)',
-					borderColor: 'rgba(255, 99, 132, 1)',
-					borderWidth: 1,
-					data: @json($monografiData)
+					label: 'Monografi',
+					data: [0, 3, 0, 0, 2],
+					backgroundColor: 'rgba(251, 113, 133, 0.7)',
+					borderRadius: 6
 				},
 				{
-					label: 'KEPUTUSAN',
-					backgroundColor: 'rgba(153, 102, 255, 0.2)',
-					borderColor: 'rgba(153, 102, 255, 1)',
-					borderWidth: 1,
-					data: @json($keputusanData)
+					label: 'Putusan',
+					data: [0, 1, 0, 0, 1],
+					backgroundColor: 'rgba(167, 139, 250, 0.7)',
+					borderRadius: 6
 				}
 			]
-		};
-
-		function getRandomValue() {
-			return Math.floor(Math.random() * (80 - 10 + 1) + 10);
-		}
-
-		var ctx = document.getElementById('myChart').getContext('2d');
-		var myChart = new Chart(ctx, {
-			type: 'bar',
-			data: data,
-			options: {
-				scales: {
-					y: {
-						beginAtZero: true
+		},
+		options: {
+			responsive: true,
+			maintainAspectRatio: false,
+			plugins: {
+				legend: {
+					position: 'top',
+					labels: {
+						color: '#374151'
+					}
+				}
+			},
+			scales: {
+				y: {
+					beginAtZero: true,
+					ticks: {
+						color: '#374151'
 					},
-
+					grid: {
+						color: '#e5e7eb'
+					}
 				},
+				x: {
+					ticks: {
+						color: '#374151'
+					},
+					grid: {
+						display: false
+					}
+				}
 			}
-		});
-	</script>
-@endpush
+		}
+	});
+</script>

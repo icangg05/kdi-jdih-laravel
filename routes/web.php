@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/backend', [AuthController::class, 'login'])->middleware('guest')->name('login');
 Route::post('/backend', [AuthController::class, 'authenticate'])->middleware('guest')->name('authenticate');
 Route::get('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
+Route::post('/download', [DashboardController::class, 'downloadFile'])->name('download_file');
 
 
 // Frontend route
@@ -41,9 +42,8 @@ Route::name('frontend.')->group(function () {
 
 
 // Route helper
-Route::get('/tes', [DashboardController::class, 'downloadFile'])->name('tes');
-Route::post('/download', [DashboardController::class, 'downloadFile'])->name('download_file');
-Route::get('/exportdb', [DashboardController::class, 'exportDatabase'])->name('exrpot_db');
-Route::get('/generate-wilayah', [DashboardController::class, 'generateWilayah'])
-  ->middleware('auth')
-  ->name('generate_wilayah');
+// Route::get('/tes', [DashboardController::class, 'downloadFile'])->name('tes');
+// Route::get('/exportdb', [DashboardController::class, 'exportDatabase'])->name('exrpot_db');
+// Route::get('/generate-wilayah', [DashboardController::class, 'generateWilayah'])
+//   ->middleware('auth')
+//   ->name('generate_wilayah');
