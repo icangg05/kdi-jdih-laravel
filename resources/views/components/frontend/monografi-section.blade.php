@@ -19,7 +19,7 @@
 				MONOGRAFI HUKUM
 			</p>
 
-			<h1 class="text-2xl md:text-3xl font-bold leading-snug">
+			<h1 class="text-lg md:text-3xl font-bold leading-snug">
 				Buku Tanya Jawab Seputar Pembentukan Peraturan Daerah dan
 				<br class="hidden md:block" />
 				Peraturan Kepala Daerah
@@ -37,6 +37,11 @@
 					<span class="text-primary text-xl">➜</span>
 					<div>
 						<p class="font-semibold">T.E.U. Badan/Pengarang</p>
+						<p class="text-sm text-slate-300">
+							@foreach ($pengarang as $i => $item)
+								{{ $item->name }} {{ $pengarang->count() - 1 !== $i ? '|' : '' }}
+							@endforeach
+						</p>
 					</div>
 				</div>
 
@@ -44,6 +49,11 @@
 					<span class="text-primary text-xl">➜</span>
 					<div>
 						<p class="font-semibold">Subjek</p>
+						<ul class="text-sm text-slate-300">
+							@foreach ($subjek as $item)
+								<li>- {{ $item->subyek }}</li>
+							@endforeach
+						</ul>
 					</div>
 				</div>
 
@@ -51,7 +61,9 @@
 					<span class="text-primary text-xl">➜</span>
 					<div>
 						<p class="font-semibold">Tempat Terbit</p>
-						<p class="text-sm text-slate-300">KOTA KENDARI</p>
+						<p class="text-sm text-slate-300">
+							{{ $monografi->penerbit }}
+						</p>
 					</div>
 				</div>
 			</div>
@@ -62,7 +74,9 @@
 					<span class="text-primary text-xl">➜</span>
 					<div>
 						<p class="font-semibold">Penerbit</p>
-						<p class="text-sm text-slate-300">Alfian Alfian</p>
+						<p class="text-sm text-slate-300">
+							{{ $monografi->tempat_terbit }}
+						</p>
 					</div>
 				</div>
 
@@ -70,7 +84,9 @@
 					<span class="text-primary text-xl">➜</span>
 					<div>
 						<p class="font-semibold">Tahun Terbit</p>
-						<p class="text-sm text-slate-300">2025</p>
+						<p class="text-sm text-slate-300">
+							{{ $monografi->tahun_terbit }}
+						</p>
 					</div>
 				</div>
 			</div>
@@ -79,7 +95,7 @@
 
 		<!-- Button -->
 		<div class="mt-14 text-center">
-			<a href="#"
+			<a wire:navigate.hover href="{{ route('frontend.dokumen.show', ['monografi', $monografi->id]) }}"
 				class="inline-flex items-center gap-2 bg-white/50 text-slate-900 px-6 py-3 rounded-md font-semibold transition">
 				📄 Lihat Detail →
 			</a>

@@ -1,127 +1,90 @@
-<section class="bg-slate-50 py-16">
-  <div class="max-w-5xl mx-auto px-6">
+<section class="bg-slate-50 py-20">
+	<div class="max-w-6xl mx-auto px-6">
 
-    <!-- Header -->
-    <div class="text-center mb-12">
-      <h2 class="text-3xl md:text-4xl font-bold text-slate-800">
-        Berita Terbaru
-      </h2>
-      <p class="mt-3 text-slate-600 max-w-2xl mx-auto">
-        Kumpulan berita terkini dari Jaringan Dokumentasi dan Informasi Hukum
-        Pemerintah Kota Kendari
-      </p>
-    </div>
+		<!-- Header -->
+		<div class="text-center mb-14">
+			<h2 class="text-2xl md:text-4xl font-bold text-slate-800">
+				Berita Terbaru
+			</h2>
+			<p class="mt-3 max-w-2xl mx-auto text-sm lg:text-base text-slate-600 leading-relaxed">
+				Kumpulan berita terkini dari Jaringan Dokumentasi dan Informasi Hukum
+				Pemerintah Kota Kendari
+			</p>
+		</div>
 
-    <!-- Grid Berita -->
-    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+		<!-- Grid -->
+		<div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
 
-      <!-- Card -->
-      <article class="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition overflow-hidden">
-        <div class="overflow-hidden">
-          <img
-            src="https://jdih.kendarikota.go.id/storage/gambar/BS9ytHkxH23JUHs29VJ998HiWbvukFBNlFc3744d.jpg"
-            alt="Berita"
-            class="h-52 w-full object-cover group-hover:scale-105 transition duration-300"
-          />
-        </div>
+			@foreach ($berita as $v)
+				@php
+					$image = checkFilePath(config('app.img_directory'), $v->image)
+					    ? asset('storage/' . config('app.img_directory') . $v->image)
+					    : asset('assets/img/default-img.jpg');
+				@endphp
 
-        <div class="p-6">
-          <span class="text-sm text-primary font-medium">
-            22 Desember 2025
-          </span>
+				<article
+					class="group relative bg-white rounded-2xl overflow-hidden
+          border border-slate-200
+          transform-gpu will-change-transform
+          transition-all duration-300 ease-out
+          hover:-translate-y-1 hover:shadow-2xl">
 
-          <h3 class="mt-3 text-lg font-semibold text-slate-800 group-hover:text-primary transition line-clamp-2">
-            Pelantikan dan Rapat Kerja Pengurus JMSI Sulawesi Tenggara
-          </h3>
+					<!-- Image -->
+					<div class="relative h-56 overflow-hidden">
+						<img
+							src="{{ $image }}"
+							alt="Berita"
+							class="absolute inset-0 w-full h-full object-cover
+							group-hover:scale-105 transition-transform duration-500" />
 
-          <p class="mt-3 text-sm text-slate-600 line-clamp-3">
-            Pelantikan pengurus JMSI Sulawesi Tenggara dilakukan secara resmi
-            di Kota Kendari dengan dihadiri pejabat terkait.
-          </p>
+						<!-- Overlay -->
+						<div class="absolute inset-0 bg-linear-to-t from-black/50 via-black/10 to-transparent"></div>
 
-          <a
-            href="#"
-            class="inline-flex items-center mt-5 text-sm font-semibold text-primary hover:text-primary"
-          >
-            Baca Selengkapnya
-            <svg class="ml-2 h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-            </svg>
-          </a>
-        </div>
-      </article>
+						<!-- Date Badge -->
+						<span
+							class="absolute top-4 left-4 z-10
+							rounded-full bg-primary/90 text-white
+							text-xs font-semibold px-3 py-1 shadow">
+							{{ Carbon\Carbon::parse($v->created_at)->translatedFormat('d F Y') }}
+						</span>
+					</div>
 
-      <!-- Card -->
-      <article class="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition overflow-hidden">
-        <div class="overflow-hidden">
-          <img
-            src="https://jdih.kendarikota.go.id/storage/gambar/BS9ytHkxH23JUHs29VJ998HiWbvukFBNlFc3744d.jpg"
-            alt="Berita"
-            class="h-52 w-full object-cover group-hover:scale-105 transition duration-300"
-          />
-        </div>
+					<!-- Content -->
+					<div class="p-6">
+						<h3
+							class="text-base lg:text-lg font-semibold text-slate-800
+							leading-snug line-clamp-2
+							group-hover:text-primary transition">
+							{{ Str::limit($v->judul, 20) }}
+						</h3>
 
-        <div class="p-6">
-          <span class="text-sm text-primary font-medium">
-            19 Desember 2025
-          </span>
+						<p
+							class="mt-3 text-sm text-slate-600 leading-relaxed line-clamp-3">
+							{{ Str::limit(strip_tags($v->isi), 100) }}
+						</p>
 
-          <h3 class="mt-3 text-lg font-semibold text-slate-800 group-hover:text-primary transition line-clamp-2">
-            Pemerintah Kota Kendari Raih Penghargaan Nasional
-          </h3>
+						<a
+							wire:navigate.hover href="{{ route('frontend.berita.show', $v->id) }}"
+							class="inline-flex items-center gap-1 mt-5
+							text-sm font-semibold text-primary
+							group-hover:gap-2 transition-all">
+							Baca Selengkapnya
+							<span>→</span>
+						</a>
+					</div>
 
-          <p class="mt-3 text-sm text-slate-600 line-clamp-3">
-            Pemerintah Kota Kendari berhasil meraih penghargaan tingkat nasional
-            dalam bidang pelayanan publik.
-          </p>
+				</article>
+			@endforeach
 
-          <a href="#" class="inline-flex items-center mt-5 text-sm font-semibold text-primary">
-            Baca Selengkapnya →
-          </a>
-        </div>
-      </article>
+		</div>
 
-      <!-- Card -->
-      <article class="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition overflow-hidden">
-        <div class="overflow-hidden">
-          <img
-            src="https://jdih.kendarikota.go.id/storage/gambar/BS9ytHkxH23JUHs29VJ998HiWbvukFBNlFc3744d.jpg"
-            alt="Berita"
-            class="h-52 w-full object-cover group-hover:scale-105 transition duration-300"
-          />
-        </div>
+		<!-- CTA -->
+		<div class="mt-16 text-center">
+			<a wire.navigate.hover href="{{ route('frontend.berita.index') }}"
+				class="text-sm lg:text-base inline-flex items-center gap-2 bg-primary hover:bg-primary-hover text-white px-4 lg:px-6 py-2 lg:py-3 rounded font-semibold transition">
+				Berita Lainnya
+			</a>
+		</div>
 
-        <div class="p-6">
-          <span class="text-sm text-primary font-medium">
-            19 Desember 2025
-          </span>
-
-          <h3 class="mt-3 text-lg font-semibold text-slate-800 group-hover:text-primary transition line-clamp-2">
-            Undangan Rapat Koordinasi Bagian Hukum
-          </h3>
-
-          <p class="mt-3 text-sm text-slate-600 line-clamp-3">
-            Kepala Bagian Hukum menghadiri rapat koordinasi bersama
-            stakeholder terkait di Kecamatan Poasia.
-          </p>
-
-          <a href="#" class="inline-flex items-center mt-5 text-sm font-semibold text-primary">
-            Baca Selengkapnya →
-          </a>
-        </div>
-      </article>
-
-    </div>
-
-    <!-- Button -->
-    <div class="mt-14 text-center">
-      <a
-        href="#"
-        class="inline-flex items-center justify-center rounded-full bg-primary px-8 py-3 text-white font-semibold hover:bg-primary transition"
-      >
-        Berita Lainnya
-      </a>
-    </div>
-
-  </div>
+	</div>
 </section>

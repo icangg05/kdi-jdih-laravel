@@ -4,8 +4,8 @@
 
 		<!-- Header -->
 		<div class="text-center mb-12">
-			<h1 class="text-white text-3xl font-bold tracking-wide">STATISTIK</h1>
-			<p class="text-gray-300 mt-2">
+			<h1 class="text-white text-2xl lg:text-3xl font-bold tracking-wide">STATISTIK</h1>
+			<p class="text-sm lg:text-base text-gray-300 mt-2">
 				Menyediakan informasi hukum terpercaya untuk membantu Anda mendapatkan wawasan yang dibutuhkan.
 			</p>
 			<div class="w-12 h-1 bg-orange-500 mx-auto mt-4 rounded"></div>
@@ -15,10 +15,10 @@
 
 			<!-- PERATURAN -->
 			<div class="flex items-center gap-4">
-				<img class="w-14" src="{{ asset('assets/img/peraturan.svg') }}" alt="img">
+				<img class="w-10 lg:w-14" src="{{ asset('assets/img/peraturan.svg') }}" alt="img">
 				<div>
-					<p class="text-3xl font-bold">694+</p>
-					<p class="text-blue-400 text-sm font-semibold tracking-wide">
+					<p class="text-xl lg:text-3xl font-bold">{{ number_format($countPeraturan, 0, ',', '.') }}+</p>
+					<p class="text-blue-400 text-[11px] lg:text-sm font-semibold tracking-wide">
 						PERATURAN
 					</p>
 				</div>
@@ -26,10 +26,10 @@
 
 			<!-- MONOGRAFI -->
 			<div class="flex items-center gap-4">
-				<img class="w-14" src="{{ asset('assets/img/monogrofi.svg') }}" alt="img">
+				<img class="w-10 lg:w-14" src="{{ asset('assets/img/monogrofi.svg') }}" alt="img">
 				<div>
-					<p class="text-3xl font-bold">3</p>
-					<p class="text-blue-400 text-sm font-semibold tracking-wide">
+					<p class="text-xl lg:text-3xl font-bold">{{ number_format($countMonografi, 0, ',', '.') }}</p>
+					<p class="text-blue-400 text-[11px] lg:text-sm font-semibold tracking-wide">
 						MONOGRAFI
 					</p>
 				</div>
@@ -37,10 +37,10 @@
 
 			<!-- ARTIKEL -->
 			<div class="flex items-center gap-4">
-				<img class="w-14" src="{{ asset('assets/img/artikel.svg') }}" alt="img">
+				<img class="w-10 lg:w-14" src="{{ asset('assets/img/artikel.svg') }}" alt="img">
 				<div>
-					<p class="text-3xl font-bold">10</p>
-					<p class="text-blue-400 text-sm font-semibold tracking-wide">
+					<p class="text-xl lg:text-3xl font-bold">{{ number_format($countArtikel, 0, ',', '.') }}</p>
+					<p class="text-blue-400 text-[11px] lg:text-sm font-semibold tracking-wide">
 						ARTIKEL
 					</p>
 				</div>
@@ -48,10 +48,10 @@
 
 			<!-- PUTUSAN -->
 			<div class="flex items-center gap-4">
-				<img class="w-14" src="{{ asset('assets/img/yurisprudensi.svg') }}" alt="img">
+				<img class="w-10 lg:w-14" src="{{ asset('assets/img/yurisprudensi.svg') }}" alt="img">
 				<div>
-					<p class="text-3xl font-bold">5</p>
-					<p class="text-blue-400 text-sm font-semibold tracking-wide">
+					<p class="text-xl lg:text-3xl font-bold">{{ number_format($countPutusan, 0, ',', '.') }}</p>
+					<p class="text-blue-400 text-[11px] lg:text-sm font-semibold tracking-wide">
 						PUTUSAN
 					</p>
 				</div>
@@ -64,18 +64,57 @@
 			<h2 class="text-xl font-bold text-gray-800 text-center">
 				GRAFIK PERATURAN
 			</h2>
-			<p class="text-sm text-gray-500 text-center mt-1">
+			<p class="text-xs lg:text-sm text-gray-500 text-center mt-1">
 				Jumlah berkas 5 tahun terakhir berdasarkan jenis dokumen
 			</p>
 			<div class="w-10 h-1 bg-orange-500 mx-auto my-4 rounded"></div>
 
 			<!-- Chart -->
-			<div class="relative h-[380px]">
+			<div class="relative h-95">
 				<canvas id="statistikChart"></canvas>
 			</div>
 		</div>
 	</div>
 </section>
+
+
+
+@php
+	$peraturan = DB::table('document')
+	    ->where('tipe_dokumen', 1)
+	    ->select(DB::raw('YEAR(created_at) as year'), DB::raw('COUNT(*) as total'))
+	    ->whereBetween(DB::raw('YEAR(created_at)'), [2021, 2025])
+	    ->groupBy('year')
+	    ->pluck('total', 'year');
+
+	$monografi = DB::table('document')
+	    ->where('tipe_dokumen', 2)
+
+	    ->select(DB::raw('YEAR(created_at) as year'), DB::raw('COUNT(*) as total'))
+	    ->whereBetween(DB::raw('YEAR(created_at)'), [2021, 2025])
+	    ->groupBy('year')
+	    ->pluck('total', 'year');
+
+	$keputusan = DB::table('document')
+	    ->where('tipe_dokumen', 4)
+
+	    ->select(DB::raw('YEAR(created_at) as year'), DB::raw('COUNT(*) as total'))
+	    ->whereBetween(DB::raw('YEAR(created_at)'), [2021, 2025])
+	    ->groupBy('year')
+	    ->pluck('total', 'year');
+
+	$years = range(2021, 2025);
+
+	$peraturanData = [];
+	$monografiData = [];
+	$keputusanData = [];
+
+	foreach ($years as $year) {
+	    $peraturanData[] = $peraturan[$year] ?? 0;
+	    $monografiData[] = $monografi[$year] ?? 0;
+	    $keputusanData[] = $keputusan[$year] ?? 0;
+	}
+@endphp
 
 <!-- Chart Script -->
 <script>
@@ -84,22 +123,22 @@
 	new Chart(ctx, {
 		type: 'bar',
 		data: {
-			labels: ['2021', '2022', '2023', '2024', '2025'],
+			labels: @json($years),
 			datasets: [{
 					label: 'Peraturan & Keputusan',
-					data: [30, 95, 40, 290, 235],
+					data: @json($peraturanData),
 					backgroundColor: 'rgba(56, 189, 248, 0.7)',
 					borderRadius: 6
 				},
 				{
 					label: 'Monografi',
-					data: [0, 3, 0, 0, 2],
+					data: @json($monografiData),
 					backgroundColor: 'rgba(251, 113, 133, 0.7)',
 					borderRadius: 6
 				},
 				{
 					label: 'Putusan',
-					data: [0, 1, 0, 0, 1],
+					data: @json($keputusanData),
 					backgroundColor: 'rgba(167, 139, 250, 0.7)',
 					borderRadius: 6
 				}
