@@ -13,3 +13,7 @@
   --color-primary-hover: #ea8221;
   --color-darkbg: #0f172a;
 }
+
+.bline {
+  @apply border border-red-500;
+}

@@ -38,9 +38,11 @@
 					<div>
 						<p class="font-semibold">T.E.U. Badan/Pengarang</p>
 						<p class="text-sm text-slate-300">
-							@foreach ($pengarang as $i => $item)
+							@forelse ($pengarang as $i => $item)
 								{{ $item->name }} {{ $pengarang->count() - 1 !== $i ? '|' : '' }}
-							@endforeach
+							@empty
+								-
+							@endforelse
 						</p>
 					</div>
 				</div>
@@ -50,9 +52,11 @@
 					<div>
 						<p class="font-semibold">Subjek</p>
 						<ul class="text-sm text-slate-300">
-							@foreach ($subjek as $item)
+							@forelse ($subjek as $item)
 								<li>- {{ $item->subyek }}</li>
-							@endforeach
+							@empty
+								<li>-</li>
+							@endforelse
 						</ul>
 					</div>
 				</div>
@@ -62,7 +66,7 @@
 					<div>
 						<p class="font-semibold">Tempat Terbit</p>
 						<p class="text-sm text-slate-300">
-							{{ $monografi->penerbit }}
+							{{ $monografi->penerbit ?? '-' }}
 						</p>
 					</div>
 				</div>
@@ -75,7 +79,7 @@
 					<div>
 						<p class="font-semibold">Penerbit</p>
 						<p class="text-sm text-slate-300">
-							{{ $monografi->tempat_terbit }}
+							{{ $monografi->tempat_terbit ?? '-' }}
 						</p>
 					</div>
 				</div>
@@ -85,7 +89,7 @@
 					<div>
 						<p class="font-semibold">Tahun Terbit</p>
 						<p class="text-sm text-slate-300">
-							{{ $monografi->tahun_terbit }}
+							{{ $monografi->tahun_terbit ?? '-' }}
 						</p>
 					</div>
 				</div>

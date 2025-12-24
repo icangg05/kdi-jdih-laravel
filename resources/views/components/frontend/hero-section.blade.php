@@ -58,7 +58,8 @@
 					type="text"
 					placeholder="Masukkan Kata Kunci Pencarian..."
 					class="bg-white text-xs lg:text-sm flex-1 rounded px-3 lg:px-5 py-3 text-slate-800 focus:ring-2 focus:ring-none outline-none"
-					name="q">
+					name="q"
+          autocomplete="off">
 
 				<button
 					type="submit"

@@ -36,13 +36,6 @@
 	@include('frontend.partials.footer')
 
 
-	<!-- SCRIPT -->
-	<script>
-		document.getElementById('mobileBtn').addEventListener('click', () => {
-			document.getElementById('mobileMenu').classList.toggle('hidden')
-		})
-	</script>
-
 	<!-- Aos js -->
 	<script src="{{ asset('assets/frontend/js/aos.js') }}"></script>
 
