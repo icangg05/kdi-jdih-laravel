@@ -19,7 +19,7 @@
 	        'sub' => [
 	            ['label' => 'Peraturan & Keputusan', 'route' => 'frontend.dokumen.index', 'param' => 'peraturan'],
 	            ['label' => 'Monografi', 'route' => 'frontend.dokumen.index', 'param' => 'monografi'],
-	            ['label' => 'Artikel', 'route' => 'frontend.dokumen.index', 'param' => 'artikel'],
+	            ['label' => 'Artikel / Majalah Hukum', 'route' => 'frontend.dokumen.index', 'param' => 'artikel'],
 	            ['label' => 'Putusan', 'route' => 'frontend.dokumen.index', 'param' => 'putusan'],
 	        ],
 	    ],

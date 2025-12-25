@@ -46,276 +46,264 @@
 	}
 @endphp
 
-<div>
+<div class="bg-linear-to-b from-white via-slate-50 to-slate-100">
 	<x-frontend.breadcrumb
 		:title="Str::words($title, 1, '') . ' Detail'"
 		:listNav="[
 		    ['label' => Str::words($title, 1, ''), 'route' => route('frontend.dokumen.index', $kategori)],
-		    ['label' => $data['jenis_peraturan']],
+		    ['label' => Str::title($data['jenis_peraturan'])],
 		]" />
 
-	<section class="blogs">
-		<div class="container">
+	{{-- TOP BAR (GANTI SEARCH JADI TOMBOL KEMBALI) --}}
+	<div class="border-b-2 border-b-gray-200">
+		<div class="max-w-6xl mx-auto px-6 py-4 flex items-center">
 
-			@include('frontend.partials.search-dokumen')
+			<a wire:navigate.hover href="{{ route('frontend.dokumen.index', $kategori) }}"
+				class="inline-flex items-center gap-2 text-sm font-medium
+          text-slate-600 hover:text-black transition">
+				<i class="fa-solid fa-arrow-left text-sm"></i>
+				Kembali
+			</a>
+		</div>
+	</div>
 
-			<div class="row">
-				<!--  start blog left-->
-				<div class="col-lg-8 col-md-12 sm-margin-50px-bottom">
-					<div class="posts">
-						<!--  start post-->
-						<div class="content">
-							<div class="blog-list-simple-text post-meta" style="margin-bottom: -11px">
-								<div class="post-title">
-									<h5 style="font-size: 1.5rem;">{{ __($data['judul']) }}</h5>
-								</div>
-							</div>
-							<div class="row align-items-start">
-								<div class="col-md-12">
-									<hr class="mb-3 mt-2" style="border: none; height: 1px; background-color: #e0e0e0;">
-								</div>
-								@foreach ($columnField as $i => $item)
-									<div class="col-md-{{ $kategori == 'peraturan' && $i == count($columnField) - 1 ? '12' : '6' }}">
-										{{ $item[0] }}<br>
-										<span class="text-extra-dark-gray font-weight-600">
-											@if ($kategori == 'peraturan' && ($i == 1 || $i == 2))
-												@if (!empty($data[$item[1]]))
-													{{ Carbon\Carbon::parse($data[$item[1]])->translatedFormat('l, j F Y') }}
-												@else
-													—
-												@endif
-											@elseif ($kategori == 'putusan' && $i == 2)
-												{{ Carbon\Carbon::parse($data[$item[1]])->translatedFormat('l, j F Y') }}
-											@else
-												{{ $data[$item[1]] != null || $data[$item[1]] != '' ? $data[$item[1]] : '—' }}
-											@endif
-										</span>
-									</div>
-									@if ($i % 2 == 1 && $i < count($columnField) - 1)
-										<div class="col-md-12">
-											<hr class="my-3" style="border: none; height: 1px; background-color: #e0e0e0;">
-										</div>
+	{{-- MAIN --}}
+	<div class="max-w-6xl mx-auto px-6 py-8">
+		<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+			{{-- LEFT CONTENT --}}
+			<div class="lg:col-span-2">
+
+				{{-- TITLE --}}
+				<h1 class="text-lg font-bold text-slate-800 leading-snug mb-6 uppercase">
+					{{ $data['judul'] }}
+				</h1>
+
+				{{-- DETAIL --}}
+				<div class="text-sm border-t-2 border-gray-200">
+
+					<div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-0">
+						@foreach ($columnField as $i => $item)
+							@php
+								$total = count($columnField);
+								$isLast = $i === $total - 1;
+								$isSecondLast = $i === $total - 2;
+
+								$useThickBorder = $total % 2 === 0 ? $isLast || $isSecondLast : $isLast;
+							@endphp
+
+							<div class="{{ $useThickBorder ? 'border-b-2' : 'border-b' }} border-b-gray-200 py-4">
+								<p class="text-accent-hover font-medium">{{ $item[0] }}</p>
+								<p class="font-semibold text-slate-700">
+									@if ($kategori == 'peraturan' && ($i == 1 || $i == 2))
+										@if (!empty($data[$item[1]]))
+											{{ Carbon\Carbon::parse($data[$item[1]])->translatedFormat('l, j F Y') }}
+										@else
+											—
+										@endif
+									@elseif ($kategori == 'putusan' && $i == 2)
+										{{ Carbon\Carbon::parse($data[$item[1]])->translatedFormat('l, j F Y') }}
+									@else
+										{{ $data[$item[1]] != null || $data[$item[1]] != '' ? $data[$item[1]] : '—' }}
 									@endif
-								@endforeach
+								</p>
 							</div>
-
-							<hr class="my-4" style="border: none; height: 1px; background-color: #e0e0e0;">
-
-							@if ($kategori == 'peraturan')
-								<div class="row align-items-end">
-									<div class="col-lg-12 col-md-12">
-										Peraturan Terkait<br>
-										<ul class="mt-1">
-											@forelse ($peraturanTerkait as $item)
-												<li class="list-group-item" style="line-height: 24px;">
-													{{ $item->status_perter }} :
-													<a class="text-primary"
-														href="{{ route('frontend.dokumen.show', ['peraturan', $item->peraturan_terkait]) }}">
-														{{ $item->judul_peraturan_terkait }}
-													</a>
-												</li>
-											@empty
-												<span class="text-extra-dark-gray font-weight-600 font-italic">Data Tidak Tersedia</span>
-											@endforelse
-										</ul>
-									</div>
-								</div>
-								<div class="row align-items-end">
-									<div class="col-lg-12 col-md-12">
-										Dokumen Terkait<br>
-										<div class="mt-1 d-flex left-content-between align-items-start">
-											@forelse ($dokumenTerkait as $item)
-												<a href="{{ route('download_file', $item->document_terkait) }}"
-													class="btn btn-secondary btn-sm btn-hover-primary">Download File</a><br>
-											@empty
-												<span class="text-extra-dark-gray font-weight-600 font-italic">Data Tidak Tersedia</span>
-											@endforelse
-										</div>
-									</div>
-								</div>
-								<div class="row align-items-end mb-2">
-									<div class="col-lg-12 col-md-12 mt-3">
-										Hasil Uji Materi<br>
-										<div class="mt-1 d-flex left-content-between align-items-start">
-											@forelse ($hasilUjiMateri as $item)
-												<a href="{{ route('download_file', $item->hasil_uji_materi) }}"
-													class="btn btn-secondary btn-sm btn-hover-primary">Download File</a><br>
-											@empty
-												<span class="text-extra-dark-gray font-weight-600 font-italic">Data Tidak Tersedia</span>
-											@endforelse
-										</div>
-									</div>
-								</div>
-							@endif
-
-							@if ($kategori == 'monografi')
-								<div class="row align-items-end">
-									<div class="col-lg-12 col-md-12">
-										EKSEMPLAR<br>
-										<table class="table table-bordered">
-											<thead>
-												<tr class="active">
-													<th>Kode Eksemplar</th>
-													<th>Lokasi Rak</th>
-													<th>Status Buku</th>
-												</tr>
-											</thead>
-											<tbody>
-												@forelse ($eksemplar as $item)
-													<tr>
-														<td>{{ $item->kode_eksemplar }}</td>
-														<td>{{ $item->lokasi_rak }}</td>
-														<td>{{ $item->status_eksemplar }}</td>
-													</tr>
-												@empty
-													<tr>
-														<td colspan="3" class="text-center">—</td>
-													</tr>
-												@endforelse
-											</tbody>
-										</table>
-									</div>
-								</div>
-							@endif
-
-							@if ($kategori != 'artikel' && $kategori != 'putusan')
-								<hr class="my-4" style="border: none; height: 1px; background-color: #e0e0e0;">
-							@endif
-
-							<div class="row align-items-end">
-								<div class="col-lg-12 col-md-12">
-									T.E.U BADAN<br>
-									<table class="table table-bordered">
-										<thead>
-											<tr class="active">
-												<th>Nama Pengarang</th>
-												<th>Tipe Pengarang</th>
-												<th>Jenis Pengarang</th>
-											</tr>
-										</thead>
-										<tbody>
-											@forelse ($dataPengarang as $item)
-												<tr>
-													<td>{{ $item->nama_pengarang }}</td>
-													<td>{{ $item->tipe_pengarang }}</td>
-													<td>{{ $item->jenis_pengarang }}</td>
-												</tr>
-											@empty
-												<tr>
-													<td colspan="3" class="text-center">—</td>
-												</tr>
-											@endforelse
-										</tbody>
-									</table>
-								</div>
-							</div>
-
-							<div class="row align-items-end">
-								<div class="col-lg-12 col-md-12 mt-2" style="line-height: 24px;">
-									<span class="text-extra-dark-gray font-weight-600"> SUBJEK : </span>
-									@forelse ($subjek as $i => $item)
-										{{ $item->subyek }} {{ $subjek->count() - 1 !== $i ? '|' : '' }}
-									@empty
-										—
-									@endforelse
-								</div>
-							</div>
-						</div>
+						@endforeach
 					</div>
-				</div>
-				<!--  end blog left-->
 
-				<!--  start blog right-->
-				<div class="col-lg-4 col-md-12 padding-30px-left sm-padding-15px-left">
-					<div class="side-bar">
-						<div class="shadow">
-							<ul class="list-group mt-2">
-								<li class="list-group-item text-center">JENIS DOKUMEN</li>
-								<li class="list-group-item list-group-item-primary text-center">
-									<strong>{{ $data['jenis_peraturan'] }}</strong>
-								</li>
+
+					<!-- MEN PERATURAN & KEPUTUSAN -->
+					@if ($kategori == 'peraturan')
+						<div class="py-4 border-b-2 border-b-gray-200">
+							<p class="text-accent-hover font-medium">Peraturan Terkait</p>
+							<ul class="mt-1">
+								@forelse ($peraturanTerkait as $item)
+									<li>
+										<span class="text-slate-600">{{ $item->status_perter }}</span> :
+										<a class="font-medium text-primary hover:text-primary-hover transition hover:underline"
+											href="{{ route('frontend.dokumen.show', ['peraturan', Hashids::encode($item->peraturan_terkait)]) }}">
+											{{ $item->judul_peraturan_terkait }}
+										</a>
+									</li>
+								@empty
+									<p class="italic font-semibold text-slate-400">Data Tidak Tersedia</p>
+								@endforelse
 							</ul>
 						</div>
-						@if ($kategori != 'artikel')
-							<div class="shadow">
-								<ul class="list-group mt-2">
-									@if ($kategori == 'peraturan')
-										<li class="list-group-item text-center">STATUS</li>
-										<li
-											class="list-group-item list-group-item-{{ strtolower($data['status']) == 'berlaku' ? 'success' : 'danger' }} text-center">
-											<strong>{{ $data['status'] }}</strong>
-										</li>
-									@elseif ($kategori == 'monografi')
-										<li class="list-group-item text-center">COVER</li>
-										<li class="list-group-item list-group-item-warning text-center">
-											@php
-												$imageCover = checkFilePath(config('app.img_directory'), $data['gambar_sampul'])
-												    ? asset('storage/' . config('app.img_directory') . $data['gambar_sampul'])
-												    : asset('assets/img/default-book.png');
-											@endphp
-											<img
-												src="{{ $imageCover }}"
-												alt="sampul.jpg" class="rounded">
-										</li>
-									@elseif ($kategori == 'putusan')
-										<li class="list-group-item text-center">AMAR PUTUSAN</li>
-										<li class="list-group-item list-group-item-secondary text-center">
-											<strong>{{ $data['amar_status'] != null || $data['amar_status'] != '' ? $data['amar_status'] : '—' }}</strong>
-										</li>
-									@endif
-								</ul>
-							</div>
-						@endif
 
-						<div class="widget">
-							<div class="widget-title margin-35px-bottom mt-4">
-								<h3>Lampiran</h3>
-							</div>
-							<div class="d-flex left-content-between align-items-start">
-								<form action="{{ route('download_file') }}" method="POST" style="display: inline">
-									@csrf
-									<input type="hidden" name="filePath"
-										value="{{ config('app.doc_directory') . $data['dokumen_lampiran'] }}">
-									<button type="submit" @disabled(!checkFilePath(config('app.doc_directory'), $data['dokumen_lampiran']))
-										style="opacity: {{ !checkFilePath(config('app.doc_directory'), $data['dokumen_lampiran']) ? '.4' : '1' }};"
-										class="btn-custom mr-3">
-										<i class="fa-solid fa-file-lines"></i>&nbsp; Download
-									</button>
-								</form>
-
-								<form action="{{ route('download_file') }}" method="POST" style="display: inline">
-									@csrf
-									<input type="hidden" name="filePath"
-										value="{{ config('app.doc_directory') . $data['dokumen_lampiran'] }}">
-									<button type="submit" @disabled(!checkFilePath(config('app.doc_directory'), $data['abstrak']))
-										style="opacity: {{ !checkFilePath(config('app.doc_directory'), $data['abstrak']) ? '.4' : '1' }};"
-										class="btn-custom-2">
-										<i class="fa-solid fa-file-lines"></i>&nbsp; ABSTRAK
-								</form>
-								</button>
+						<div class="py-4 border-b-2 border-b-gray-200">
+							<p class="text-accent-hover font-medium">Dokumen Terkait</p>
+							<div class="mt-1 d-flex left-content-between align-items-start">
+								@forelse ($dokumenTerkait as $item)
+									<form action="{{ route('download_file') }}" method="post">
+										@csrf
+										<input type="hidden" name="filePath"
+											value="{{ config('app.doc_directory') . $item->document_terkait }}">
+										<button type="submit"
+											class="text-white rounded text-xs px-2.5 py-1.5 bg-accent hover:bg-accent-hover transition">
+											Download File</button>
+									</form>
+								@empty
+									<p class="italic font-semibold text-slate-400">Data Tidak Tersedia</p>
+								@endforelse
 							</div>
 						</div>
 
-						@if ($kategori == 'peraturan')
-							<div class="widget">
-								<div class="widget-title margin-35px-bottom mt-4">
-									<h3>Keterangan Status</h3>
-								</div>
-								<ul class="widget-list text-extra-dark-gray font-weight-600" style="opacity: 0.9;">
-									@if ($dataStatus)
-										<button class="btn btn-secondary btn-sm" type="button">
-											{{ ucfirst($dataStatus->status_peraturan) }}
-										</button>
-									@else
-										—
-									@endif
-								</ul>
+						<div class="py-4 border-b-2 border-b-gray-200">
+							<p class="text-accent-hover font-medium">Hasil Uji Materi</p>
+							<div class="mt-2 flex gap-1">
+								@forelse ($hasilUjiMateri as $item)
+									<form action="{{ route('download_file') }}" method="post">
+										@csrf
+										<input type="hidden" name="filePath"
+											value="{{ config('app.doc_directory') . $item->hasil_uji_materi }}">
+										<button type="submit"
+											class="text-white rounded text-xs px-2.5 py-1.5 bg-accent hover:bg-accent-hover transition">
+											Download File</button>
+									</form>
+								@empty
+									<p class="italic font-semibold text-slate-400">Data Tidak Tersedia</p>
+								@endforelse
 							</div>
-						@endif
+						</div>
+					@endif
+				</div>
+
+
+				<!-- EKSEMPLAR -->
+				@if ($kategori == 'monografi')
+					<div class="mt-8 text-slate-700">
+						<p class="font-semibold mb-2">EKSEMPLAR</p>
+
+						<table class="w-full text-sm border border-black/15">
+							<thead class="bg-gray-100">
+								<tr>
+									<th class="border border-black/15 px-3 py-2 text-left">Kode Eksemplar</th>
+									<th class="border border-black/15 px-3 py-2 text-left">Lokasi Rak</th>
+									<th class="border border-black/15 px-3 py-2 text-left">Status Buku</th>
+								</tr>
+							</thead>
+							<tbody>
+								@forelse ($eksemplar as $item)
+									<tr>
+										<td class="border border-black/15 px-3 py-2">{{ $item->kode_eksemplar }}</td>
+										<td class="border border-black/15 px-3 py-2">{{ $item->lokasi_rak }}</td>
+										<td class="border border-black/15 px-3 py-2">{{ $item->status_eksemplar }}</td>
+									</tr>
+								@empty
+									<tr>
+										<td colspan="3" class="border border-black/15 px-3 py-2 text-center">—</td>
+									</tr>
+								@endforelse
+							</tbody>
+						</table>
+					</div>
+				@endif
+
+
+				<!-- T.E.U -->
+				<div class="mt-8 text-slate-700">
+					<p class="font-semibold mb-2">T.E.U BADAN</p>
+
+					<table class="w-full text-sm border border-black/15">
+						<thead class="bg-gray-100">
+							<tr>
+								<th class="border border-black/15 px-3 py-2 text-left">Nama Pengarang</th>
+								<th class="border border-black/15 px-3 py-2 text-left">Tipe Pengarang</th>
+								<th class="border border-black/15 px-3 py-2 text-left">Jenis Pengarang</th>
+							</tr>
+						</thead>
+						<tbody>
+							@forelse ($dataPengarang as $item)
+								<tr>
+									<td class="border border-black/15 px-3 py-2">{{ $item->nama_pengarang }}</td>
+									<td class="border border-black/15 px-3 py-2">{{ $item->tipe_pengarang }}</td>
+									<td class="border border-black/15 px-3 py-2">{{ $item->jenis_pengarang }}</td>
+								</tr>
+							@empty
+								<tr>
+									<td colspan="3" class="border border-black/15 px-3 py-2 text-center">—</td>
+								</tr>
+							@endforelse
+						</tbody>
+					</table>
+				</div>
+
+
+				<!-- SUBJEK -->
+				<div class="mt-6 text-sm text-slate-700">
+					<strong>SUBJEK :</strong>
+					@forelse ($subjek as $i => $item)
+						{{ $item->subyek }} {{ $subjek->count() - 1 !== $i ? '|' : '' }}
+					@empty
+						—
+					@endforelse
+				</div>
+			</div>
+
+
+
+			<!-- RIGHT SIDEBAR -->
+			<div class="space-y-6 text-sm">
+
+				<!-- JENIS DOKUMEN -->
+				<div class="border border-gray-200 bg-gray-50">
+					<div class="border-b-2 border-b-gray-200 px-4 py-2 font-semibold text-gray-600">
+						JENIS DOKUMEN
+					</div>
+					<div class="px-4 py-3">
+						<span class="inline-block bg-blue-100 text-accent
+              font-semibold px-3 py-1">
+							PERATURAN DAERAH KOTA
+						</span>
 					</div>
 				</div>
-				<!--  end blog right-->
+
+				<!-- STATUS -->
+				<div class="border border-gray-200 bg-gray-50">
+					<div class="border-b-2 border-b-gray-200 px-4 py-2 font-semibold text-gray-600">
+						STATUS
+					</div>
+					<div class="px-4 py-3">
+						<span class="inline-block bg-green-200 text-green-900
+              font-semibold px-3 py-1">
+							Berlaku
+						</span>
+					</div>
+				</div>
+
+				<!-- LAMPIRAN -->
+				<div class="border border-gray-200 bg-gray-50">
+					<div class="border-b-2 border-b-gray-200 px-4 py-2 font-semibold text-gray-600">
+						LAMPIRAN
+					</div>
+					<div class="px-4 py-3 space-y-2">
+						<a href="#"
+							class="rounded flex justify-center items-center gap-2 text-center bg-accent text-white
+                font-semibold py-2 hover:bg-accent-hover transition">
+							<i class="fa-solid fa-file-arrow-down"></i>
+							Download
+						</a>
+
+						<a href="#"
+							class="rounded flex justify-center items-center gap-2 text-center bg-primary text-white
+              font-semibold py-2 hover:bg-primary-hover transition">
+							<i class="fa-solid fa-file-arrow-down"></i>
+							Abstrak
+						</a>
+					</div>
+				</div>
+
+				<!-- KETERANGAN STATUS -->
+				<div class="border border-gray-200 bg-gray-50">
+					<div class="border-b-2 border-b-gray-200 px-4 py-2 font-semibold text-gray-600">
+						KETERANGAN STATUS
+					</div>
+					<div class="px-4 py-3 text-gray-600">
+						-
+					</div>
+				</div>
 			</div>
 		</div>
-	</section>
+	</div>
 </div>
