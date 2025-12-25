@@ -10,6 +10,10 @@
 				<div class="lg:col-span-8">
 					<div class="space-y-6">
 						@forelse ($data as $v)
+							@php
+								$hashId = Hashids::encode($v->id);
+							@endphp
+
 							<div
 								class="group bg-white rounded border border-gray-200 p-6
                 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300">
@@ -25,16 +29,13 @@
 									@endif
 								</span>
 
-								<a wire:navigate.hover href="{{ route('frontend.dokumen.show', [$kategori, $v->id]) }}"
+								<a wire:navigate.hover href="{{ route('frontend.dokumen.show', [$kategori, $hashId]) }}"
 									class="text-sm lg:text-base leading-5 font-semibold text-gray-900
                 group-hover:text-primary transition line-clamp-3">
 									{{ $v->judul }}
 								</a>
 
 								<div class="mt-3.5 flex flex-wrap items-start gap-5">
-									@php
-										$hashId = Hashids::encode($v->id);
-									@endphp
 
 									{{-- QR Code --}}
 									<div class="flex flex-col items-center text-xs text-gray-500">
@@ -120,36 +121,40 @@
 						{{-- Jenis Dokumen --}}
 						<div class="space-y-1">
 							<label class="text-xs font-medium text-gray-500 uppercase tracking-wide">
-								Jenis Dokumen
+								Jenis {{ $kategori }}
 							</label>
 							<div class="relative">
 								<i class="fa-solid fa-layer-group absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
 								<select name="jenis"
-									class="select2 w-full pl-11 pr-4 py-2.5 rounded border border-gray-300 text-sm focus:ring-2 focus:primary focus:border-primary">
-									<option value="">Pilh Jenis Dokumen</option>
+									class="select2 w-full pl-11 pr-4 py-2.5 rounded border border-gray-300 text-sm focus:outline-none focus:border-primary">
+									<option value="">Pilh Jenis {{ ucfirst($kategori) }}</option>
 									@foreach ($tipeDokumen as $v)
-										<option @selected(request()->jenis === $v->name) value="{{ $v->name }}">{{ $v->name }}</option>
+										<option @selected(request()->jenis === $v->name) value="{{ $v->name }}">
+                      {{ Str::title($v->name) }}
+                    </option>
 									@endforeach
 								</select>
 							</div>
 						</div>
 
 						{{-- Nomor --}}
-						<div class="space-y-1">
-							<label class="text-xs font-medium text-gray-500 uppercase tracking-wide">
-								Nomor Peraturan
-							</label>
-							<div class="relative">
-								<i
-									class="fa-solid fa-hashtag absolute left-4 top-1/2 -translate-y-1/2
+						@if ($kategori == 'peraturan')
+							<div class="space-y-1">
+								<label class="text-xs font-medium text-gray-500 uppercase tracking-wide">
+									Nomor Peraturan
+								</label>
+								<div class="relative">
+									<i
+										class="fa-solid fa-hashtag absolute left-4 top-1/2 -translate-y-1/2
                            text-gray-400 text-sm"></i>
-								<input type="text" name="nomor"
-									value="{{ request()->nomor }}"
-									placeholder="Contoh: 8"
-									class="w-full pl-11 pr-4 py-2.5 rounded border border-gray-300
-                              text-sm focus:ring-2 focus:primary focus:border-primary">
+									<input type="text" name="nomor"
+										value="{{ request()->nomor }}"
+										placeholder="Contoh: 8"
+										class="w-full pl-11 pr-4 py-2.5 rounded border border-gray-300
+                              text-sm focus:outline-none focus:border-primary">
+								</div>
 							</div>
-						</div>
+						@endif
 
 						{{-- Tahun --}}
 						<div class="space-y-1">
@@ -164,39 +169,41 @@
 									placeholder="Contoh: {{ date('Y') }}"
 									value="{{ request()->tahun }}"
 									class="w-full pl-11 pr-4 py-2.5 rounded border border-gray-300
-                              text-sm focus:ring-2 focus:primary focus:border-primary">
+                              text-sm focus:outline-none focus:border-primary">
 							</div>
 						</div>
 
 						{{-- Status --}}
-						<div class="space-y-1">
-							<label class="text-xs font-medium text-gray-500 uppercase tracking-wide">
-								Status
-							</label>
-							<div class="relative">
-								<i
-									class="fa-solid fa-circle-check absolute left-4 top-1/2 -translate-y-1/2
+						@if ($kategori == 'peraturan')
+							<div class="space-y-1">
+								<label class="text-xs font-medium text-gray-500 uppercase tracking-wide">
+									Status
+								</label>
+								<div class="relative">
+									<i
+										class="fa-solid fa-circle-check absolute left-4 top-1/2 -translate-y-1/2
                            text-gray-400 text-sm"></i>
-								<select name="status"
-									class="w-full pl-11 pr-4 py-2.5 rounded border border-gray-300
-                           text-sm focus:ring-2 focus:ring-primary focus:border-primary">
-									<option value="">Pilih Status</option>
-									<option @selected(request()->status === 'dicabut') value="dicabut">dicabut</option>
-									<option @selected(request()->status == 'mencabut') value="mencabut">mencabut</option>
-									<option @selected(request()->status == 'diubah') value="diubah">diubah</option>
-									<option @selected(request()->status == 'mengubah') value="mengubah">mengubah</option>
-									<option @selected(request()->status == 'Tidak memiliki daya guna') value="Tidak memiliki daya guna">Tidak memiliki daya guna
-									</option>
-								</select>
+									<select name="status"
+										class="w-full pl-11 pr-4 py-2.5 rounded border border-gray-300
+                           text-sm focus:outline-none focus:border-primary">
+										<option value="">Pilih Status</option>
+										<option @selected(request()->status === 'dicabut') value="dicabut">Dicabut</option>
+										<option @selected(request()->status == 'mencabut') value="mencabut">Mencabut</option>
+										<option @selected(request()->status == 'diubah') value="diubah">Diubah</option>
+										<option @selected(request()->status == 'mengubah') value="mengubah">Mengubah</option>
+										<option @selected(request()->status == 'Tidak memiliki daya guna') value="Tidak memiliki daya guna">Tidak memiliki daya guna
+										</option>
+									</select>
+								</div>
 							</div>
-						</div>
+						@endif
 
 						{{-- Actions --}}
 						<div class="flex gap-3 pt-2">
 							<button
 								class="flex-1 flex items-center justify-center gap-2
                        py-2.5 rounded bg-primary text-white
-                       text-xs font-semibold hover:bg-primary-hover  transition">
+                       text-xs font-semibold hover:bg-primary-hover focus:outline-none focus:bg-primary-hover transition">
 								<i class="fa-solid fa-magnifying-glass"></i>
 								Terapkan
 							</button>
@@ -206,7 +213,7 @@
 								onclick="window.location.href='{{ url()->current() }}'"
 								class="flex items-center justify-center
                        px-4 rounded border border-gray-300
-                       text-gray-600 hover:bg-gray-100 transition">
+                       text-gray-600 hover:bg-gray-100 transition focus:outline-none focus:bg-gray-100">
 								<i class="fa-solid fa-rotate-left"></i>
 							</button>
 						</div>

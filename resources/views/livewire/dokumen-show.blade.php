@@ -46,7 +46,7 @@
 	}
 @endphp
 
-<div class="bg-linear-to-b from-white via-slate-50 to-slate-100">
+<div class="bg-linear-to-b from-white via-slate-50 to-slate-100 pb-7">
 	<x-frontend.breadcrumb
 		:title="Str::words($title, 1, '') . ' Detail'"
 		:listNav="[
@@ -56,9 +56,9 @@
 
 	{{-- TOP BAR (GANTI SEARCH JADI TOMBOL KEMBALI) --}}
 	<div class="border-b-2 border-b-gray-200">
-		<div class="max-w-6xl mx-auto px-6 py-4 flex items-center">
+		<div class="max-w-6xl mx-auto px-3 lg:px-6 py-4 flex items-center">
 
-			<a wire:navigate.hover href="{{ route('frontend.dokumen.index', $kategori) }}"
+			<a wire:navigate.hover href="{{ url()->previous() }}"
 				class="inline-flex items-center gap-2 text-sm font-medium
           text-slate-600 hover:text-black transition">
 				<i class="fa-solid fa-arrow-left text-sm"></i>
@@ -67,22 +67,22 @@
 		</div>
 	</div>
 
-	{{-- MAIN --}}
-	<div class="max-w-6xl mx-auto px-6 py-8">
+	<!-- MAIN -->
+	<div class="max-w-6xl mx-auto px-3 lg:px-6 py-8">
 		<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-			{{-- LEFT CONTENT --}}
+			<!-- LEFT CONTENT -->
 			<div class="lg:col-span-2">
 
-				{{-- TITLE --}}
+				<!-- TITLE -->
 				<h1 class="text-lg font-bold text-slate-800 leading-snug mb-6 uppercase">
 					{{ $data['judul'] }}
 				</h1>
 
-				{{-- DETAIL --}}
+				<!-- DETAIL -->
 				<div class="text-sm border-t-2 border-gray-200">
 
-					<div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-0">
+					<div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8">
 						@foreach ($columnField as $i => $item)
 							@php
 								$total = count($columnField);
@@ -92,7 +92,7 @@
 								$useThickBorder = $total % 2 === 0 ? $isLast || $isSecondLast : $isLast;
 							@endphp
 
-							<div class="{{ $useThickBorder ? 'border-b-2' : 'border-b' }} border-b-gray-200 py-4">
+							<div class="{{ $useThickBorder ? 'border-b-2' : 'border-b' }} border-b-gray-200 py-2 lg:py-3.5">
 								<p class="text-accent-hover font-medium">{{ $item[0] }}</p>
 								<p class="font-semibold text-slate-700">
 									@if ($kategori == 'peraturan' && ($i == 1 || $i == 2))
@@ -172,7 +172,7 @@
 
 				<!-- EKSEMPLAR -->
 				@if ($kategori == 'monografi')
-					<div class="mt-8 text-slate-700">
+					<div class="mt-7 text-slate-700">
 						<p class="font-semibold mb-2">EKSEMPLAR</p>
 
 						<table class="w-full text-sm border border-black/15">
@@ -202,7 +202,7 @@
 
 
 				<!-- T.E.U -->
-				<div class="mt-8 text-slate-700">
+				<div class="mt-7 text-slate-700">
 					<p class="font-semibold mb-2">T.E.U BADAN</p>
 
 					<table class="w-full text-sm border border-black/15">
@@ -242,7 +242,6 @@
 			</div>
 
 
-
 			<!-- RIGHT SIDEBAR -->
 			<div class="space-y-6 text-sm">
 
@@ -254,23 +253,55 @@
 					<div class="px-4 py-3">
 						<span class="inline-block bg-blue-100 text-accent
               font-semibold px-3 py-1">
-							PERATURAN DAERAH KOTA
+							{{ Str::title($data['jenis_peraturan']) }}
 						</span>
 					</div>
 				</div>
 
-				<!-- STATUS -->
-				<div class="border border-gray-200 bg-gray-50">
-					<div class="border-b-2 border-b-gray-200 px-4 py-2 font-semibold text-gray-600">
-						STATUS
+				<!-- STATUS | COVER | AMAR PUTUSAN -->
+				@if ($kategori != 'artikel')
+					<div class="border border-gray-200 bg-gray-50">
+						@if ($kategori == 'peraturan')
+							<div class="border-b-2 border-b-gray-200 px-4 py-2 font-semibold text-gray-600">
+								STATUS
+							</div>
+							<div class="px-4 py-3">
+								<span
+									class="inline-block font-semibold px-3 py-1
+                    {{ strtolower($data['status']) == 'berlaku' ? 'bg-green-200 text-green-900' : 'bg-red-200 text-red-900' }}">
+									{{ $data['status'] }}
+								</span>
+							</div>
+						@elseif ($kategori == 'monografi')
+							@php
+								$imageCover = checkFilePath(config('app.img_directory'), $data['gambar_sampul'])
+								    ? asset('storage/' . config('app.img_directory') . $data['gambar_sampul'])
+								    : asset('assets/img/default-book.png');
+							@endphp
+
+							<div class="border-b-2 border-b-gray-200 px-4 py-2 font-semibold text-gray-600">
+								COVER
+							</div>
+							<div class="bg-[#FFEEBA] p-4.5">
+								<img src="{{ $imageCover }}" alt="sampul.png" class="rounded">
+							</div>
+						@elseif ($kategori == 'putusan')
+							<div class="border-b-2 border-b-gray-200 px-4 py-2 font-semibold text-gray-600">
+								AMAR PUTUSAN
+							</div>
+							<div class="px-4 py-3">
+								@php
+									$checkAmarStatus = $data['amar_status'] != null || $data['amar_status'] != '';
+								@endphp
+								<span @class([
+									'inline-block bg-blue-100 text-accent font-semibold px-3 py-1' => $checkAmarStatus,
+								])>
+									{{ $checkAmarStatus ? $data['amar_status'] : '—' }}
+								</span>
+							</div>
+						@endif
 					</div>
-					<div class="px-4 py-3">
-						<span class="inline-block bg-green-200 text-green-900
-              font-semibold px-3 py-1">
-							Berlaku
-						</span>
-					</div>
-				</div>
+				@endif
 
 				<!-- LAMPIRAN -->
 				<div class="border border-gray-200 bg-gray-50">
@@ -278,31 +309,47 @@
 						LAMPIRAN
 					</div>
 					<div class="px-4 py-3 space-y-2">
-						<a href="#"
-							class="rounded flex justify-center items-center gap-2 text-center bg-accent text-white
-                font-semibold py-2 hover:bg-accent-hover transition">
-							<i class="fa-solid fa-file-arrow-down"></i>
-							Download
-						</a>
+						<form action="{{ route('download_file') }}" method="POST">
+							@csrf
+							<input type="hidden" name="filePath"
+								value="{{ config('app.doc_directory') . $data['dokumen_lampiran'] }}">
+							<button type="submit" @disabled(!checkFilePath(config('app.doc_directory'), $data['dokumen_lampiran']))
+								style="opacity: {{ !checkFilePath(config('app.doc_directory'), $data['dokumen_lampiran']) ? '.4' : '1' }};"
+								class="rounded flex justify-center items-center gap-2 text-center bg-accent text-white
+                font-semibold py-2 hover:bg-accent-hover transition w-full">
+								<i class="fa-solid fa-file-lines"></i> Download
+							</button>
+						</form>
 
-						<a href="#"
-							class="rounded flex justify-center items-center gap-2 text-center bg-primary text-white
-              font-semibold py-2 hover:bg-primary-hover transition">
-							<i class="fa-solid fa-file-arrow-down"></i>
-							Abstrak
-						</a>
+						<form action="{{ route('download_file') }}" method="POST">
+							@csrf
+							<input type="hidden" name="filePath"
+								value="{{ config('app.doc_directory') . $data['dokumen_lampiran'] }}">
+							<button type="submit" @disabled(!checkFilePath(config('app.doc_directory'), $data['abstrak']))
+								style="opacity: {{ !checkFilePath(config('app.doc_directory'), $data['abstrak']) ? '.4' : '1' }};"
+								class="rounded flex justify-center items-center gap-2 text-center bg-primary text-white
+              font-semibold py-2 hover:bg-primary-hover transition w-full">
+								<i class="fa-solid fa-file-lines"></i> Abstrak
+						</form>
+						</button>
 					</div>
 				</div>
 
 				<!-- KETERANGAN STATUS -->
-				<div class="border border-gray-200 bg-gray-50">
-					<div class="border-b-2 border-b-gray-200 px-4 py-2 font-semibold text-gray-600">
-						KETERANGAN STATUS
+				@if ($kategori == 'peraturan')
+					<div class="border border-gray-200 bg-gray-50">
+						<div class="border-b-2 border-b-gray-200 px-4 py-2 font-semibold text-gray-600">
+							KETERANGAN STATUS
+						</div>
+						<div class="px-4 py-3 text-gray-600">
+							<span @class([
+								'inline-block bg-blue-100 text-accent font-semibold px-3 py-1' => !empty($dataStatus->status_peraturan),
+							])>
+								{{ ucfirst($dataStatus->status_peraturan ?? '—') }}
+							</span>
+						</div>
 					</div>
-					<div class="px-4 py-3 text-gray-600">
-						-
-					</div>
-				</div>
+				@endif
 			</div>
 		</div>
 	</div>

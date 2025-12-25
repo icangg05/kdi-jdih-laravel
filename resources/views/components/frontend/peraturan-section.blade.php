@@ -20,7 +20,7 @@
 		<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 
 			@foreach ($peraturan as $v)
-				<a wire:navigate.hover href="{{ route('frontend.dokumen.show', ['peraturan', $v->id]) }}"
+				<a wire:navigate.hover href="{{ route('frontend.dokumen.show', ['peraturan', Hashids::encode($v->id)]) }}"
 					class="group border border-gray-300 rounded-3xl p-7 lg:p-8 transition duration-300 hover:bg-primary hover:border-primary">
 
 					<span

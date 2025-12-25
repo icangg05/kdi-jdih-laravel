@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
+use Vinkla\Hashids\Facades\Hashids;
 
 class DokumenShow extends Component
 {
@@ -13,7 +14,7 @@ class DokumenShow extends Component
   public function mount($kategori, $id)
   {
     $this->kategori = $kategori;
-    $this->id       = $id;
+    $this->id       = Hashids::decode($id)[0] ?? abort(404);
   }
 
 

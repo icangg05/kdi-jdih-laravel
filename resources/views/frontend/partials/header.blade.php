@@ -147,7 +147,7 @@
 
 			@foreach ($menus as $i => $menu)
 				@if (!isset($menu['sub']))
-					<a href="{{ route($menu['route']) }}"
+					<a wire:navigate.hover href="{{ route($menu['route']) }}"
 						class="block uppercase
 					   {{ request()->routeIs($menu['route']) ? 'text-primary' : 'text-white/80' }}">
 						{{ $menu['label'] }}
@@ -173,7 +173,7 @@
 							@foreach ($menu['sub'] as $sub)
 								@php $active = isSubActive($sub); @endphp
 
-								<a href="{{ route($sub['route'], $sub['param'] ?? null) }}"
+								<a wire:navigate.hover href="{{ route($sub['route'], $sub['param'] ?? null) }}"
 									class="block
 								   {{ $active ? 'text-primary' : 'text-white/70' }}">
 									{{ $sub['label'] }}

@@ -4,25 +4,33 @@ namespace App\Livewire;
 
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
+use Vinkla\Hashids\Facades\Hashids;
 
 class BeritaShow extends Component
 {
-	public $id;
+  public $id;
 
-	public function mount($id)
-	{
-		$this->id = $id;
-	}
+  public function mount($id)
+  {
+    $this->id = Hashids::decode($id)[0] ?? abort(404);
+  }
 
-	public function render()
-	{
-		$data = DB::table('berita')
-			->where('id', $this->id)
-			->first();
-		abort_if(!$data, 404);
+  public function render()
+  {
+    $data = DB::table('berita')
+      ->where('id', $this->id)
+      ->first();
+    abort_if(!$data, 404);
 
-		return view('livewire.berita-show', compact(
-			'data',
-		));
-	}
+    $beritaTerbaru = DB::table('berita')
+      ->whereNot('id', $data->id)
+      ->orderByDesc('tanggal')
+      ->limit(3)
+      ->get();
+
+    return view('livewire.berita-show', compact(
+      'data',
+      'beritaTerbaru',
+    ));
+  }
 }
