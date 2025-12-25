@@ -17,7 +17,7 @@
 	    [
 	        'label' => 'Jenis Dokumen',
 	        'sub' => [
-	            ['label' => 'Peraturan', 'route' => 'frontend.dokumen.index', 'param' => 'peraturan'],
+	            ['label' => 'Peraturan & Keputusan', 'route' => 'frontend.dokumen.index', 'param' => 'peraturan'],
 	            ['label' => 'Monografi', 'route' => 'frontend.dokumen.index', 'param' => 'monografi'],
 	            ['label' => 'Artikel', 'route' => 'frontend.dokumen.index', 'param' => 'artikel'],
 	            ['label' => 'Putusan', 'route' => 'frontend.dokumen.index', 'param' => 'putusan'],
@@ -115,7 +115,7 @@
 										<a wire:navigate.hover
 											href="{{ route($sub['route'], $sub['param'] ?? null) }}"
 											class="block px-4.5 py-2 text-sm transition
-										   {{ $active ? 'text-primary bg-white/5' : 'text-white/80 hover:text-primary hover:bg-white/5' }}
+										   {{ $active ? 'text-primary bg-white/5' : 'text-white/65 hover:text-primary hover:bg-white/5' }}
 										   {{ $loop->first ? 'pt-4' : '' }}
 										   {{ $loop->last ? 'pb-4' : '' }}">
 											{{ $sub['label'] }}

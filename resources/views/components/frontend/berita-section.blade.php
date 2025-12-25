@@ -80,7 +80,7 @@
 
 		<!-- CTA -->
 		<div class="mt-16 text-center">
-			<a wire.navigate.hover href="{{ route('frontend.berita.index') }}"
+			<a wire:navigate.hover href="{{ route('frontend.berita.index') }}"
 				class="text-sm lg:text-base inline-flex items-center gap-2 bg-primary hover:bg-primary-hover text-white px-4 lg:px-6 py-2 lg:py-3 rounded font-semibold transition">
 				Berita Lainnya
 			</a>

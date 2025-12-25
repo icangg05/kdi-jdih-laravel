@@ -1,22 +1,52 @@
-<section class="page-title-section bg-img cover-background" data-overlay-dark="7"
-	data-background="{{ asset('assets/img/header.jpg') }}">
-	<div class="container">
-		<h1>{{ __($title) }}</h1>
-		<ul class="text-center">
-			<li>
-				<a wire:navigate href="{{ route('frontend.beranda') }}">Home</a>
-			</li>
+<section class="relative bg-gray-900">
+	<div class="absolute inset-0">
+		<img src="{{ asset('assets/img/header.jpg') }}"
+			alt="Sejarah"
+			class="w-full h-full object-cover object-center opacity-15">
+	</div>
+
+	<div class="relative max-w-7xl mx-auto px-6 pt-30 lg:pt-43 py-14 lg:py-30 text-center">
+		<h1 class="text-2xl md:text-4xl font-bold text-white">
+			{{ $title }}
+		</h1>
+		<nav class="mt-2 lg:mt-4 text-xs lg:text-sm text-gray-300">
+			<a wire:navigate.hover
+				href="{{ route('frontend.beranda') }}"
+				class="text-white hover:text-orange-400 transition">
+				Home
+			</a>
+
 			@foreach ($listNav as $item)
-				@if (!empty($item['route']))
-					<li>
-						<a wire:navigate href="{{ $item['route'] }}">{{ $item['label'] }}</a>
-					</li>
+				<span class="mx-2">›</span>
+
+				@if ($loop->last)
+					{{-- Item terakhir: selalu ORANGE --}}
+					@if (!empty($item['route']))
+						<a wire:navigate.hover
+							href="{{ $item['route'] }}"
+							class="text-orange-400 font-medium">
+							{{ $item['label'] }}
+						</a>
+					@else
+						<span class="text-orange-400 font-medium">
+							{{ $item['label'] }}
+						</span>
+					@endif
 				@else
-					<li>
-						<span class="active">{{ $item['label'] }}</span>
-					</li>
+					{{-- Bukan item terakhir --}}
+					@if (!empty($item['route']))
+						<a wire:navigate.hover
+							href="{{ $item['route'] }}"
+							class="text-white hover:text-orange-400 transition">
+							{{ $item['label'] }}
+						</a>
+					@else
+						<span class="text-white">
+							{{ $item['label'] }}
+						</span>
+					@endif
 				@endif
 			@endforeach
-		</ul>
+		</nav>
 	</div>
 </section>

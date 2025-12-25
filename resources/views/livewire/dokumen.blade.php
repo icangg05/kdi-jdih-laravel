@@ -1,133 +1,264 @@
 <div>
-	<x-frontend.breadcrumb :title="$title" :listNav="[['label' => 'Dokumen Hukum']]" />
+	<x-frontend.breadcrumb :title="$title" :listNav="[['label' => $title]]" />
 
-	<!-- start listing-list section -->
-	<section class="dokumen">
-		<div class="container">
+	<section class="bg-linear-to-b from-white via-slate-50 to-slate-100 py-12 lg:py-14">
+		<div class="max-w-5xl mx-auto px-2 lg:px-0">
 
-			@include('frontend.partials.search-dokumen')
+			<x-frontend.form-search placeholder="Cari dokumen hukum lainnya" />
 
-			<div class="row">
-				<div class="col-lg-9 sm-margin-50px-bottom">
-					<div id="w0" class="list-view">
-						@forelse ($data as $item)
-							<div class="item" data-key="509">
-								<div class="border-bottom margin-40px-bottom padding-40px-bottom xs-padding-20px-bottom">
-									<div class="card card-list border-0">
-										<div class="row align-items-center">
-											<div class="card-body no-padding-tb">
-												<div class="d-flex justify-content-between align-items-center">
-													<p class="mb-1">
-														<span>
-															@if ($kategori === 'monografi' || $kategori === 'artikel')
-																TAHUN TERBIT ({{ $item->tahun_terbit }})
-															@else
-																{{ __($item->bentuk_peraturan) }} ({{ $item->tahun_terbit }})
-															@endif
-														</span>
-													</p>
-												</div>
-												<p style="line-height: 24px;">
-													<a wire:navigate class="titles" href="{{ route('frontend.dokumen.show', [$kategori, $item->id]) }}">
-														{{ $item->judul }}</a>
-												</p>
-												<div class="d-flex left-content-between align-items-left">
-													<form action="{{ route('download_file') }}" method="POST" style="display: inline">
-														@csrf
-														<input type="hidden" name="filePath"
-															value="{{ config('app.doc_directory') . $item->dokumen_lampiran }}">
-														<button @disabled(!checkFilePath(config('app.doc_directory'), $item->dokumen_lampiran))
-															onclick="window.location='{{ $item->dokumen_lampiran ? route('download_file', $item->dokumen_lampiran) : '#' }}'"
-															style="opacity: {{ !checkFilePath(config('app.doc_directory'), $item->dokumen_lampiran) ? '.4' : '1' }};"
-															class="btn-custom mr-3">
-															<i class="fa-solid fa-file-lines"></i>&nbsp; Download
-														</button>
-													</form>
+			<div class="mt-12 grid grid-cols-1 lg:grid-cols-12 gap-8">
+				<div class="lg:col-span-8">
+					<div class="space-y-6">
+						@forelse ($data as $v)
+							<div
+								class="group bg-white rounded border border-gray-200 p-6
+                hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300">
 
-													<form action="{{ route('download_file') }}" method="POST" style="display: inline">
-														@csrf
-														<input type="hidden" name="filePath"
-															value="{{ config('app.doc_directory') . $item->abstrak }}">
-														<button @disabled(!checkFilePath(config('app.doc_directory'), $item->abstrak))
-															onclick="window.location='{{ $item->abstrak ? route('download_file', $item->abstrak) : '#' }}'"
-															style="opacity: {{ !checkFilePath(config('app.doc_directory'), $item->abstrak) ? '.4' : '1' }};"
-															class="btn-custom-2 mr-3">
-															<i class="fa-solid fa-file-lines"></i>&nbsp; Abstrak
-														</button>
-													</form>
-												</div>
+								<span
+									class="inline-flex items-center gap-2 mb-3 text-xs font-semibold
+                text-primary bg-orange-50 px-3 py-1 rounded-full">
+									<i class="fa-solid fa-scale-balanced"></i>
+									@if ($kategori === 'monografi' || $kategori === 'artikel')
+										TAHUN TERBIT ({{ $v->tahun_terbit }})
+									@else
+										{{ $v->bentuk_peraturan }} • ({{ $v->tahun_terbit }})
+									@endif
+								</span>
+
+								<a wire:navigate.hover href="{{ route('frontend.dokumen.show', [$kategori, $v->id]) }}"
+									class="text-sm lg:text-base leading-5 font-semibold text-gray-900
+                group-hover:text-primary transition line-clamp-3">
+									{{ $v->judul }}
+								</a>
+
+								<div class="mt-3.5 flex flex-wrap items-start gap-5">
+									@php
+										$hashId = Hashids::encode($v->id);
+									@endphp
+
+									{{-- QR Code --}}
+									<div class="flex flex-col items-center text-xs text-gray-500">
+										<div class="w-32 border border-black/10 rounded p-1 bg-white shadow-sm">
+											<div id="qrcode-{{ $hashId }}">
+												{!! QrCode::format('svg')->size(118.5)->generate(route('frontend.dokumen.show', [$kategori, $hashId])) !!}
 											</div>
 										</div>
+
+										<button type="button"
+											class="mt-1 flex items-center gap-1.5 cursor-pointer hover:text-primary transition"
+											onclick="downloadPNG('{{ $hashId }}')">
+											<i class="fa-solid fa-cloud-arrow-down opacity-60"></i>
+											Download QR
+										</button>
+									</div>
+
+									<div class="flex flex-col gap-2 mt-3">
+										<form action="{{ route('download_file') }}" method="POST">
+											@csrf
+											<input type="hidden" name="filePath"
+												value="{{ config('app.doc_directory') . $v->dokumen_lampiran }}">
+											<button @disabled(!checkFilePath(config('app.doc_directory'), $v->dokumen_lampiran))
+												onclick="window.location='{{ $v->dokumen_lampiran ? route('download_file', $v->dokumen_lampiran) : '#' }}'"
+												style="opacity: {{ !checkFilePath(config('app.doc_directory'), $v->dokumen_lampiran) ? '.4' : '1' }};"
+												class="inline-flex items-center gap-2 px-5 py-2 rounded
+                        bg-accent text-white text-xs font-semibold
+                        hover:bg-accent-hover transition shadow-sm w-full">
+												<i class="fa-solid fa-file-arrow-down"></i>
+												Download
+											</button>
+										</form>
+
+										<form action="{{ route('download_file') }}" method="POST">
+											@csrf
+											<input type="hidden" name="filePath"
+												value="{{ config('app.doc_directory') . $v->abstrak }}">
+											<button @disabled(!checkFilePath(config('app.doc_directory'), $v->abstrak))
+												onclick="window.location='{{ $v->abstrak ? route('download_file', $v->abstrak) : '#' }}'"
+												style="opacity: {{ !checkFilePath(config('app.doc_directory'), $v->abstrak) ? '.4' : '1' }};"
+												class="inline-flex items-center gap-2 px-5 py-2 rounded
+                        bg-primary text-white text-xs font-semibold
+                        hover:bg-primary-hover transition shadow-sm w-full">
+												<i class="fa-solid fa-file-arrow-down"></i>
+												Abstrak
+											</button>
+										</form>
 									</div>
 								</div>
 							</div>
 						@empty
-							<div class="empty">No results found.</div>
+							<div class="text-center text-gray-400">
+								Tidak ada data ditemukan.
+								@if (request('q'))
+									<span class="italic">Kata kunci : {{ request('q') }}</span>
+								@endif
+							</div>
 						@endforelse
-
-						{{ $data->onEachSide(3)->links() }}
 					</div>
 				</div>
 
-				<div class="col-lg-3">
-					<div class="side-bar">
-						<div class="widget">
-							<div class="widget-title">
-								<h3>Pencarian</h3>
-							</div>
-							<div class="dokumen-search">
-								<form action="{{ route('frontend.dokumen.index', $kategori) }}" method="GET">
-									@php $exceptKey = ['jenis', 'nomor', 'tahun', 'status'] @endphp
-									@foreach (request()->except($exceptKey) as $key => $value)
-										<input type="hidden" name="{{ $key }}" value="{{ $value }}">
-									@endforeach
+				<!-- Sidebar search -->
+				<div class="lg:col-span-4">
+					<form action="{{ route('frontend.dokumen.index', $kategori) }}" method="GET"
+						class="bg-white/90 backdrop-blur border border-gray-200 rounded p-6 shadow-sm space-y-4 sticky top-22">
+						@php $exceptKey = ['jenis', 'nomor', 'tahun', 'status'] @endphp
+						@foreach (request()->except($exceptKey) as $key => $value)
+							<input type="hidden" name="{{ $key }}" value="{{ $value }}">
+						@endforeach
 
-									<div class="form-group field-dokumensearch-jenis_peraturan">
-										<label class="control-label" for="jenis">Jenis Dokumen</label>
-										<select id="jenis" class="form-control" name="jenis">
-											<option value="">Pilih Jenis Dokumen</option>
-											@foreach ($tipeDokumen as $item)
-												<option @selected(request()->jenis === $item->name) value="{{ $item->name }}">{{ $item->name }}</option>
-											@endforeach
-										</select>
-										<div class="help-block"></div>
-									</div>
-									<div class="form-group field-dokumensearch-nomor_peraturan">
-										<label class="control-label" for="nomor">Nomor Peraturan</label>
-										<input value="{{ request()->nomor }}" type="text" id="nomor" class="form-control"
-											name="nomor">
-										<div class="help-block"></div>
-									</div>
-									<div class="form-group field-dokumensearch-tahun_terbit">
-										<label class="control-label" for="tahun">Tahun Terbit</label>
-										<input type="text" id="tahun" class="form-control" name="tahun"
-											value="{{ request()->tahun }}">
-										<div class="help-block"></div>
-									</div>
-									<div class="form-group field-dokumensearch-status_terakhir">
-										<label class="control-label" for="status">Status</label>
-										<select id="status" class="form-control" name="status">
-											<option value="">Pilih Status</option>
-											<option @selected(request()->status === 'dicabut') value="dicabut">dicabut</option>
-											<option @selected(request()->status == 'mencabut') value="mencabut">mencabut</option>
-											<option @selected(request()->status == 'diubah') value="diubah">diubah</option>
-											<option @selected(request()->status == 'mengubah') value="mengubah">mengubah</option>
-											<option @selected(request()->status == 'Tidak memiliki daya guna') value="Tidak memiliki daya guna">Tidak memiliki daya guna
-											</option>
-										</select>
-										<div class="help-block"></div>
-									</div>
-									<div class="form-group">
-										<button type="submit" class="btn btn-primary">Filter</button>
-										<button type="button" class="btn btn-secondary"
-											onclick="window.location='{{ route('frontend.dokumen.index', $kategori) }}'">Clear</button>
-									</div>
-								</form>
+						{{-- Header --}}
+						<div class="flex items-center gap-3 border-b border-b-black/20 pb-4">
+							<div
+								class="w-9 h-9 flex items-center justify-center
+                       rounded bg-orange-100 text-primary">
+								<i class="fa-solid fa-filter"></i>
+							</div>
+							<h4 class="text-base font-semibold text-gray-900">
+								Filter Dokumen
+							</h4>
+						</div>
+
+						{{-- Jenis Dokumen --}}
+						<div class="space-y-1">
+							<label class="text-xs font-medium text-gray-500 uppercase tracking-wide">
+								Jenis Dokumen
+							</label>
+							<div class="relative">
+								<i class="fa-solid fa-layer-group absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+								<select name="jenis"
+									class="select2 w-full pl-11 pr-4 py-2.5 rounded border border-gray-300 text-sm focus:ring-2 focus:primary focus:border-primary">
+									<option value="">Pilh Jenis Dokumen</option>
+									@foreach ($tipeDokumen as $v)
+										<option @selected(request()->jenis === $v->name) value="{{ $v->name }}">{{ $v->name }}</option>
+									@endforeach
+								</select>
 							</div>
 						</div>
-					</div>
+
+						{{-- Nomor --}}
+						<div class="space-y-1">
+							<label class="text-xs font-medium text-gray-500 uppercase tracking-wide">
+								Nomor Peraturan
+							</label>
+							<div class="relative">
+								<i
+									class="fa-solid fa-hashtag absolute left-4 top-1/2 -translate-y-1/2
+                           text-gray-400 text-sm"></i>
+								<input type="text" name="nomor"
+									value="{{ request()->nomor }}"
+									placeholder="Contoh: 8"
+									class="w-full pl-11 pr-4 py-2.5 rounded border border-gray-300
+                              text-sm focus:ring-2 focus:primary focus:border-primary">
+							</div>
+						</div>
+
+						{{-- Tahun --}}
+						<div class="space-y-1">
+							<label class="text-xs font-medium text-gray-500 uppercase tracking-wide">
+								Tahun Terbit
+							</label>
+							<div class="relative">
+								<i
+									class="fa-solid fa-calendar absolute left-4 top-1/2 -translate-y-1/2
+                           text-gray-400 text-sm"></i>
+								<input type="text" name="tahun"
+									placeholder="Contoh: {{ date('Y') }}"
+									value="{{ request()->tahun }}"
+									class="w-full pl-11 pr-4 py-2.5 rounded border border-gray-300
+                              text-sm focus:ring-2 focus:primary focus:border-primary">
+							</div>
+						</div>
+
+						{{-- Status --}}
+						<div class="space-y-1">
+							<label class="text-xs font-medium text-gray-500 uppercase tracking-wide">
+								Status
+							</label>
+							<div class="relative">
+								<i
+									class="fa-solid fa-circle-check absolute left-4 top-1/2 -translate-y-1/2
+                           text-gray-400 text-sm"></i>
+								<select name="status"
+									class="w-full pl-11 pr-4 py-2.5 rounded border border-gray-300
+                           text-sm focus:ring-2 focus:ring-primary focus:border-primary">
+									<option value="">Pilih Status</option>
+									<option @selected(request()->status === 'dicabut') value="dicabut">dicabut</option>
+									<option @selected(request()->status == 'mencabut') value="mencabut">mencabut</option>
+									<option @selected(request()->status == 'diubah') value="diubah">diubah</option>
+									<option @selected(request()->status == 'mengubah') value="mengubah">mengubah</option>
+									<option @selected(request()->status == 'Tidak memiliki daya guna') value="Tidak memiliki daya guna">Tidak memiliki daya guna
+									</option>
+								</select>
+							</div>
+						</div>
+
+						{{-- Actions --}}
+						<div class="flex gap-3 pt-2">
+							<button
+								class="flex-1 flex items-center justify-center gap-2
+                       py-2.5 rounded bg-primary text-white
+                       text-xs font-semibold hover:bg-primary-hover  transition">
+								<i class="fa-solid fa-magnifying-glass"></i>
+								Terapkan
+							</button>
+
+							<button
+								type="button"
+								onclick="window.location.href='{{ url()->current() }}'"
+								class="flex items-center justify-center
+                       px-4 rounded border border-gray-300
+                       text-gray-600 hover:bg-gray-100 transition">
+								<i class="fa-solid fa-rotate-left"></i>
+							</button>
+						</div>
+
+					</form>
 				</div>
+			</div>
+
+			<div class="mt-6">
+				{{ $data->links('vendor.pagination.tailwind') }}
 			</div>
 		</div>
 	</section>
+
+
+	<script>
+		function downloadPNG(id) {
+			const svg = document.querySelector('#qrcode-' + id + ' svg');
+			const serializer = new XMLSerializer();
+			const svgStr = serializer.serializeToString(svg);
+
+			const canvas = document.createElement("canvas");
+			const ctx = canvas.getContext("2d");
+
+			const img = new Image();
+			const svgBlob = new Blob([svgStr], {
+				type: "image/svg+xml;charset=utf-8"
+			});
+			const url = URL.createObjectURL(svgBlob);
+
+			img.onload = function() {
+				const scale = 5;
+
+				canvas.width = img.width * scale;
+				canvas.height = img.height * scale;
+
+				ctx.scale(scale, scale);
+				ctx.drawImage(img, 0, 0);
+
+				URL.revokeObjectURL(url);
+
+				const pngUrl = canvas.toDataURL("image/png");
+
+				const a = document.createElement("a");
+				a.href = pngUrl;
+				a.download = "qrcode-{{ $kategori }}-" + id + ".png";
+				document.body.appendChild(a);
+				a.click();
+				document.body.removeChild(a);
+			};
+
+			img.src = url;
+		}
+	</script>
 </div>

@@ -17,7 +17,6 @@ class Profil extends Component
   {
     if ($this->kategori === 'sekilas-sejarah') {
       $title = "Sekilas Sejarah";
-      // $data  = DB::table('sejarah')->first();
       $data = <<<HTML
         <p class="margin-30px-bottom sm-margin-20px-bottom">Pembentukan Jaringan Dokumentasi dan Informasi Hukum Nasional (JDIHN), secara historis merupakan salah satu rekomendasi dari kegiatan pembangunan hukum nasional yaitu Seminar Hukum Nasional III tahun 1974 di Surabaya yang diselenggarakan oleh Badan Pembinaan Hukum. Hasil seminar menilai dokumentasi hukum terhadap pembangunan hukum nasional masih sangat lemah karena belum mampu menyediakan dokumen dan informasi hukum serta sistem temu kembali dengan cepat dan tepat pada saat dibutuhan.</p>
         <p class="margin-30px-bottom sm-margin-20px-bottom">Hasil lain dari Seminar Hukum Nasional III Tahun 1974, ditemukan faktor penyebab lemahnya dukungan dokumentasi hukum antara lain adalah:</p>
@@ -77,10 +76,9 @@ class Profil extends Component
         </ol>
         <p>Sejarah pembentukan JDIHN di atas menunjukkan betapa pentingnya kerjasama pengelolaan dokumen dan informasi hukum untuk mempercepat pembangunan hukum nasional yang berkualitas. Oleh karena itu, untuk membangun akses informasi hukum yang terintegrasi, secara nasional semua Anggota JDIHN wajib mengelola dokumen dan informasi hukum yang ada dalam kewenangannya dengan menggunakan modul/standar yang ada dan meningkatkan akselerasinya dengan memanfaatkan kecanggihan teknologi informasi dan komunikasi.</p>
       HTML;
-      // 
+      //
     } elseif ($this->kategori === 'dasar-hukum') {
       $title = "Dasar Hukum";
-      // $data  = DB::table('dasar_hukum')->get();
       $data = <<<HTML
         <ul>
             <li><a href="#">
@@ -94,10 +92,9 @@ class Profil extends Component
             </a></li>
         </ul>
       HTML;
-      // 
+      //
     } elseif ($this->kategori === 'visi') {
       $title = "Visi";
-      // $data  = DB::table('visi_misi')->first();
       $data = <<<HTML
         <p>Jaringan Dokumentasi dan Informasi Hukum Pemerintah Kota Kendari atau disingkat JDIH Pemkot Kendari adalah:</p>
         <ul>
@@ -107,10 +104,9 @@ class Profil extends Component
         <p><strong>VISI</strong></p>
         <p>"Kendari Bergerak Menuntun Jagat Keadilan dan Ketertiban Hukum"</p>
       HTML;
-      // 
+      //
     } elseif ($this->kategori === 'misi') {
       $title = "Misi";
-      // $data  = DB::table('visi_misi')->first();
       $data = <<<HTML
         <p>Jaringan Dokumentasi dan Informasi Hukum Pemerintah Kota Kendari atau disingkat JDIH Pemkot Kendari adalah :</p>
         <ul>
@@ -121,11 +117,10 @@ class Profil extends Component
         <p><strong>MISI</strong></p>
         <p>"Terwujudnya Kendari Bergerak Yang Menuntun Jagat Keadilan dan Ketertiban Hukum"</p>
       HTML;
-      // 
+      //
     } elseif ($this->kategori === 'sto') {
       $title = "Struktur Organisasi";
       $data  = null;
-      // 
     } else {
       return abort(404);
     }

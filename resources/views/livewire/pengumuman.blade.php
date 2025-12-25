@@ -1,62 +1,92 @@
 <div>
 	<x-frontend.breadcrumb title="Pengumuman" :listNav="[['label' => 'Pengumuman']]" />
 
-	<section class="news">
-		<div class="container">
-			<div class="border-bottom padding-20px-bottom margin-30px-bottom">
-				<div class="widget search mb-4">
-					<form id="w0" action="{{ route('frontend.pengumuman.index') }}" method="get">
-						<div class="form-row align-items-center">
-							<div class="col-md-10 my-1">
-								<input type="text" class="form-control" id="pengumumansearch-judul" name="q"
-									placeholder="cari pengumuman lainnya..." value="{{ request()->q }}">
-							</div>
-							<div class="col-md-2 my-1">
-								<button type="submit" class="butn btn-block">Cari</button>
-							</div>
-						</div>
-					</form>
-				</div>
-			</div>
 
-			<div class="row pengumuman">
-				<div id="w0" class="list-view" style="width: 100%">
-					<div class="item">
-						@forelse ($data as $item)
-							<div class="col-lg-12 sm-margin-30px-bottom">
-								<div class="card row h-100">
-									@php
-										$image = checkFilePath(config('app.img_directory'), $item->image)
-										    ? asset('storage/' . config('app.img_directory') . $item->image)
-										    : asset('assets/img/default-img.jpg');
-									@endphp
-									<img class="card-img-top col-lg-3" src="{{ $image }}" alt="img">
-									<div class="card-body padding-30px-all col-lg-9">
-										<label for="category">{{ $item->tag }}</label>
-										<h5 class="card-title font-size22 font-weight-500 magin-20px-bottom">
-											<a href="#" class="text-extra-dark-gray">
-												<a wire:navigate
-													href="{{ route('frontend.pengumuman.show', $item->id) }}">{{ str()->limit($item->judul, 40) }}</a>
-											</a>
-										</h5>
-										<div class="detail">
-											{{ Carbon\Carbon::parse($item->tanggal)->translatedFormat('d F Y') }}
-										</div>
-										<p class="no-margin-bottom">
-											{{ str()->limit(strip_tags($item->isi), 140) }}
-										</p>
-									</div>
+	<section class="bg-linear-to-b from-white via-slate-50 to-slate-100  py-12 lg:py-14">
+		<div class="max-w-5xl mx-auto px-2 lg:px-0">
+
+			<x-frontend.form-search placeholder="Cari pengumuman lainnya" />
+
+
+			<div class="mt-12 space-y-8">
+				@forelse ($data as $v)
+					@php
+						$image = checkFilePath(config('app.img_directory'), $v->image)
+						    ? asset('storage/' . config('app.img_directory') . $v->image)
+						    : asset('assets/img/default-img.jpg');
+					@endphp
+
+					<article
+						class="group relative bg-white rounded-2xl border border-slate-200 overflow-hidden
+					transition duration-300 hover:-translate-y-1 hover:shadow-xl">
+
+						<div class="flex flex-col md:flex-row">
+
+							<!-- Image -->
+							<div class="relative md:w-72 shrink-0">
+								<img
+									src="{{ $image }}"
+									alt="Pengumuman JDIH"
+									class="h-48 md:h-full w-full object-cover" />
+
+								<!-- Gradient Overlay -->
+								<div
+									class="absolute inset-0 bg-linear-to-t from-black/40 via-black/10 to-transparent md:hidden">
 								</div>
 							</div>
-						@empty
-							<div class="empty text-center">No results found.</div>
-						@endforelse
-					</div>
 
-					<div class="mt-4">
-						{{ $data->onEachSide(3)->links() }}
+							<!-- Content -->
+							<div class="flex flex-col justify-between p-6 lg:p-8 flex-1">
+
+								<div>
+									<!-- Badge -->
+									<span
+										class="inline-flex items-center gap-1 mb-4 rounded-full
+									bg-orange-50 text-primary text-xs font-semibold px-3 py-1">
+										📌 Pemberitahuan Putusan
+									</span>
+
+									<h3
+										class="text-base lg:text-lg font-semibold text-slate-900 leading-snug
+									group-hover:text-primary transition">
+										{{ Str::limit($v->judul, 60) }}
+									</h3>
+
+									<p
+										class="mt-3 text-sm text-slate-600 leading-relaxed line-clamp-2">
+										{{ Str::limit(strip_tags($v->isi), 130) }}
+									</p>
+								</div>
+
+								<div class="mt-6 flex gap-3 items-center justify-between">
+									<span class="text-xs lg:text-sm text-slate-500 flex items-center gap-1">
+										📅 {{ Carbon\Carbon::parse($v->tanggal)->translatedFormat('d F Y') }}
+									</span>
+
+									<a wire:navigate.hover href="{{ route('frontend.pengumuman.show', $v->id) }}"
+										class="inline-flex items-center gap-1 text-xs lg:text-sm font-semibold text-primary
+									group-hover:gap-2 transition-all">
+										Baca Selengkapnya
+										<span>→</span>
+									</a>
+								</div>
+
+							</div>
+						</div>
+					</article>
+				@empty
+					<div class="text-center text-gray-400 col-span-3">
+						Tidak ada data ditemukan.
+						@if (request('q'))
+							<span class="italic">Kata kunci : {{ request('q') }}</span>
+						@endif
 					</div>
-				</div>
+				@endforelse
+
+			</div>
+
+			<div class="mt-6">
+				{{ $data->links('vendor.pagination.tailwind') }}
 			</div>
 		</div>
 	</section>

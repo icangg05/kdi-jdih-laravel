@@ -13,6 +13,8 @@
     "laravel/framework": "^12.0",
     "laravel/tinker": "^2.10.1",
     "livewire/livewire": "^3.6",
+    "simplesoftwareio/simple-qrcode": "^4.2",
+    "vinkla/hashids": "^13.0",
     "yoeunes/toastr": "^3.1"
   },
   "require-dev": {
@@ -76,6 +78,12 @@
     "allow-plugins": {
       "pestphp/pest-plugin": true,
       "php-http/discovery": true
+    },
+    "audit": {
+      "ignore": [
+        "PKSA-g5js-3ypd-k2kr",
+        "PKSA-365x-2zjk-pt47"
+      ]
     }
   },
   "minimum-stability": "stable",

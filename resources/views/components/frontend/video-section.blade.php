@@ -1,5 +1,17 @@
-<section class="bg-[#292C36] py-20">
-	<div class="max-w-6xl mx-auto px-6">
+<section
+	class="relative py-20 bg-linear-to-br from-[#1E2028] via-[#292C36] to-[#12131A] overflow-hidden">
+
+	<!-- Decorative Glow -->
+	<div class="absolute -top-32 -left-32 w-96 h-96 bg-primary/20 rounded-full blur-3xl"></div>
+	<div class="absolute bottom-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl"></div>
+
+	<!-- Subtle Pattern -->
+	<div
+		class="absolute inset-0 opacity-[0.04]"
+		style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;">
+	</div>
+
+	<div class="relative max-w-6xl mx-auto px-6">
 
 		<!-- Header -->
 		<div class="text-center mb-16">

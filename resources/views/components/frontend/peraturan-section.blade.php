@@ -34,7 +34,7 @@
 						{{ $v->pemrakarsa }}
 					</h3>
 
-					<p class="text-sm text-gray-600 leading-relaxed group-hover:text-white">
+					<p class="line-clamp-3 text-sm text-gray-600 leading-relaxed group-hover:text-white">
 						{{ $v->judul }}
 					</p>
 				</a>

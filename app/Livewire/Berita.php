@@ -7,15 +7,16 @@ use Livewire\Component;
 
 class Berita extends Component
 {
-	public function render()
-	{
-		$data = DB::table('berita')
-			->orderBy('created_at', 'desc')
-			->where('judul', 'like', '%'. request()->q. '%')
-			->paginate(9);
+  public function render()
+  {
+    $data = DB::table('berita')
+      ->orderBy('created_at', 'desc')
+      ->where('judul', 'like', '%' . request()->q . '%')
+      ->paginate(9)
+      ->withQueryString();
 
-		return view('livewire.berita', compact(
-			'data'
-		));
-	}
+    return view('livewire.berita', compact(
+      'data'
+    ));
+  }
 }

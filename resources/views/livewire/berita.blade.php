@@ -1,56 +1,86 @@
 <div>
 	<x-frontend.breadcrumb title="Berita" :listNav="[['label' => 'Berita']]" />
 
-	<section class="news">
-		<div class="container">
-			<div class="border-bottom padding-20px-bottom margin-30px-bottom">
-				<div class="widget search mb-4">
-					<form id="w0" action="{{ route('frontend.berita.index') }}" method="get">
-						<div class="form-row align-items-center">
-							<div class="col-md-10 my-1">
-								<input type="text" class="form-control" id="beritasearch-judul" name="q"
-									placeholder="cari berita lainnya..." value="{{ request()->q }}">
-							</div>
-							<div class="col-md-2 my-1">
-								<button type="submit" class="butn btn-block">Cari</button>
-							</div>
-						</div>
-					</form>
-				</div>
-			</div>
+	<section class="bg-linear-to-b from-white via-slate-50 to-slate-100 py-12 lg:py-14">
+		<div class="max-w-5xl mx-auto px-2 lg:px-0">
 
-			<div class="row">
-				@forelse ($data as $item)
-					<div class="col-lg-4 col-md-6 col-sm-12 margin-30px-bottom">
-						<div class="card border-0 shadow h-100">
-							<a href="#">
-								@php
-									$image = checkFilePath(config('app.img_directory'), $item->image)
-									    ? asset('storage/' . config('app.img_directory') . $item->image)
-									    : asset('assets/img/default-img.jpg');
-								@endphp
-								<img class="card-img-top rounded"
-									src="{{ $image }}" alt="img">
-							</a>
-							<div class="card-body padding-30px-all">
-								<div class="margin-10px-bottom">
-									{{ Carbon\Carbon::parse($item->tanggal)->translatedFormat('d F Y') }}
-								</div>
-								<h5 class="card-title font-size22 font-weight-500 magin-20px-bottom">
-									<a wire:navigate class="text-extra-dark-gray" href="{{ route('frontend.berita.show', $item->id) }}">
-										{{ str()->limit($item->judul, 30) }}</a>
-								</h5>
-								<p class="no-margin-bottom">
-									{{ str()->limit(strip_tags($item->isi), 100) }}</p>
-							</div>
+			<x-frontend.form-search placeholder="Cari berita lainnya" />
+
+
+			<div class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+				@forelse ($data as $v)
+					@php
+						$image = checkFilePath(config('app.img_directory'), $v->image)
+						    ? asset('storage/' . config('app.img_directory') . $v->image)
+						    : asset('assets/img/default-img.jpg');
+					@endphp
+
+					<article
+						class="group relative bg-white rounded-2xl overflow-hidden
+          border border-slate-200
+          transform-gpu will-change-transform
+          transition-all duration-300 ease-out
+          hover:-translate-y-1 hover:shadow-2xl">
+
+						<!-- Image -->
+						<div class="relative h-56 overflow-hidden">
+							<img
+								src="{{ $image }}"
+								alt="Berita"
+								class="absolute inset-0 w-full h-full object-cover
+							group-hover:scale-105 transition-transform duration-500" />
+
+							<!-- Overlay -->
+							<div class="absolute inset-0 bg-linear-to-t from-black/50 via-black/10 to-transparent"></div>
+
+							<!-- Date Badge -->
+							<span
+								class="absolute top-4 left-4 z-10
+							rounded-full bg-primary/90 text-white
+							text-xs font-semibold px-3 py-1 shadow">
+								{{ Carbon\Carbon::parse($v->created_at)->translatedFormat('d F Y') }}
+							</span>
 						</div>
-					</div>
+
+						<!-- Content -->
+						<div class="p-6">
+							<h3
+								class="text-base lg:text-lg font-semibold text-slate-800
+							leading-snug line-clamp-2
+							group-hover:text-primary transition">
+								{{ Str::limit($v->judul, 20) }}
+							</h3>
+
+							<p
+								class="mt-3 text-sm text-slate-600 leading-relaxed line-clamp-3">
+								{{ Str::limit(strip_tags($v->isi), 100) }}
+							</p>
+
+							<a
+								wire:navigate.hover href="{{ route('frontend.berita.show', $v->id) }}"
+								class="inline-flex items-center gap-1 mt-5
+							text-sm font-semibold text-primary
+							group-hover:gap-2 transition-all">
+								Baca Selengkapnya
+								<span>→</span>
+							</a>
+						</div>
+
+					</article>
 				@empty
-					<div class="empty mx-auto">No results found.</div>
+					<div class="text-center text-gray-400 col-span-3">
+						Tidak ada data ditemukan.
+						@if (request('q'))
+							<span class="italic">Kata kunci : {{ request('q') }}</span>
+						@endif
+					</div>
 				@endforelse
 			</div>
 
-			{{ $data->onEachSide(3)->links() }}
+			<!-- Pagination -->
+			<div class="mt-6">
+				{{ $data->links('vendor.pagination.tailwind') }}
+			</div>
 		</div>
 	</section>
 </div>
