@@ -39,9 +39,8 @@
 
 					<!-- Date -->
 					<div class="flex items-center gap-2 text-slate-600">
-						<i class="fa-regular fa-calendar text-sm"></i>
-						<span class="text-sm">
-							<i class="fa-regular fa-calendar-days"></i>&nbsp;
+            <span class="text-sm">
+              <i class="fa-regular fa-calendar text-sm"></i>&nbsp;
 							{{ Carbon\Carbon::parse($data->tanggal)->translatedFormat('d F Y') }}
 							</p>
 						</span>
@@ -157,7 +156,7 @@
 								</li>
 							@empty
 								<li class="text-sm text-slate-500 text-center">
-									Belum ada berita terbaru.
+									Belum ada data terbaru.
 								</li>
 							@endforelse
 						</ul>

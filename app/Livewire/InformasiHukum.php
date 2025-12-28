@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
+use Vinkla\Hashids\Facades\Hashids;
 
 class InformasiHukum extends Component
 {
@@ -11,7 +12,7 @@ class InformasiHukum extends Component
 
   public function mount($id)
   {
-    $this->jenisInformasiHukumId = $id;
+    $this->jenisInformasiHukumId = Hashids::decode($id)[0] ?? abort(404);
   }
 
   public function render()
@@ -25,11 +26,9 @@ class InformasiHukum extends Component
       ->select('informasi_hukum.*', 'jenis_informasi_hukum.singkatan as jenis')
       ->paginate(8);
 
-    $jenisInformasiHukumId = $this->jenisInformasiHukumId;
 
     return view('livewire.informasi-hukum', compact(
       'data',
-      'jenisInformasiHukumId',
     ));
   }
 }

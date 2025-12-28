@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
+use Vinkla\Hashids\Facades\Hashids;
 
 class InformasiHukumShow extends Component
 {
@@ -11,7 +12,7 @@ class InformasiHukumShow extends Component
 
   public function mount($id)
   {
-    $this->id = $id;
+    $this->id = Hashids::decode($id)[0] ?? abort(404);
   }
 
   public function render()
@@ -25,23 +26,17 @@ class InformasiHukumShow extends Component
     abort_if(!$data, 404);
 
     // Query data informasi hukum lainnya
-    $informasiHukum = DB::table('informasi_hukum')
+    $informasiHukumTerbaru = DB::table('informasi_hukum')
       ->where('status', 1)
       ->where('id', '!=', $this->id)
       ->orderBy('created_at', 'desc')
-      ->limit(2)
+      ->limit(3)
       ->get();
 
-    // Query data video
-    $video = DB::table('video')
-      ->orderBy('created_at', 'desc')
-      ->limit(2)
-      ->get();
 
     return view('livewire.informasi-hukum-show', compact(
       'data',
-      'informasiHukum',
-      'video'
+      'informasiHukumTerbaru',
     ));
   }
 }

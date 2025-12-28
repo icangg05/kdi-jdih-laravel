@@ -99,7 +99,7 @@
 
 		<!-- Button -->
 		<div class="mt-14 text-center">
-			<a wire:navigate.hover href="{{ route('frontend.dokumen.show', ['monografi', $monografi->id]) }}"
+			<a wire:navigate.hover href="{{ route('frontend.dokumen.show', ['monografi', Hashids::encode($monografi->id)]) }}"
 				class="inline-flex items-center gap-2 bg-white/50 text-slate-900 px-6 py-3 rounded-md font-semibold transition">
 				📄 Lihat Detail →
 			</a>
