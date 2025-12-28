@@ -4,15 +4,40 @@ namespace App\Livewire;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Url;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Dokumen extends Component
 {
+  use WithPagination;
+
+  #[Url()]
+  public $q = '', $jenis = '', $tahun = '', $status = '', $nomor = '';
+
   public $kategori;
 
   public function mount($kategori)
   {
     $this->kategori = $kategori;
+  }
+
+  public function search()
+  {
+    $this->resetPage();
+  }
+
+  public function resetFilter()
+  {
+    $this->reset([
+      'q',
+      'jenis',
+      'tahun',
+      'status',
+      'nomor',
+    ]);
+
+    $this->resetPage();
   }
 
   public function render(Request $request)
@@ -50,17 +75,17 @@ class Dokumen extends Component
     }
 
     // User search input
-    if ($request->q != '')
-      $data = $data->where('judul', 'like', "%$request->q%");
+    if ($this->q != '')
+      $data = $data->where('judul', 'like', "%$this->q%");
     // Filter search
-    if ($request->jenis != '')
-      $data = $data->where('jenis_peraturan', $request->jenis);
-    if ($request->tahun != '')
-      $data = $data->where('tahun_terbit', $request->tahun);
-    if ($request->status != '')
-      $data = $data->where('status_terakhir', $request->status);
-    if ($request->nomor != '')
-      $data = $data->where('nomor_peraturan', $request->nomor);
+    if ($this->jenis != '')
+      $data = $data->where('jenis_peraturan', $this->jenis);
+    if ($this->tahun != '')
+      $data = $data->where('tahun_terbit', $this->tahun);
+    if ($this->status != '')
+      $data = $data->where('status_terakhir', $this->status);
+    if ($this->nomor != '')
+      $data = $data->where('nomor_peraturan', $this->nomor);
 
     // Paginate 6 item perpage
     $data = $data->orderBy('created_at', 'desc')->paginate(6)->withQueryString();

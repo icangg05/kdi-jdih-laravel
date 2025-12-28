@@ -11,7 +11,7 @@
 
 
 			<!-- LOADING SPINNER -->
-			<div wire:loading wire:target="q" class="py-3 w-full">
+			<div wire:loading wire:target="search" class="py-3 w-full">
 				<div class="text-sm lg:text-base text-center text-gray-400">
 					<i class="fa-solid fa-spinner fa-spin text-[20.5px]"></i>
 				</div>
@@ -19,7 +19,7 @@
 
 			<div class="space-y-8"
 				wire:loading.remove
-				wire:target="q">
+				wire:target="search">
 				@forelse ($data as $v)
 					@php
 						$image = checkFilePath(config('app.img_directory'), $v->image)

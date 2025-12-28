@@ -8,7 +8,16 @@
 
 			<div class="mt-12 grid grid-cols-1 lg:grid-cols-12 gap-8">
 				<div class="lg:col-span-8">
-					<div class="space-y-6">
+					<!-- LOADING SPINNER -->
+					<div wire:loading wire:target="search" class="py-3 w-full">
+						<div class="text-sm lg:text-base text-center text-gray-400">
+							<i class="fa-solid fa-spinner fa-spin text-[20.5px]"></i>
+						</div>
+					</div>
+
+					<div class="space-y-6"
+						wire:loading.remove
+						wire:target="search">
 						@forelse ($data as $v)
 							@php
 								$hashId = Hashids::encode($v->id);
@@ -89,8 +98,8 @@
 						@empty
 							<div class="text-center text-gray-400">
 								Tidak ada data ditemukan.
-								@if (request('q'))
-									<span class="italic">Kata kunci : {{ request('q') }}</span>
+								@if ($q)
+									<span class="italic">Kata kunci : {{ $q }}</span>
 								@endif
 							</div>
 						@endforelse
@@ -99,12 +108,8 @@
 
 				<!-- Sidebar search -->
 				<div class="lg:col-span-4">
-					<form action="{{ route('frontend.dokumen.index', $kategori) }}" method="GET"
+					<form wire:submit.prevent="search"
 						class="bg-white/90 backdrop-blur border border-gray-200 rounded p-6 shadow-sm space-y-4 sticky top-22">
-						@php $exceptKey = ['jenis', 'nomor', 'tahun', 'status'] @endphp
-						@foreach (request()->except($exceptKey) as $key => $value)
-							<input type="hidden" name="{{ $key }}" value="{{ $value }}">
-						@endforeach
 
 						{{-- Header --}}
 						<div class="flex items-center gap-3 border-b border-b-black/20 pb-4">
@@ -125,13 +130,13 @@
 							</label>
 							<div class="relative">
 								<i class="fa-solid fa-layer-group absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
-								<select name="jenis"
+								<select wire:model.defer="jenis"
 									class="select2 w-full pl-11 pr-4 py-2.5 rounded border border-gray-300 text-sm focus:outline-none focus:border-primary">
 									<option value="">Pilh Jenis {{ ucfirst($kategori) }}</option>
 									@foreach ($tipeDokumen as $v)
-										<option @selected(request()->jenis === $v->name) value="{{ $v->name }}">
-                      {{ Str::title($v->name) }}
-                    </option>
+										<option value="{{ $v->name }}">
+											{{ Str::title($v->name) }}
+										</option>
 									@endforeach
 								</select>
 							</div>
@@ -147,8 +152,8 @@
 									<i
 										class="fa-solid fa-hashtag absolute left-4 top-1/2 -translate-y-1/2
                            text-gray-400 text-sm"></i>
-									<input type="text" name="nomor"
-										value="{{ request()->nomor }}"
+									<input type="text"
+										wire:model.defer="nomor"
 										placeholder="Contoh: 8"
 										class="w-full pl-11 pr-4 py-2.5 rounded border border-gray-300
                               text-sm focus:outline-none focus:border-primary">
@@ -165,7 +170,8 @@
 								<i
 									class="fa-solid fa-calendar absolute left-4 top-1/2 -translate-y-1/2
                            text-gray-400 text-sm"></i>
-								<input type="text" name="tahun"
+								<input type="text"
+									wire:model.defer="tahun"
 									placeholder="Contoh: {{ date('Y') }}"
 									value="{{ request()->tahun }}"
 									class="w-full pl-11 pr-4 py-2.5 rounded border border-gray-300
@@ -183,15 +189,15 @@
 									<i
 										class="fa-solid fa-circle-check absolute left-4 top-1/2 -translate-y-1/2
                            text-gray-400 text-sm"></i>
-									<select name="status"
+									<select wire:model.defer="status"
 										class="w-full pl-11 pr-4 py-2.5 rounded border border-gray-300
                            text-sm focus:outline-none focus:border-primary">
 										<option value="">Pilih Status</option>
-										<option @selected(request()->status === 'dicabut') value="dicabut">Dicabut</option>
-										<option @selected(request()->status == 'mencabut') value="mencabut">Mencabut</option>
-										<option @selected(request()->status == 'diubah') value="diubah">Diubah</option>
-										<option @selected(request()->status == 'mengubah') value="mengubah">Mengubah</option>
-										<option @selected(request()->status == 'Tidak memiliki daya guna') value="Tidak memiliki daya guna">Tidak memiliki daya guna
+										<option value="dicabut">Dicabut</option>
+										<option value="mencabut">Mencabut</option>
+										<option value="diubah">Diubah</option>
+										<option value="mengubah">Mengubah</option>
+										<option value="Tidak memiliki daya guna">Tidak memiliki daya guna
 										</option>
 									</select>
 								</div>
@@ -210,7 +216,7 @@
 
 							<button
 								type="button"
-								onclick="window.location.href='{{ url()->current() }}'"
+								wire:click="resetFilter"
 								class="flex items-center justify-center
                        px-4 rounded border border-gray-300
                        text-gray-600 hover:bg-gray-100 transition focus:outline-none focus:bg-gray-100">
@@ -222,8 +228,10 @@
 				</div>
 			</div>
 
-			<div class="mt-6">
-				{{ $data->links('vendor.pagination.tailwind') }}
+			<div class="mt-6"
+				wire:loading.remove
+				wire:target="search">
+				{{ $data->links() }}
 			</div>
 		</div>
 	</section>

@@ -5,20 +5,22 @@ namespace App\Livewire;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Url;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Berita extends Component
 {
+  use WithPagination;
+
   #[Url()]
   public $q = '';
 
   public function search()
   {
-    // cukup kosong — Livewire akan re-render
+    $this->resetPage();
   }
 
   public function render()
   {
-    sleep(1);
     $data = DB::table('berita')
       ->orderBy('created_at', 'desc')
       ->when(

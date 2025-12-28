@@ -16,12 +16,11 @@ class Pengumuman extends Component
 
   public function search()
   {
-    // cukup kosong — Livewire akan re-render
+    $this->resetPage();
   }
 
   public function render()
   {
-    sleep(1);
     $data = DB::table('pengumuman')
       ->orderBy('created_at', 'desc')
       ->when(
