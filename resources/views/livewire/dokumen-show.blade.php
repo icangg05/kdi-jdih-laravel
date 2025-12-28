@@ -120,7 +120,7 @@
 								@forelse ($peraturanTerkait as $item)
 									<li>
 										<span class="text-slate-600">{{ $item->status_perter }}</span> :
-										<a class="font-medium text-primary hover:text-primary-hover transition hover:underline"
+										<a wire:navigate.hover class="font-medium text-primary hover:text-primary-hover transition hover:underline"
 											href="{{ route('frontend.dokumen.show', ['peraturan', Hashids::encode($item->peraturan_terkait)]) }}">
 											{{ $item->judul_peraturan_terkait }}
 										</a>

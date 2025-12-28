@@ -64,7 +64,7 @@
 						</p>
 
 						<a
-							wire:navigate.hover href="{{ route('frontend.berita.show', $v->id) }}"
+							wire:navigate.hover href="{{ route('frontend.berita.show', Hashids::encode($v->id)) }}"
 							class="inline-flex items-center gap-1 mt-5
 							text-sm font-semibold text-primary
 							group-hover:gap-2 transition-all">
