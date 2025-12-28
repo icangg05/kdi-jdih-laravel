@@ -16,6 +16,29 @@ return [
   'img_directory' => 'gambar/',
   'default_img'   => 'assets/img/default-img.jpg',
 
+  // Contact & social media
+  'contact' => '0821-3527-3000',
+  'email'   => 'pemkot@kendarikota.go.id',
+  'address' => 'Jl. Drs. H. Abd. Silondae No. 8 , Kel. Mandonga Kec. Mandonga 93111',
+  // Social media
+  'fb'      => [
+    'url'   => 'https://www.facebook.com/share/1armp948ym/',
+    'label' => 'JDIH Kota Kendari',
+  ],
+  'ig' => [
+    'url'   => 'https://www.instagram.com/jdihkotakendari2?igsh=MWVqNDN6Y3Y4ZmtjcA==',
+    'label' => 'jdihkotakendari2',
+  ],
+  'yt' => [
+    'url'   => 'https://www.youtube.com/@jdihkotakendari',
+    'label' => 'JDIH KENDARI',
+  ],
+  'tt' => [
+    'url'   => 'https://www.tiktok.com/@jdihkotakendari',
+    'label' => 'JDIH',
+  ],
+  'surveiUrl' => 'https://forms.gle/wtEHAoVe7EcZ8AHx6',
+
   'menus' => [
     [
       'label' => 'Beranda',
@@ -58,6 +81,7 @@ return [
       'route'       => 'frontend.berita.index',
     ]
   ],
+
 
   /*
     |--------------------------------------------------------------------------

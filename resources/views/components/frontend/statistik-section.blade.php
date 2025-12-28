@@ -134,64 +134,52 @@
 	}
 @endphp
 
-<!-- Chart Script -->
-<script>
-	const ctx = document.getElementById('statistikChart').getContext('2d');
 
-	new Chart(ctx, {
-		type: 'bar',
-		data: {
-			labels: @json($years),
-			datasets: [{
-					label: 'Peraturan & Keputusan',
-					data: @json($peraturanData),
-					backgroundColor: 'rgba(56, 189, 248, 0.7)',
-					borderRadius: 6
-				},
-				{
-					label: 'Monografi',
-					data: @json($monografiData),
-					backgroundColor: 'rgba(251, 113, 133, 0.7)',
-					borderRadius: 6
-				},
-				{
-					label: 'Putusan',
-					data: @json($keputusanData),
-					backgroundColor: 'rgba(167, 139, 250, 0.7)',
-					borderRadius: 6
-				}
-			]
-		},
-		options: {
-			responsive: true,
-			maintainAspectRatio: false,
-			plugins: {
-				legend: {
-					position: 'top',
-					labels: {
-						color: '#374151'
-					}
-				}
-			},
-			scales: {
-				y: {
-					beginAtZero: true,
-					ticks: {
-						color: '#374151'
-					},
-					grid: {
-						color: '#e5e7eb'
-					}
-				},
-				x: {
-					ticks: {
-						color: '#374151'
-					},
-					grid: {
-						display: false
-					}
-				}
-			}
+<!-- Chart Script -->
+<script data-navigate-once>
+	document.addEventListener('livewire:navigated', () => {
+
+		const el = document.getElementById('statistikChart');
+		if (!el) return;
+
+		// Hapus chart lama jika sudah ada
+		if (el._chartInstance) {
+			el._chartInstance.destroy();
 		}
+
+		const ctx = el.getContext('2d');
+
+		const chart = new Chart(ctx, {
+			type: 'bar',
+			data: {
+				labels: @json($years),
+				datasets: [{
+						label: 'Peraturan & Keputusan',
+						data: @json($peraturanData),
+						backgroundColor: 'rgba(56, 189, 248, 0.7)',
+						borderRadius: 6
+					},
+					{
+						label: 'Monografi',
+						data: @json($monografiData),
+						backgroundColor: 'rgba(251, 113, 133, 0.7)',
+						borderRadius: 6
+					},
+					{
+						label: 'Putusan',
+						data: @json($keputusanData),
+						backgroundColor: 'rgba(167, 139, 250, 0.7)',
+						borderRadius: 6
+					}
+				]
+			},
+			options: {
+				responsive: true,
+				maintainAspectRatio: false
+			}
+		});
+
+		// simpan instance agar tidak duplikat
+		el._chartInstance = chart;
 	});
 </script>

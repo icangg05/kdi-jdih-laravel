@@ -1,24 +1,14 @@
 @php
-	$contact = '0821-3527-3000';
-	$email = 'pemkot@kendarikota.go.id';
-	$address = 'Jl. Drs. H. Abd. Silondae No. 8 , Kel. Mandonga Kec. Mandonga 93111';
+	$contact = config('app.contact');
+	$email   = config('app.email');
+	$address = config('app.address');
 
-	$fb = [
-    'url' => 'https://www.facebook.com/share/1armp948ym/',
-    'label' => 'JDIH Kota Kendari',
-	];
-	$ig = [
-    'url' => 'https://www.instagram.com/jdihkotakendari2?igsh=MWVqNDN6Y3Y4ZmtjcA==',
-    'label' => 'jdihkotakendari2',
-	];
-	$yt = [
-    'url' => 'https://www.youtube.com/@jdihkotakendari',
-    'label' => 'JDIH KENDARI',
-	];
-	$tt = [
-    'url' => 'https://www.tiktok.com/@jdihkotakendari',
-    'label' => 'JDIH',
-	];
+	$fb = config('app.fb');
+	$ig = config('app.ig');
+	$yt = config('app.yt');
+	$tt = config('app.tt');
+
+  $surveiUrl = config('app.surveiUrl');
 
 	$pengunjung = DB::table('pengunjung')->first();
 @endphp
@@ -134,7 +124,7 @@
 
 						<a
 							target="_blank"
-							href="https://forms.gle/wtEHAoVe7EcZ8AHx6"
+							href="{{ $surveiUrl }}"
 							class="inline-flex items-center gap-2 rounded
             bg-primary px-3 lg:px-4 py-2
               text-xs lg:text-sm font-semibold text-white

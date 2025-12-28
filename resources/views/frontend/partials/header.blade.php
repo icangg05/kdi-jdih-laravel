@@ -24,19 +24,24 @@
 	unset($menu);
 @endphp
 
-<header class="w-full fixed bg-black/70 backdrop-blur-sm text-white top-0 z-50">
+<header
+	class="w-full fixed bg-black/70 backdrop-blur-sm text-white top-0 z-50"
+	x-data="{ mobileOpen: false, subOpen: {} }">
 	<div class="max-w-7xl mx-auto px-4">
-		<div class="flex items-center justify-between h-20">
+		<div class="flex items-center justify-between h-17 lg:h-20">
 
 			<!-- LOGO -->
-			<div class="flex items-center gap-4">
-				<img src="{{ asset('assets/img/logo-new-jdih.png') }}" alt="JDIH" class="h-12">
-				<div class="hidden md:block leading-tight">
-					<p class="text-xs uppercase text-slate-300">
-						Jaringan Dokumentasi dan Informasi Hukum
+			<div class="flex items-center gap-2 lg:gap-2.5">
+        <a wire:navigate href="{{ route('frontend.beranda') }}">
+          <img src="{{ asset('assets/img/logo-new-jdih.png') }}" alt="JDIH" class="h-12 lg:h-15">
+        </a>
+				<div class="leading-tight">
+					<p class="text-[17px] lg:text-xs font-bold lg:font-normal tracking-widest lg:tracking-normal uppercase text-slate-300">
+						<span class="hidden lg:inline">Jaringan Dokumentasi dan Informasi Hukum</span>
+            <span class="inline lg:hidden">JDIH</span>
 					</p>
-					<p class="text-sm font-semibold text-primary">
-						Pemerintah Kota Kendari
+					<p class="text-xs lg:text-sm font-semibold text-primary">
+						<span class="hidden lg:inline">Pemerintah</span> Kota Kendari
 					</p>
 				</div>
 			</div>
@@ -107,7 +112,7 @@
 			</nav>
 
 			<!-- MOBILE BUTTON -->
-			<button id="mobileBtn" class="lg:hidden">
+			<button @click="mobileOpen = !mobileOpen" class="lg:hidden">
 				<svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
 						d="M4 6h16M4 12h16M4 18h16" />
@@ -117,18 +122,23 @@
 	</div>
 
 	<!-- MOBILE MENU -->
-	<div id="mobileMenu"
-		class="hidden lg:hidden bg-black/60 backdrop-blur-sm border-t border-gray-700">
-
+	<div
+		class="lg:hidden bg-black/60 backdrop-blur-sm border-t border-gray-700"
+		x-show="mobileOpen"
+		x-transition>
 		<div class="px-6 py-6 space-y-3 text-sm">
 
 			@foreach ($menus as $i => $menu)
+				{{-- TANPA SUBMENU --}}
 				@if (!isset($menu['sub']))
-					<a wire:navigate.hover href="{{ route($menu['route']) }}"
+					<a wire:navigate.hover
+						href="{{ route($menu['route']) }}"
 						class="block uppercase
-					   {{ request()->routeIs($menu['route']) ? 'text-primary' : 'text-white/80' }}">
+                    {{ request()->routeIs($menu['route']) ? 'text-primary' : 'text-white/80' }}">
 						{{ $menu['label'] }}
 					</a>
+
+					{{-- DENGAN SUBMENU --}}
 				@else
 					@php
 						$parentActive = isset($menu['startActive'])
@@ -136,23 +146,32 @@
 						    : request()->routeIs($menu['route'] . '*');
 					@endphp
 
-					<div class="text-white/80">
+					<div class="text-white/80"
+						x-data="{ open: false }">
+
 						<button
 							class="flex w-full items-center justify-between py-2 uppercase
-							{{ $parentActive ? 'text-primary' : '' }}"
-							onclick="toggleSub('sub{{ $i }}')">
+                        {{ $parentActive ? 'text-primary' : '' }}"
+							@click="open = !open">
 							<span>{{ $menu['label'] }}</span>
-							<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+							<svg class="w-4 h-4 transition-transform"
+								:class="open ? 'rotate-180' : ''"
+								fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
 									d="M19 9l-7 7-7-7" />
 							</svg>
 						</button>
 
-						<div id="sub{{ $i }}" class="hidden pl-4 space-y-2">
+						<div
+							class="pl-4 space-y-2"
+							x-show="open"
+							x-transition>
 							@foreach ($menu['sub'] as $sub)
-								<a wire:navigate.hover href="{{ route($sub['route'], $sub['param'] ?? null) }}"
+								<a wire:navigate.hover
+									href="{{ route($sub['route'], $sub['param'] ?? null) }}"
 									class="block text-white/70 py-0.5
-                  {{ $loop->first ? 'pt-1' : '' }}">
+                                {{ $loop->first ? 'pt-1' : '' }}">
 									{{ $sub['label'] }}
 								</a>
 							@endforeach
@@ -160,19 +179,7 @@
 					</div>
 				@endif
 			@endforeach
+
 		</div>
 	</div>
-
-	<script>
-		const mobileBtn = document.getElementById('mobileBtn');
-		const mobileMenu = document.getElementById('mobileMenu');
-
-		mobileBtn.addEventListener('click', () => {
-			mobileMenu.classList.toggle('hidden');
-		});
-
-		function toggleSub(id) {
-			document.getElementById(id).classList.toggle('hidden');
-		}
-	</script>
 </header>
