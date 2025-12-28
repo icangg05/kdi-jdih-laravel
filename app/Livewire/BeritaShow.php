@@ -24,6 +24,7 @@ class BeritaShow extends Component
 
     $beritaTerbaru = DB::table('berita')
       ->whereNot('id', $data->id)
+      ->where('status', 1)
       ->orderByDesc('tanggal')
       ->limit(3)
       ->get();

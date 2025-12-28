@@ -69,7 +69,7 @@
 									📅 {{ Carbon\Carbon::parse($v->tanggal)->translatedFormat('d F Y') }}
 								</span>
 
-								<a wire:navigate.hover href="{{ route('frontend.pengumuman.show', $v->id) }}"
+								<a wire:navigate.hover href="{{ route('frontend.pengumuman.show', Hashids::encode($v->id)) }}"
 									class="inline-flex items-center gap-1 text-xs lg:text-sm font-semibold text-primary
 									group-hover:gap-2 transition-all">
 									Baca Selengkapnya

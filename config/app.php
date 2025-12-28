@@ -16,6 +16,49 @@ return [
   'img_directory' => 'gambar/',
   'default_img'   => 'assets/img/default-img.jpg',
 
+  'menus' => [
+    [
+      'label' => 'Beranda',
+      'route' => 'frontend.beranda',
+    ],
+    [
+      'label'       => 'Profil',
+      'startActive' => 'profil',
+      'sub'         => [
+        ['label' => 'Sekilas Sejarah', 'route' => 'frontend.profil', 'param' => 'sekilas-sejarah'],
+        ['label' => 'Dasar Hukum', 'route' => 'frontend.profil', 'param' => 'dasar-hukum'],
+        ['label' => 'Visi', 'route' => 'frontend.profil', 'param' => 'visi'],
+        ['label' => 'Misi', 'route' => 'frontend.profil', 'param' => 'misi'],
+        ['label' => 'Struktur Organisasi', 'route' => 'frontend.profil', 'param' => 'sto'],
+      ],
+    ],
+    [
+      'label'       => 'Jenis Dokumen',
+      'startActive' => 'dokumen',
+      'sub'         => [
+        ['label' => 'Peraturan & Keputusan', 'route' => 'frontend.dokumen.index', 'param' => 'peraturan'],
+        ['label' => 'Monografi', 'route' => 'frontend.dokumen.index', 'param' => 'monografi'],
+        ['label' => 'Artikel / Majalah Hukum', 'route' => 'frontend.dokumen.index', 'param' => 'artikel'],
+        ['label' => 'Putusan', 'route' => 'frontend.dokumen.index', 'param' => 'putusan'],
+      ],
+    ],
+    [
+      'label'       => 'Pengumuman',
+      'startActive' => 'pengumuman',
+      'route'       => 'frontend.pengumuman.index',
+    ],
+    [
+      'label'       => 'Informasi Hukum',
+      'startActive' => 'informasi-hukum',
+      'sub'         => [],
+    ],
+    [
+      'label'       => 'Berita',
+      'startActive' => 'berita',
+      'route'       => 'frontend.berita.index',
+    ]
+  ],
+
   /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -134,7 +177,7 @@ return [
 
   'maintenance' => [
     'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
-    'store' => env('APP_MAINTENANCE_STORE', 'database'),
+    'store'  => env('APP_MAINTENANCE_STORE', 'database'),
   ],
 
 ];

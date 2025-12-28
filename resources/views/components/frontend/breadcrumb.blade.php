@@ -5,7 +5,7 @@
 			class="w-full h-full object-cover object-center opacity-15">
 	</div>
 
-	<div class="relative max-w-7xl mx-auto px-6 pt-30 lg:pt-43 py-14 lg:py-30 text-center">
+	<div class="relative max-w-7xl mx-auto px-6 pt-30 lg:pt-37 py-14 lg:py-20 text-center">
 		<h1 class="text-2xl md:text-4xl font-bold text-white">
 			{{ $title }}
 		</h1>

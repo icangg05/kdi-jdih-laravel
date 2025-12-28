@@ -1,50 +1,27 @@
 @php
-	$menus = [
-	    [
-	        'label' => 'Beranda',
-	        'route' => 'frontend.beranda',
-	    ],
-	    [
-	        'label' => 'Profil',
-	        'sub' => [
-	            ['label' => 'Sekilas Sejarah', 'route' => 'frontend.profil', 'param' => 'sekilas-sejarah'],
-	            ['label' => 'Dasar Hukum', 'route' => 'frontend.profil', 'param' => 'dasar-hukum'],
-	            ['label' => 'Visi', 'route' => 'frontend.profil', 'param' => 'visi'],
-	            ['label' => 'Misi', 'route' => 'frontend.profil', 'param' => 'misi'],
-	            ['label' => 'Struktur Organisasi', 'route' => 'frontend.profil', 'param' => 'sto'],
+	$menus = config('app.menus');
+
+	// ambil jenis informasi hukum
+	$jenisInformasiHukum = DB::table('jenis_informasi_hukum')
+	    ->select('id', 'singkatan')
+	    ->orderBy('singkatan')
+	    ->get()
+	    ->map(
+	        fn($row) => [
+	            'label' => $row->singkatan,
+	            'route' => 'frontend.informasi-hukum.index',
+	            'param' => ['id' => Hashids::encode($row->id)],
 	        ],
-	    ],
-	    [
-	        'label' => 'Jenis Dokumen',
-	        'sub' => [
-	            ['label' => 'Peraturan & Keputusan', 'route' => 'frontend.dokumen.index', 'param' => 'peraturan'],
-	            ['label' => 'Monografi', 'route' => 'frontend.dokumen.index', 'param' => 'monografi'],
-	            ['label' => 'Artikel / Majalah Hukum', 'route' => 'frontend.dokumen.index', 'param' => 'artikel'],
-	            ['label' => 'Putusan', 'route' => 'frontend.dokumen.index', 'param' => 'putusan'],
-	        ],
-	    ],
-	    [
-	        'label' => 'Pengumuman',
-	        'route' => 'frontend.pengumuman.index',
-	    ],
-	    [
-	        'label' => 'Berita',
-	        'route' => 'frontend.berita.index',
-	    ],
-	];
+	    )
+	    ->toArray();
 
-	function isSubActive($sub)
-	{
-	    if (!request()->routeIs($sub['route'])) {
-	        return false;
+	// inject ke menu yang labelnya "Informasi Hukum"
+	foreach ($menus as &$menu) {
+	    if ($menu['label'] === 'Informasi Hukum') {
+	        $menu['sub'] = $jenisInformasiHukum;
 	    }
-
-	    if (isset($sub['param'])) {
-	        return request()->route('slug') === $sub['param'];
-	    }
-
-	    return true;
 	}
+	unset($menu);
 @endphp
 
 <header class="w-full fixed bg-black/70 backdrop-blur-sm text-white top-0 z-50">
@@ -68,21 +45,23 @@
 			<nav class="hidden lg:flex items-center gap-8 text-[13px] font-light">
 
 				@foreach ($menus as $menu)
+					@php
+						$parentActive = isset($menu['startActive'])
+						    ? request()->is($menu['startActive']) || request()->is($menu['startActive'] . '/*')
+						    : request()->routeIs($menu['route'] . '*');
+					@endphp
+
 					{{-- MENU TANPA SUB --}}
 					@if (!isset($menu['sub']))
 						<a wire:navigate.hover
 							href="{{ route($menu['route']) }}"
 							class="uppercase transition
-						   {{ request()->routeIs($menu['route']) ? 'text-primary' : 'text-white/70 hover:text-primary' }}">
+						   {{ $parentActive ? 'text-primary' : 'text-white/70 hover:text-primary' }}">
 							{{ $menu['label'] }}
 						</a>
 
 						{{-- MENU DENGAN SUB --}}
 					@else
-						@php
-							$parentActive = collect($menu['sub'])->contains(fn($s) => isSubActive($s));
-						@endphp
-
 						<div class="relative group">
 
 							<button
@@ -110,12 +89,10 @@
 									overflow-hidden">
 
 									@foreach ($menu['sub'] as $sub)
-										@php $active = isSubActive($sub); @endphp
-
 										<a wire:navigate.hover
 											href="{{ route($sub['route'], $sub['param'] ?? null) }}"
 											class="block px-4.5 py-2 text-sm transition
-										   {{ $active ? 'text-primary bg-white/5' : 'text-white/65 hover:text-primary hover:bg-white/5' }}
+										   text-white/65 hover:text-primary hover:bg-white/5
 										   {{ $loop->first ? 'pt-4' : '' }}
 										   {{ $loop->last ? 'pb-4' : '' }}">
 											{{ $sub['label'] }}
@@ -154,7 +131,9 @@
 					</a>
 				@else
 					@php
-						$parentActive = collect($menu['sub'])->contains(fn($s) => isSubActive($s));
+						$parentActive = isset($menu['startActive'])
+						    ? request()->is($menu['startActive']) || request()->is($menu['startActive'] . '/*')
+						    : request()->routeIs($menu['route'] . '*');
 					@endphp
 
 					<div class="text-white/80">
@@ -171,11 +150,9 @@
 
 						<div id="sub{{ $i }}" class="hidden pl-4 space-y-2">
 							@foreach ($menu['sub'] as $sub)
-								@php $active = isSubActive($sub); @endphp
-
 								<a wire:navigate.hover href="{{ route($sub['route'], $sub['param'] ?? null) }}"
-									class="block
-								   {{ $active ? 'text-primary' : 'text-white/70' }}">
+									class="block text-white/70 py-0.5
+                  {{ $loop->first ? 'pt-1' : '' }}">
 									{{ $sub['label'] }}
 								</a>
 							@endforeach

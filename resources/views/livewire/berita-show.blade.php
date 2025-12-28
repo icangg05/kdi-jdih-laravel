@@ -44,12 +44,12 @@
 
 							<!-- TANGGAL -->
 							<span class="text-xs lg:text-sm text-slate-500 mt-3 flex items-center gap-1">
-								<i class="fa-regular fa-calendar"></i>
+								<i class="fa-regular fa-calendar"></i>&nbsp;
 								{{ \Carbon\Carbon::parse($data->tanggal)->translatedFormat('d F Y') }}
 							</span>
 
 							<!-- Konten -->
-							<div class="prose prose-slate max-w-none mt-6 text-justify">
+							<div class="prose max-w-none mt-6">
 								{!! $data->isi !!}
 							</div>
 						</div>
