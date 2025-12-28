@@ -1,4 +1,4 @@
-<form action="{{ url()->current() }}" method="get">
+<form wire:submit.prevent="search">
 	<div class="flex items-center lg:gap-3">
 		<div class="relative flex-1">
 			<svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
@@ -9,12 +9,11 @@
 			</svg>
 
 			<input type="text"
+				wire:model.defer="q"
 				placeholder="{{ $placeholder ?? 'Pencarian' }}..."
 				class="text-xs lg:text-sm w-full pl-12 pr-4 py-3.5 lg:py-4 rounded border border-gray-300 focus:ring-none focus:outline-none text-gray-700"
-				value="{{ request()->q }}"
-				name="q"
 				autofocus
-        autocomplete="off">
+				autocomplete="off">
 		</div>
 
 		<button type="submit"

@@ -5,10 +5,21 @@
 	<section class="bg-linear-to-b from-white via-slate-50 to-slate-100  py-12 lg:py-14">
 		<div class="max-w-5xl mx-auto px-2 lg:px-0">
 
-			<x-frontend.form-search placeholder="Cari pengumuman lainnya" />
+			<div class="mb-12">
+				<x-frontend.form-search placeholder="Cari pengumuman lainnya" />
+			</div>
 
 
-			<div class="mt-12 space-y-8">
+			<!-- LOADING SPINNER -->
+			<div wire:loading wire:target="q" class="py-3 w-full">
+				<div class="text-sm lg:text-base text-center text-gray-400">
+					<i class="fa-solid fa-spinner fa-spin text-[20.5px]"></i>
+				</div>
+			</div>
+
+			<div class="space-y-8"
+				wire:loading.remove
+				wire:target="q">
 				@forelse ($data as $v)
 					@php
 						$image = checkFilePath(config('app.img_directory'), $v->image)
@@ -75,18 +86,20 @@
 						</div>
 					</article>
 				@empty
-					<div class="text-center text-gray-400 col-span-3">
+					<div class="text-sm lg:text-base text-center text-gray-400">
 						Tidak ada data ditemukan.
-						@if (request('q'))
-							<span class="italic">Kata kunci : {{ request('q') }}</span>
+						@if ($q)
+							<span class="italic">Kata kunci : {{ $q }}</span>
 						@endif
 					</div>
 				@endforelse
 
 			</div>
 
-			<div class="mt-6">
-				{{ $data->links('vendor.pagination.tailwind') }}
+			<div class="mt-6"
+				wire:loading.remove
+				wire:target="search">
+				{{ $data->links() }}
 			</div>
 		</div>
 	</section>

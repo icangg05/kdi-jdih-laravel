@@ -7,7 +7,17 @@
 			<x-frontend.form-search placeholder="Cari berita lainnya" />
 
 
-			<div class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+			<!-- LOADING SPINNER -->
+			<div wire:loading wire:target="q" class="py-9 w-full">
+				<div class="text-sm lg:text-base text-center text-gray-400">
+					<i class="fa-solid fa-spinner fa-spin text-[20.5px]"></i>
+				</div>
+			</div>
+
+			<!-- CONTENT -->
+			<div class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3"
+				wire:loading.remove
+				wire:target="q">
 				@forelse ($data as $v)
 					@php
 						$image = checkFilePath(config('app.img_directory'), $v->image)
@@ -17,10 +27,10 @@
 
 					<article
 						class="group relative bg-white rounded-2xl overflow-hidden
-          border border-slate-200
-          transform-gpu will-change-transform
-          transition-all duration-300 ease-out
-          hover:-translate-y-1 hover:shadow-2xl">
+              border border-slate-200
+              transform-gpu will-change-transform
+              transition-all duration-300 ease-out
+              hover:-translate-y-1 hover:shadow-2xl">
 
 						<!-- Image -->
 						<div class="relative h-56 overflow-hidden">
@@ -70,16 +80,18 @@
 				@empty
 					<div class="text-center text-gray-400 col-span-3">
 						Tidak ada data ditemukan.
-						@if (request('q'))
-							<span class="italic">Kata kunci : {{ request('q') }}</span>
+						@if ($q)
+							<span class="italic">Kata kunci : {{ $q }}</span>
 						@endif
 					</div>
 				@endforelse
 			</div>
 
 			<!-- Pagination -->
-			<div class="mt-6">
-				{{ $data->links('vendor.pagination.tailwind') }}
+			<div class="mt-6"
+				wire:loading.remove
+				wire:target="search">
+				{{ $data->links() }}
 			</div>
 		</div>
 	</section>
